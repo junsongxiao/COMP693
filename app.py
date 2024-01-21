@@ -15,7 +15,7 @@ app.secret_key = 'secrete_key_for_secured_sessions'
 
 import routes.root  # Root page route
 import routes.auth  # Authentication routes (login/logout)
-import routes.register  # register route
+# import routes.register  # register route
 import routes.error  # Error handling routes
 import routes.about_us
 # import routes.dashboard  # Dashboard route

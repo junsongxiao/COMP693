@@ -3,10 +3,11 @@
 {% block content %}
 
 <body>
-    <div class="container d-flex justify-content-center align-items-center mt-5" style="height: 220vh;">
+    <div class="container d-flex justify-content-center align-items-center mt-5" >
         <div class="card p-3" style="max-width: 2000px; text-align: center;">
-            <h3>Hororata Medical Centre</h3>
+            
             <h3>Registration</h3>
+            <p>Register to make inquiry.</p>
 
             <form action="{{ url_for('register') }}" method="post" class="p-3">
                 <p class="text-danger">* Required</p>
@@ -64,48 +65,6 @@
                     </div>
                 </div>
 
-
-                <div class="ml-4" style="max-width: 1400px;">
-                    <div class="mb-3">
-                        <h5>Choose Your Doctor:</h5>
-                        <!-- Option to automatically assign a doctor -->
-                        <div class="col-md-12 mb-3">
-                            <div class="text-center">
-                                <div>
-                                    <p>I agree to be automatically assigned to a general practitioner</p>
-                                </div>
-                                <label>
-                                    <input type="radio" name="health_professional" value="auto" checked>
-                                    Select
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            {% for doctor in doctors %}
-                                <div class="col-md-4 mb-4">
-                                    <div class="card" style="width: 10rem;">
-                                        <div style="background-image:url('{{ url_for('static', filename=doctor.photo | default('images/default-avatar.jpg')) }}'); min-height:150px; width:auto; background-size:cover; background-position:center; background-repeat:no-repeat;" class="card-img-top"></div>
-
-                        
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ doctor.title }} {{ doctor.first_name }} {{ doctor.last_name }}</h5>
-                                            <p class="card-text">Speciality: {{ doctor.speciality }}</p>  
-                                            <label>
-                                                <input type="radio" name="health_professional" value="{{ doctor.doctor_id }}">
-                                                Select
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% if loop.index % 3 == 0 and not loop.last %}
-                                    </div><div class="row"> 
-                                    <!-- Close and open a new row every 3 doctors -->
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                        
-                    </div>
-                </div>
 
                 {% if error_msg %}
                 <div class="mb-3">

@@ -1,5 +1,9 @@
 from flask import session
 from datetime import datetime,date
+from model.users import Users
+import bcrypt
+# from model.db import database_execute_action, database_execute_lastrowid, database_execute_query_fetchone
+
 from model.db import database_execute_query_fetchone, database_execute_query_fetchall,database_execute_action,database_execute_lastrowid
 from typing import List,Dict, Any, Optional
 from flask import abort, session,flash
@@ -12,5 +16,23 @@ import sqlite3
 
 
 class UserController:
-    # User-related business logic and interactions with the user model
-    pass
+
+
+    @staticmethod
+    def get_user_by_username(username):
+        query = "SELECT * FROM Users WHERE Username = %s"
+        user = database_execute_query_fetchone(query, (username,))
+        return user
+
+    @staticmethod
+    def add_user(username, password, user_type):
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode("utf-8")
+        query = "INSERT INTO Users (Username, PasswordHash, Type) VALUES (%s, %s, %s)"
+        user_id = database_execute_lastrowid(query, (username, hashed_password, user_type))
+        return user_id
+    
+    @staticmethod
+    def delete_user(user_id):
+        query = "DELETE FROM Users WHERE UserID = %s"
+        return database_execute_action(query, (user_id,))
+
