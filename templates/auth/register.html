@@ -1,0 +1,147 @@
+{% extends "index.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+
+<body>
+    <div class="container d-flex justify-content-center align-items-center mt-5" style="height: 220vh;">
+        <div class="card p-3" style="max-width: 2000px; text-align: center;">
+            <h3>Hororata Medical Centre</h3>
+            <h3>Registration</h3>
+
+            <form action="{{ url_for('register') }}" method="post" class="p-3">
+                <p class="text-danger">* Required</p>
+
+            <!-- Left Side -->
+                <div class="d-inline-flex">
+                    <div class="py-3 pe-2" style="max-width: 700px;">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Username*" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password*" required>
+                        </div>
+                        <!-- Add confirm password function -->
+                        <div class="mb-3">
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password*" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Title (Mr/Ms/etc)*" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First name*" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last name*" required>
+                        </div>
+                        <div class="mb-3" onclick="switchDOBInput()">
+                            <input type="date" class="form-control" id="dob" name="dob" placeholder="Date of birth*" required oninput="validateDate()">
+
+                        </div>
+                    </div>
+
+                    <!-- Right Side -->
+                    <div class="py-3 pe-2" style="max-width: 700px;">
+                        <div style="padding-bottom: 100px;">
+                            <div class="mb-3">
+                                <input type="tel" class="form-control" id="phone_number" name="phone_number" placeholder="Phone number*" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Email*" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="street_address" name="street_address" placeholder="Street*" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="suburb" name="suburb" placeholder="Suburb*" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="city" name="city" placeholder="City*" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="postcode" name="postcode" placeholder="Postcode*" pattern="\d{4}" title="Please enter a 4-digit postcode" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="ml-4" style="max-width: 1400px;">
+                    <div class="mb-3">
+                        <h5>Choose Your Doctor:</h5>
+                        <!-- Option to automatically assign a doctor -->
+                        <div class="col-md-12 mb-3">
+                            <div class="text-center">
+                                <div>
+                                    <p>I agree to be automatically assigned to a general practitioner</p>
+                                </div>
+                                <label>
+                                    <input type="radio" name="health_professional" value="auto" checked>
+                                    Select
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            {% for doctor in doctors %}
+                                <div class="col-md-4 mb-4">
+                                    <div class="card" style="width: 10rem;">
+                                        <div style="background-image:url('{{ url_for('static', filename=doctor.photo | default('images/default-avatar.jpg')) }}'); min-height:150px; width:auto; background-size:cover; background-position:center; background-repeat:no-repeat;" class="card-img-top"></div>
+
+                        
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ doctor.title }} {{ doctor.first_name }} {{ doctor.last_name }}</h5>
+                                            <p class="card-text">Speciality: {{ doctor.speciality }}</p>  
+                                            <label>
+                                                <input type="radio" name="health_professional" value="{{ doctor.doctor_id }}">
+                                                Select
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if loop.index % 3 == 0 and not loop.last %}
+                                    </div><div class="row"> 
+                                    <!-- Close and open a new row every 3 doctors -->
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        
+                    </div>
+                </div>
+
+                {% if error_msg %}
+                <div class="mb-3">
+                    <p class="text-danger">{{ error_msg }}</p>
+                </div>
+                {% endif %}
+                <button type="submit" class="btn btn-primary auth-btn mt-3" id="payment-button">Register</button>
+            </form>
+            <p class="mt-3 text-center">Already have an account?<br /><a href="{{ url_for('login') }}">Login here</a>
+            </p>
+        </div>
+    </div>
+
+
+    <script>
+        function switchDOBInput() {
+            var dobInput = document.getElementById("dob");
+    
+            if (dobInput.type !== 'date') {
+                dobInput.type = 'date';
+    
+                // Set the min attribute to the current date to prevent future dates
+                var currentDate = new Date().toISOString().split('T')[0];
+                dobInput.min = currentDate;
+            }
+        }
+    
+        function validateDate() {
+            var dobInput = document.getElementById("dob");
+            var selectedDate = dobInput.value;
+    
+            if (selectedDate > new Date().toISOString().split('T')[0]) {
+                alert("Please select a valid date. The Date of birth cannot be in the future.");
+                dobInput.value = ""; // Clear the invalid date
+            }
+        }
+    </script>
+</body>
+    {% endblock %}

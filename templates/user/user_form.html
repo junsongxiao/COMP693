@@ -1,0 +1,83 @@
+{% extends "dashboard.html" %}
+
+{% block title %}
+Create {{ role }} user
+{% endblock %}
+
+{% block header %}
+Create {{ role }} user
+{% endblock %}
+
+{% block nested_content %}
+<div class="container">
+    <div class="row">
+        <div style="display:inline-flex">
+            {% include 'components/back_button.html' %}
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <h4 class="card-header">Create {{ role }} user</h4>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('create_user', role=role) }}">
+                        {# Hidden input for role #}
+                        <input type="hidden" id="role" name="role" value="{{ role }}">
+                        
+
+                        <div class="mb-3">
+                            <label for="role_id" class="form-label">{{ role.capitalize() }}</label>
+                            <select class="form-select" id="role_id" name="role_id">
+                                {% if role == 'admin' %}
+                                    {% for admin in admins %}
+                                        <option value="{{ admin.admin_id }}" {% if admin_id ==admin.admin_id %}selected{% endif %}>
+                                            {{ admin.title }} {{ admin.first_name }} {{ admin.last_name }}
+                                        </option>
+                                    {% endfor %}
+                                {% elif role == 'doctor' %}
+                                    {% for doctor in doctors %}
+                                        <option value="{{ doctor.doctor_id }}" {% if doctor_id == doctor.doctor_id %}selected{% endif %}>
+                                            {{ doctor.title }} {{ doctor.first_name }} {{ doctor.last_name }}
+                                        </option>
+                                    {% endfor %}
+                                {% elif role == 'nurse' %}
+                                    {% for nurse in nurses %}
+                                        <option value="{{ nurse.nurse_id }}" {% if nurse_id == nurse.nurse_id %}selected{% endif %}>
+                                            {{ nurse.title }} {{ nurse.first_name }} {{ nurse.last_name }}
+                                        </option>
+                                    {% endfor %}
+                                {% elif role == 'patient' %}
+                                    {% for patient in patients %}
+                                        <option value="{{ patient.patient_id }}" {% if patient_id == patient.patient_id %}selected{% endif %}>
+                                            {{ patient.title }} {{ patient.first_name }} {{ patient.last_name }}
+                                        </option>
+                                    {% endfor %}
+                                {% elif role == 'receptionist' %}
+                                    {% for receptionist in receptionists %}
+                                        <option value="{{ receptionist.receptionist_id }}" {% if receptionist_id == receptionist.receptionist_id %}selected{% endif %}>
+                                            {{ receptionist.title }} {{ receptionist.first_name }} {{ receptionist.last_name }}
+                                        </option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary">Create User</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+
+{% block title %}{{ doctor.title }} {{doctor.first_name}} {{doctor.last_name}}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <a href="{{ url_for('teams') }}" class="btn btn-dark mb-3">
+                Back to Our Team
+            </a>
+            <div class="card" style="width: 300px;">
+                <div class="card-body">
+                    {% if doctor.photo %}
+                        <img src="{{ url_for('static', filename=doctor.photo) }}" alt="Doctor's Photo"
+                            class="img-fluid profile_image">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/default-avatar.jpg') }}" alt="Doctor's Photo"
+                            class="img-fluid profile_image">
+                    {% endif %}
+                    <p class="card-text"><strong>Speciality:</strong><br />{{ doctor.speciality }}</p>
+                    <p class="card-text"><strong>Phone number:</strong><br />{{ doctor.phone_number }}</p>
+                    <p class="card-text"><strong>Email:</strong><br />{{ doctor.email }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card" style="width: 800px; margin-top: 60px; margin-left: -300px;">
+                <div class="card-body">
+                    <p class="card-text"><strong>About Me:</strong><br />{{ doctor.doctor_bio }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+

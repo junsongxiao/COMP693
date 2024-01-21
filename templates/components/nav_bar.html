@@ -1,0 +1,107 @@
+<nav class="navbar navbar-expand-lg navbar-dark flex-shrink-0 d-flex justify-content-between">
+
+  <a class="navbar-brand fs-2 mx-4 d-flex" href="{{ url_for('home') }}">
+    <i class="fas fa-hospital fa-2x d-inline"></i>
+    <h2 class="ms-4 my-auto d-inline align-middle" style="height: 100%;">Hororata Medical Centre</h2>
+  </a>
+  
+
+  <ul class="navbar-nav ms-auto">
+    <li class="nav-item" class="ms-auto mx-5">
+      <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+    </li>
+    <li class="nav-item" class="ms-auto mx-5">
+      <a class="nav-link" href="{{ url_for('about_us') }}">About us</a>
+    </li>
+ 
+
+    {# If user is logged in #}
+    {% if session["username"] %}
+   
+      <li class="nav-item" class="ms-auto mx-5">
+        <a class="nav-link" href="{{url_for('profile')}}">Profile</a>
+      </li>
+      <form action="{{ url_for('logout') }}" method="post" class="m-auto mx-5"
+        style="width: fit-content; height:fit-content">
+        <button type="submit" class="btn btn-light">Logout</button>
+      </form><nav class="navbar navbar-expand-lg navbar-dark flex-shrink-0 d-flex justify-content-between">
+
+        <a class="navbar-brand fs-2 mx-4 d-flex" href="{{ url_for('home') }}">
+          <i class="fas fa-hospital fa-2x d-inline"></i>
+          <h2 class="ms-4 my-auto d-inline align-middle" style="height: 100%;">Hororata Medical Centre</h2>
+        </a>
+        
+      
+        <ul class="navbar-nav ms-auto">
+          
+          {# Display links for non-logged-in users or patients #}       
+          
+                   
+          {% if session['role'] == 'patient' %}
+         
+            <li class="nav-item ms-auto mx-5">
+              <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+            </li>
+            <li class="nav-item ms-auto mx-5">
+              <a class="nav-link" href="{{ url_for('about_us') }}">About us</a>
+            </li>
+            <li class="nav-item ms-auto mx-5">
+              <a class="nav-link" href="{{ url_for('teams') }}">Our team</a>
+            </li>
+            <li class="nav-item ms-auto mx-5">
+              <a class="nav-link" href="{{url_for('profile')}}">Profile</a>
+            </li>
+            <form action="{{ url_for('logout') }}" method="post" class="m-auto mx-5"
+              style="width: fit-content; height:fit-content">
+              <button type="submit" class="btn btn-light">Logout</button>
+            </form>
+            {# Only show profile and logout option for admin/doctor/nurse/receptionist #}  
+            {%elif session['role']  in ['admin','doctor','nurse','receptionist'] %}
+            <li class="nav-item ms-auto mx-5">
+              <a class="nav-link" href="{{url_for('profile')}}">Profile</a>
+            </li>
+            <form action="{{ url_for('logout') }}" method="post" class="m-auto mx-5"
+              style="width: fit-content; height:fit-content">
+              <button type="submit" class="btn btn-light">Logout</button>
+            </form>
+
+            {%else%}
+            
+            <li class="nav-item ms-auto mx-5">
+              <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+            </li>
+            <li class="nav-item ms-auto mx-5">
+              <a class="nav-link" href="{{ url_for('about_us') }}">About us</a>
+            </li>
+            <li class="nav-item ms-auto mx-5">
+              <a class="nav-link" href="{{ url_for('teams') }}">Our team</a>
+            </li>
+            <li class="nav-item ms-auto mx-5">
+              <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+            </li>
+            <li class="nav-item ms-auto mx-5">
+              <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+            </li>
+          {% endif %}
+          </ul>
+      </nav>
+      
+    </ul>
+    </div>
+  
+    {# If user is NOT logged in #}
+    {% else %}
+
+
+      <li class="nav-item" class="ms-auto mx-5">
+        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+      </li>
+      <li class="nav-item" class="ms-auto mx-5">
+        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+      </li>
+    </ul>
+
+  </div>
+
+   {% endif %}
+</nav>
