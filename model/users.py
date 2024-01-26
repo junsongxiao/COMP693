@@ -53,6 +53,20 @@ class Users:
     def update_password(username, new_hashed_password):
         query = "UPDATE Users SET PasswordHash = %s WHERE Username = %s"
         return database_execute_action(query, (new_hashed_password, username))
+    
+    @staticmethod
+    def get_user_by_id(user_id):
+        query = "SELECT * FROM Users WHERE UserID = %s"
+        return database_execute_query_fetchone(query, (user_id,))
+
+    @staticmethod
+    def update_user(user_id, first_name, last_name, email, phone, wechat, preferences, notes):
+        query = """
+            UPDATE Users
+            SET FirstName = %s, LastName = %s, Email = %s, Phone = %s, Wechat = %s, Preferences = %s, Notes = %s
+            WHERE UserID = %s
+        """
+        return database_execute_action(query, (first_name, last_name, email, phone, wechat, preferences, notes, user_id))
 
     # def get_all_users():
     #     """Returns a list of all users."""

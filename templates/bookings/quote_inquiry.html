@@ -1,0 +1,33 @@
+{% extends "dashboard.html" %}
+
+{% block title %}
+    My Bookings
+{% endblock %}
+
+{% block header %}
+    My Bookings
+{% endblock %}
+
+{% block nested_content %}
+
+
+    <h1>Customer Inquiries</h1>
+<form action="{{ url_for('quote_inquiry', booking_id=inquiry.BookingID) }}" method="post">
+    <!-- Input fields for quoted prices and note -->
+    
+
+   
+        <label>Quoted Adult Price:</label>
+        <input type="number" name="quoted_adult_price" value="{{ inquiry.QuotedAdultPrice }}" step="0.01"><br>
+        <label>Quoted Child Price:</label>
+        <input type="number" name="quoted_child_price" value="{{ inquiry.QuotedChildPrice }}" step="0.01"><br>
+        <label>Quoted Infant Price:</label>
+        <input type="number" name="quoted_infant_price" value="{{ inquiry.QuotedInfantPrice }}" step="0.01"><br>
+        <label>Quoted Family Price:</label>
+        <input type="number" name="quoted_family_price" value="{{ inquiry.QuotedFamilyPrice }}" step="0.01"><br>
+
+    
+    <textarea name="note" placeholder="Add a note"></textarea>
+    <button type="submit">Submit Quote</button>
+</form>
+{% endblock %}

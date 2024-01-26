@@ -9,4 +9,5 @@ Note: All users can view the root, but we still use auth_handler to ensure the u
 @app.route("/")
 def home():
     # return redirect(url_for("home"))
+    print("route rendered")
     return render_template("general/home.html")

@@ -1,0 +1,25 @@
+{% extends "dashboard.html" %}
+
+{% block title %}
+   Profile
+{% endblock %}
+
+{% block header %}
+    Profile
+{% endblock %}
+
+{% block nested_content %}
+    <h1>Profile</h1>
+    <div>
+        <p>Username: {{ user.Username }}</p>
+        <p>Email: {{ user.Email }}</p>
+        <p>Phone: {{ user.Phone }}</p>
+        <p>First Name: {{ user.FirstName }}</p>
+        <p>Last Name: {{ user.LastName }}</p>
+        <p>Wechat: {{ user.Wechat }}</p>
+        <p>Preferences: {{ user.Preferences }}</p>
+        <p>Notes: {{ user.Notes }}</p>
+
+    </div>
+    <a href="{{ url_for('edit_profile') }}">Edit Profile</a>
+{% endblock %}

@@ -1,4 +1,5 @@
 
+from model.db import database_execute_lastrowid, database_execute_query_fetchall, database_execute_action, database_execute_query_fetchone
 
 
 
@@ -129,5 +130,96 @@ class Bookings:
     @booking_status.setter
     def booking_status(self, value):
         self._booking_status = value
+
+    # @staticmethod
+    # def add_inquiry(tour_id, customer_id, tour_date):
+    #     query = """
+    #         INSERT INTO Bookings (TourID, CustomerID, TourDate, BookingStatus)
+    #         VALUES (%s, %s, %s, 'Inquiry')
+    #     """
+    #     return database_execute_lastrowid(query, (tour_id, customer_id, tour_date))
+    @staticmethod
+    def add_inquiry(**kwargs):
+        query = """
+            INSERT INTO Bookings (TourID, CustomerID, TourDate, AdultNum, ChildNum, InfantNum, FamilyNum, PickUpLocation, Note, BookingStatus)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, 'Inquiry')
+        """
+        values = (kwargs['tour_id'], kwargs['user_id'], kwargs['selected_date'], kwargs['adult_num'], kwargs['child_num'], kwargs['infant_num'], kwargs['family_num'], kwargs['pickup_location'], kwargs['note'])
+        return database_execute_lastrowid(query, values)
+    
+    @staticmethod
+    def get_agent_inquiries(agent_id):
+        query = """
+            SELECT Bookings.*, Tours.TourName
+            FROM Bookings
+            INNER JOIN Tours ON Bookings.TourID = Tours.TourID
+            WHERE Bookings.AgentID = %s AND Bookings.BookingStatus = 'Inquiry'
+        """
+        return database_execute_query_fetchall(query, (agent_id,))
+
+    @staticmethod
+    def get_agent_quotes(agent_id):
+        query = """
+            SELECT Bookings.*, Tours.TourName
+            FROM Bookings
+            INNER JOIN Tours ON Bookings.TourID = Tours.TourID
+            WHERE Bookings.AgentID = %s AND Bookings.BookingStatus = 'Quote'
+        """
+        return database_execute_query_fetchall(query, (agent_id,))
+
+    @staticmethod
+    def update_booking_status(booking_id, new_status):
+        query = """
+            UPDATE Bookings
+            SET BookingStatus = %s
+            WHERE BookingID = %s
+        """
+        return database_execute_action(query, (new_status, booking_id))
+
+    
+    @staticmethod
+    def update_quoted_prices_and_notes(booking_id, quoted_adult_price, quoted_child_price, quoted_infant_price, quoted_family_price, notes):
+        # Logic to update the quoted prices and notes in the database
+        # This would involve writing a query to update the relevant fields in the Bookings table
+        query = """
+            UPDATE Bookings
+            SET QuotedAdultPrice = %s, QuotedChildPrice = %s, QuotedInfantPrice = %s, QuotedFamilyPrice = %s, Notes = %s
+            WHERE BookingID = %s
+        """
+        return database_execute_action(query, (quoted_adult_price, quoted_child_price, quoted_infant_price, quoted_family_price, notes, booking_id))
+
+    @staticmethod
+    def get_inquiry_details(booking_id):
+        # Logic to retrieve the details of a specific inquiry
+        # This would involve an SQL query to fetch the details from the Bookings table
+        query = """
+            SELECT * FROM Bookings
+            WHERE BookingID = %s
+        """
+        return database_execute_query_fetchone(query, (booking_id,))
+    
+    
+    @staticmethod
+    def get_bookings_by_user(user_id):
+        query = """
+            SELECT * FROM Bookings
+            WHERE CustomerID = %s
+        """
+        return database_execute_query_fetchall(query, (user_id,))
+    
+    # @staticmethod
+    # def update_quoted_prices(booking_id, quoted_adult_price, quoted_child_price, quoted_infant_price, quoted_family_price):
+    #     query = """
+    #         UPDATE Bookings
+    #         SET QuotedAdultPrice = %s, QuotedChildPrice = %s, QuotedInfantPrice = %s, QuotedFamilyPrice = %s
+    #         WHERE BookingID = %s
+    #     """
+    #     return database_execute_action(query, (quoted_adult_price, quoted_child_price, quoted_infant_price, quoted_family_price, booking_id))
+    
+    # @staticmethod
+    # def update_inquiry_status(booking_id, new_status):
+    #     query = "UPDATE Bookings SET BookingStatus = %s WHERE BookingID = %s"
+    #     return database_execute_action(query, (new_status, booking_id))
+
 
     

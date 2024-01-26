@@ -20,5 +20,9 @@ def auth_handler(role_list: list):
             abort(403)
     else:
         abort(401)
+
+def is_agent():
+    user_type = session.get('Type')
+    return user_type == 'Agent'
     
 

@@ -10,7 +10,7 @@ from flask import (
 from app import app
 from routes.session_utils import auth_handler
 import model.auth
-import model.doctor, model.nurse, model.health_professional, model.user, model.auth, model.admin, model.receptionist, model.invoice, model.appointment
+
 
 
 

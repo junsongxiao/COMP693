@@ -1,0 +1,38 @@
+{% extends "dashboard.html" %}
+
+{% block title %}
+   Edit Profile
+{% endblock %}
+
+{% block header %}
+    Edit Profile
+{% endblock %}
+
+{% block nested_content %}
+    <h1>Edit Profile</h1>
+    <form action="{{ url_for('edit_profile') }}" method="post">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ user.Email }}" required>
+
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" value="{{ user.Phone }}" required>
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" value="{{ user.FirstName }}" required>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" value="{{ user.LastName }}" required>
+
+        <label for="wechat">Wechat:</label>
+        <input type="text" id="wechat" name="wechat" value="{{ user.Wechat }}">
+
+        <label for="preferences">Preferences:</label>
+        <textarea id="preferences" name="preferences">{{ user.Preferences }}</textarea>
+
+        <label for="notes">Notes:</label>
+        <textarea id="notes" name="notes">{{ user.Notes }}</textarea>
+
+        
+        <button type="submit">Update Profile</button>
+    </form>
+{% endblock %}

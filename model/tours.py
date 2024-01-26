@@ -1,3 +1,5 @@
+from model.db import database_execute_query_fetchall
+
 
 
 class Tours:
@@ -116,5 +118,11 @@ class Tours:
     @commission_rate.setter
     def commission_rate(self, value):
         self._commission_rate = value
+
+
+    @staticmethod
+    def get_all_tours():
+        query = "SELECT * FROM Tours"
+        return database_execute_query_fetchall(query)
 
     

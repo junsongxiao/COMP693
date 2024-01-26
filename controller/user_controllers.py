@@ -35,4 +35,12 @@ class UserController:
     def delete_user(user_id):
         query = "DELETE FROM Users WHERE UserID = %s"
         return database_execute_action(query, (user_id,))
+    
+    @staticmethod
+    def get_user_profile(user_id):
+        return Users.get_user_by_id(user_id)
+
+    @staticmethod
+    def update_user_profile(user_id, first_name, last_name, email, phone, wechat, preferences, notes):
+        return Users.update_user(user_id, first_name, last_name, email, phone, wechat, preferences, notes)
 

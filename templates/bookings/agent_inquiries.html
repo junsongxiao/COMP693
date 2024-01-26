@@ -1,0 +1,71 @@
+{% extends "dashboard.html" %}
+
+{% block title %}
+    My Bookings
+{% endblock %}
+
+{% block header %}
+    My Bookings
+{% endblock %}
+
+{% block nested_content %}
+
+
+    <h1>Customer Inquiries</h1>
+    <div>
+        {% for inquiry in inquiries %}
+            <div class="inquiry">
+                <h3>Inquiry ID: {{ inquiry.BookingID }}</h3>
+                <p>Tour Name: {{ inquiry.TourName }}</p>
+                <p>Customer ID: {{ inquiry.CustomerID }}</p>
+                <p>Tour ID: {{ inquiry.TourID }}</p>
+                <p>Date: {{ inquiry.TourDate }}</p>
+                <p>Adults: {{ inquiry.AdultNum }}</p>
+                <p>Children: {{ inquiry.ChildNum }}</p>
+                <p>Infants: {{ inquiry.InfantNum }}</p>
+                <p>Pick-Up Location: {{ inquiry.PickUpLocation }}</p>
+                <p>Notes: {{ inquiry.Note }}</p>
+                <p>Standard Prices: Adult - {{ inquiry.AdultPrice }}, Child - {{ inquiry.ChildPrice }}, Infant - {{ inquiry.InfantPrice }}, Family - {{ inquiry.FamilyPrice }}</p>
+                <p>Total Quoted Price: 
+                    ${{ (inquiry.QuotedAdultPrice|float * inquiry.AdultNum) + 
+                        (inquiry.QuotedChildPrice|float * inquiry.ChildNum) + 
+                        (inquiry.QuotedInfantPrice|float * inquiry.InfantNum) + 
+                        (inquiry.QuotedFamilyPrice|float * inquiry.FamilyNum) }}
+                </p>
+                <div>
+                    <a href="{{ url_for('quote_inquiry', booking_id=inquiry.BookingID) }}">Quote</a>
+                    <a href="{{ url_for('update_inquiry_status', booking_id=inquiry.BookingID) }}">Update Status</a>
+                </div>
+
+<!--                 
+
+                <form action="{{ url_for('update_inquiry_status', booking_id=inquiry.BookingID) }}" method="post">
+                    <label>Quoted Adult Price:</label>
+                    <input type="number" name="quoted_adult_price" value="{{ inquiry.QuotedAdultPrice }}" step="0.01"><br>
+                    <label>Quoted Child Price:</label>
+                    <input type="number" name="quoted_child_price" value="{{ inquiry.QuotedChildPrice }}" step="0.01"><br>
+                    <label>Quoted Infant Price:</label>
+                    <input type="number" name="quoted_infant_price" value="{{ inquiry.QuotedInfantPrice }}" step="0.01"><br>
+                    <label>Quoted Family Price:</label>
+                    <input type="number" name="quoted_family_price" value="{{ inquiry.QuotedFamilyPrice }}" step="0.01"><br>
+                    <label for="status">Status:</label>
+                    <select name="new_status">
+                        <option value="Inquiry">Inquiry</option>
+                        <option value="Quote">Quote</option>
+                        <option value="Pending Confirmation">Pending Confirmation</option>
+                        <option value="Pending Payment">Pending Payment</option>
+                        <option value="Confirmed">Confirmed</option>                    
+                        <option value="Cancelled and Refunded">Quote</option>
+                        <option value="Quote">Cancelled and Charged</option>
+                        
+                    </select>
+                    <button type="submit">Update Status</button>
+                </form> -->
+            </div>
+        {% else %}
+            <p>No inquiries found.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+

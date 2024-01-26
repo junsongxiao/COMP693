@@ -1,0 +1,42 @@
+COMP693/
+├── controller/
+│   ├── auth_controller.py
+│   ├── booking_controllers.py
+│   └──  user_controllers.py
+├── model/
+│   ├── agencies.py
+│   ├── auth.py
+│   ├── bookings.py
+│   ├── customers.py
+│   ├── db.py
+│   ├── operators.py
+│   ├── tours.py
+│   ├── payments.py
+│   ├── users.py
+│   └── utilities.py
+├── routes/
+│   ├── auth.py
+│   ├── dashboard.py
+│   ├── error.py
+│   ├── user.py
+│   ├── general.py
+│   ├── register.py
+│   ├── root.py
+│   └── session_utils.py
+├── templates/
+│   ├── auth/
+│   │   ├── login.html
+│   │   └── register.html
+│   ├── components/
+│   │   ├── back_button.html
+│   │   ├── nav_bar.html
+│   │   └── flash_messages.html
+│   ├── error/
+│   │   ├── 403.html
+│   │   └── 404.html
+│   ├── general/
+│   │   ├── about_us.html
+│   │   └── home.html
+│   ├── dashboard.html
+├── app.py
+└── connect.py
