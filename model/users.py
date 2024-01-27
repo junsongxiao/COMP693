@@ -58,6 +58,26 @@ class Users:
     def get_user_by_id(user_id):
         query = "SELECT * FROM Users WHERE UserID = %s"
         return database_execute_query_fetchone(query, (user_id,))
+    @staticmethod
+    def get_user_by_username(username):
+        query = "SELECT * FROM Users WHERE Username = %s"
+        try:
+            return database_execute_query_fetchone(query, (username,))
+        except Exception as e:
+            print(f"Error fetching user by username: {e}")
+            return None
+    @staticmethod
+    def get_user_role_details(user_id):
+        query = """
+        SELECT role, title, first_name, last_name
+        FROM Users
+        JOIN Customers ON Users.UserID = Customers.UserID
+        WHERE Users.UserID = %s;
+        """
+        user = database_execute_query_fetchone(query, (user_id,))
+        if user:
+            return user['role'], user
+        return None, None
 
     @staticmethod
     def update_user(user_id, first_name, last_name, email, phone, wechat, preferences, notes):

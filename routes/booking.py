@@ -3,7 +3,7 @@ from app import app
 from controller.booking_controllers import BookingController
 from routes.session_utils import is_logged_in, auth_handler, is_agent
 
-@app.route('/inquire', methods=['POST'])
+@app.route('/inquire', methods=['GET','POST'])
 def inquire():
     if not is_logged_in():
         return redirect(url_for('login'))

@@ -1,17 +1,17 @@
 <nav class="navbar navbar-expand-lg navbar-dark flex-shrink-0 d-flex justify-content-between">
 
-  <a class="navbar-brand fs-2 mx-4 d-flex" href="{{ url_for('home') }}">
+  <a class="navbar-brand fs-2 mx-4 d-flex" href="{{ url_for('index') }}">
     <i class="fas fa-hospital fa-2x d-inline"></i>
-    <h2 class="ms-4 my-auto d-inline align-middle" style="height: 100%;">Hororata Medical Centre</h2>
+    <h2 class="ms-4 my-auto d-inline align-middle" style="height: 100%;">NZ EASY TOUR BOOKING SYSTEM</h2>
   </a>
   
 
   <ul class="navbar-nav ms-auto">
     <li class="nav-item" class="ms-auto mx-5">
-      <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+      <a class="nav-link" href="{{ url_for('index') }}">Home</a>
     </li>
     <li class="nav-item" class="ms-auto mx-5">
-      <a class="nav-link" href="{{ url_for('about_us') }}">About us</a>
+      <a class="nav-link" href="#">About us</a>
     </li>
  
 
@@ -29,28 +29,23 @@
 
         <a class="navbar-brand fs-2 mx-4 d-flex" href="{{ url_for('home') }}">
           <i class="fas fa-hospital fa-2x d-inline"></i>
-          <h2 class="ms-4 my-auto d-inline align-middle" style="height: 100%;">Hororata Medical Centre</h2>
+          <h2 class="ms-4 my-auto d-inline align-middle" style="height: 100%;">NZ Easy Tour Booking System</h2>
         </a>
         
       
         <ul class="navbar-nav ms-auto">
           
-          {# Display links for non-logged-in users or patients #}       
+           
           
                    
-          {% if session['role'] == 'patient' %}
+          {% if session['role'] == 'Admin' %}
          
             <li class="nav-item ms-auto mx-5">
               <a class="nav-link" href="{{ url_for('home') }}">Home</a>
             </li>
+           
             <li class="nav-item ms-auto mx-5">
-              <a class="nav-link" href="{{ url_for('about_us') }}">About us</a>
-            </li>
-            <li class="nav-item ms-auto mx-5">
-              <a class="nav-link" href="{{ url_for('teams') }}">Our team</a>
-            </li>
-            <li class="nav-item ms-auto mx-5">
-              <a class="nav-link" href="{{url_for('profile')}}">Profile</a>
+              <a class="nav-link" href="#">Profile</a>
             </li>
             <form action="{{ url_for('logout') }}" method="post" class="m-auto mx-5"
               style="width: fit-content; height:fit-content">
@@ -59,7 +54,7 @@
             {# Only show profile and logout option for admin/doctor/nurse/receptionist #}  
             {%elif session['role']  in ['admin','doctor','nurse','receptionist'] %}
             <li class="nav-item ms-auto mx-5">
-              <a class="nav-link" href="{{url_for('profile')}}">Profile</a>
+              <a class="nav-link" href="#">Profile</a>
             </li>
             <form action="{{ url_for('logout') }}" method="post" class="m-auto mx-5"
               style="width: fit-content; height:fit-content">
@@ -72,11 +67,9 @@
               <a class="nav-link" href="{{ url_for('home') }}">Home</a>
             </li>
             <li class="nav-item ms-auto mx-5">
-              <a class="nav-link" href="{{ url_for('about_us') }}">About us</a>
+              <a class="nav-link" href="#">About us</a>
             </li>
-            <li class="nav-item ms-auto mx-5">
-              <a class="nav-link" href="{{ url_for('teams') }}">Our team</a>
-            </li>
+           
             <li class="nav-item ms-auto mx-5">
               <a class="nav-link" href="{{ url_for('login') }}">Login</a>
             </li>

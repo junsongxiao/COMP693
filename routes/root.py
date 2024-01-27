@@ -7,7 +7,8 @@ Note: All users can view the root, but we still use auth_handler to ensure the u
 """
 
 @app.route("/")
-def home():
+def index():
     # return redirect(url_for("home"))
     print("route rendered")
+    # return url_for("home")
     return render_template("general/home.html")
