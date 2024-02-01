@@ -42,6 +42,23 @@ class UserController:
 
         # Execute query and check if the customer was successfully added
         return database_execute_action(query, values)
+    
+
+    @staticmethod
+    def get_profile_details(user_id, user_type):
+        return Users.get_profile_details(user_id, user_type)
+
+    @staticmethod
+    def update_customer_profile(user_id, first_name, last_name, email, phone, wechat):
+        return Users.update_customer_profile(user_id, first_name, last_name, email, phone, wechat)
+    
+    @staticmethod
+    def update_agent_profile(user_id, first_name, last_name, email, phone, wechat):
+        return Users.update_agent_profile(user_id, first_name, last_name, email, phone, wechat)
+
+    @staticmethod
+    def update_admin_profile(user_id, first_name, last_name, email, phone, wechat):
+        return Users.update_admin_profile(user_id, first_name, last_name, email, phone, wechat)
 
     
     @staticmethod
@@ -53,9 +70,9 @@ class UserController:
     def get_user_profile(user_id):
         return Users.get_user_by_id(user_id)
 
-    @staticmethod
-    def update_user_profile(user_id, first_name, last_name, email, phone, wechat, preferences, notes):
-        return Users.update_user(user_id, first_name, last_name, email, phone, wechat, preferences, notes)
+    # @staticmethod
+    # def update_user_profile(user_id, first_name, last_name, email, phone, wechat, preferences, notes):
+    #     return Users.update_user(user_id, first_name, last_name, email, phone, wechat, preferences, notes)
     
     # @staticmethod
     # def update_password(username, new_password):
