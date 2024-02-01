@@ -1,0 +1,100 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Add Booking{% endblock %}
+
+{% block header %}
+   Add Booking
+{% endblock %}
+
+<h2>Add Booking</h2>
+<form action="{{ url_for('add_booking') }}" method="post">
+
+    <!-- Dropdown for selecting Tour -->
+    <label for="TourID">Tour:</label>
+    <select name="TourID" id="TourID">
+        {{for tour in tours}}
+            <option value="{{tour.TourID}}">{{tour.TourName}}</option>
+        {% endfor %}
+        
+    </select>
+
+    <!-- Dropdown for selecting Customer -->
+    <label for="CustomerID">Customer:</label>
+    <select name="CustomerID" id="CustomerID">
+        {{for customer in customers}}
+            <option value="{{customer.CustomerID}}">{{customer.FirstName}} {{customer.LastName}}</option>
+        {% endfor % }
+        
+    </select>
+    {{if user_type == 'agent'}}
+        <input type="hidden" id="AgentID" name="AgentID" value="{{user.AgentID}}">
+    {% else %}
+
+    <!-- Dropdown for selecting Agent -->
+    <label for="AgentID">Agent:</label>
+    <select name="AgentID" id="AgentID">
+        {{for agent in agents}}
+            <option value="{{agent.AgentID}}">{{agent.FirstName}} {{agent.LastName}}</option>
+        {% endfor %}    
+
+    </select>
+    {% endif %}
+
+    <label for="BookingAccountName">Booking Account Name:</label>
+    <input type="text" id="BookingAccountName" name="BookingAccountName">
+
+    <label for="BookingNames">Booking Names:</label>
+    <input type="text" id="BookingNames" name="BookingNames">
+
+    <label for="TourDate">Tour Date:</label>
+    <input type="date" id="TourDate" name="TourDate">
+
+    <label for="ConfirmationNum">Confirmation Number:</label>
+    <input type="text" id="ConfirmationNum" name="ConfirmationNum">
+
+    <label for="BookingNum">Booking Number</label>
+    <input type="text" id="BookingNum" name="BookingNum">
+
+    <label for="AdultQuote">Adult Quote:</label>
+    <input type="number" id="AdultQuote" name="AdultQuote">
+
+    <label for="AdultNum">Number of Adults:</label>
+    <input type="number" id="AdultNum" name="AdultNum">
+
+    <label for="ChildQuote">Child Quote:</label>
+    <input type="number" id="ChildQuote" name="ChildQuote">
+
+    <label for="ChildNum">Number of Children:</label>
+    <input type="number" id="ChildNum" name="ChildNum">
+
+    <label for="InfantQuote">Infant Quote:</label>
+    <input type="number" id="InfantQuote" name="InfantQuote">
+
+    <label for="InfantNum">Number of Infants:</label>
+    <input type="number" id="InfantNum" name="InfantNum">
+
+    <label for="FamilyQuote">Family Quote:</label>
+    <input type="number" id="FamilyQuote" name="FamilyQuote">
+
+    <label for="FamilyNum">Number of Families:</label>
+    <input type="number" id="FamilyNum" name="FamilyNum">
+
+    <label for="BookingStatus">Booking Status:</label>
+    <select name="BookingStatus" id="BookingStatus">
+        <option value="Quote">Quote</option>
+        <option value="Pending Payment">Pending Payment</option>
+        <option value="Pending Confirmation">Pending Confirmation</option>
+        <option value="Confirmed">Confirmed</option>
+        <option value="Cancelled and Refunded">Cancelled and Refunded</option>
+        <option value="Cancelled and Charged">Cancelled and Charged</option>
+    </select>
+
+    <label for="Note">Note</label>
+    <textarea id="Note" name="Note"></textarea>
+
+
+
+
+    <button type="submit">Add Booking</button>
+</form>
+{% endblock %}

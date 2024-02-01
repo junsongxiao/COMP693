@@ -1,4 +1,4 @@
-
+from db import database_execute_query_fetchall, database_execute_query_fetchone, database_execute_action, database_execute_lastrowid
 
 class Customers:
     def __init__(self, user_id, first_name, last_name, email, phone, wechat, preferences, notes):
@@ -69,4 +69,31 @@ class Customers:
     @notes.setter
     def notes(self, value):
         self._notes = value
+
+
+    @staticmethod
+    def get_all_customers():
+        
+        query = "SELECT * FROM Customers ORDER BY LastName ASC, FirstName ASC"
+        return database_execute_query_fetchall(query)
+    
+    @staticmethod
+    def get_customer_details(customer_id):
+        query = "SELECT * FROM Customers WHERE CustomerID = %s"
+        return database_execute_query_fetchone(query, (customer_id,))
+
+    @staticmethod
+    def update_customer(customer_id, first_name, last_name, email):
+        # Update query with necessary fields
+        query = "UPDATE Customers SET FirstName = %s, LastName = %s, Email = %s WHERE CustomerID = %s"
+        return database_execute_action(query, (first_name, last_name, email, customer_id))
+    
+    @staticmethod
+    def add_customer(first_name, last_name, email, phone, wechat, preferences, notes):
+        query = """
+            INSERT INTO Customers (FirstName, LastName, Email, Phone, Wechat, Preferences, Notes)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """
+        # Execute the query
+        return database_execute_action(query, (first_name, last_name, email, phone, wechat, preferences))
 

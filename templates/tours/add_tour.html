@@ -1,0 +1,29 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Add New Tour{% endblock %}
+
+{% block header %}
+   Add New Tour
+{% endblock %}
+{% block nested_content %}
+
+<h2>Add New Tour</h2>
+<form action="{{ url_for('add_tour') }}" method="post">
+    <input type="number" name="operator_id" placeholder="Operator ID">
+    <input type="text" name="tour_name" placeholder="Tour Name">
+    <input type="text" name="city" placeholder="City">
+    <input type="text" name="region" placeholder="Region">
+    <textarea name="description" placeholder="Tour Description"></textarea>
+    <input type="number" name="adult_price" placeholder="Adult Price">
+    <input type="number" name="child_price" placeholder="Child Price">
+    <input type="number" name="infant_price" placeholder="Infant Price">
+    <input type="number" name="family_price" placeholder="Family Price">
+    <input type="time" name="tour_time" placeholder="Tour Time">
+    <input type="time" name="report_time" placeholder="Report Time">
+    <textarea name="terms" placeholder="Terms"></textarea>
+    <input type="text" name="reporting_add" placeholder="Reporting Address">
+    <input type="text" name="tour_add" placeholder="Tour Address">
+    <input type="number" name="commission_rate" placeholder="Commission Rate">
+    <button type="submit">Add Tour</button>
+</form>
+{% endblock %}

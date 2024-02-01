@@ -1,0 +1,31 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Edit Operator{% endblock %}
+
+{% block header %}
+   Edit Operator
+{% endblock %}
+
+{% block nested_content %}
+<h2>All Operators</h2>
+<table>
+    <tr>
+        <th>Operator Name</th>
+        <th>Contact Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Actions</th>
+    </tr>
+    {% for operator in operators %}
+    <tr>
+        <td>{{ operator.OperatorName }}</td>
+        <td>{{ operator.ContactName }}</td>
+        <td>{{ operator.Email }}</td>
+        <td>{{ operator.Phone }}</td>
+        <td>{{ operator.Address }}</td>
+        <td><a href="{{url_for('edit_operator', operator_id = operator.OperatorID)}}">Edit</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

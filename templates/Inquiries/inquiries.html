@@ -1,0 +1,65 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Inquiries{% endblock %}
+{% block header %}
+   All Inquiries
+{% endblock %}
+
+{% block nested_content %}
+
+
+<div class="container">
+    <h2>All Inquiries</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Operator Name</th>
+                <th>Tour Name</th>
+                <th>Date</th>
+                <th>PAX</th>
+                <th>Notes</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inquiry in inquiries %}
+            <tr>
+                <td>{{ inquiry.FirstName }} {{ inquiry.LastName }}</td>
+                <td>{{ inquiry.OperatorName }}</td>
+                <td>{{ inquiry.TourName }}</td>
+                <td>{{ inquiry.TourDate }}</td>
+                <td>
+                    Adults: {{ inquiry.AdultNum }}, Children: {{ inquiry.ChildNum }}, Infants: {{ inquiry.InfantNum }}, Families: {{ inquiry.FamilyNum }}
+                </td>
+                <td>
+                    Notes: {{ inquiry.Note }}
+                </td>
+                <td>
+                    <!-- Trigger/Open The Quote Modal -->
+                    <button id="quoteBtn-{{ inquiry.BookingID }}" class="modal-btn quote-btn">Quote</button>
+
+                    <!-- The Quote Modal -->
+                    <div id="quoteModal-{{ inquiry.BookingID }}" class="modal">
+                        <div class="modal-content">
+                            <h3>Quote for {{ inquiry.TourName }}</h3>
+                            <p>{{ inquiry.FirstName }} {{ inquiry.LastName }}</p>
+                            <span style="position:absolute;right:0" class="close" data-modal-id="quoteModal-{{ inquiry.BookingID }}">&times;</span>
+                            <form action="{{ url_for('quote_inquiry', booking_id=inquiry.BookingID) }}" method="post" class="modal-form">
+                                <!-- Quotation fields here -->
+                                <input type="number" name="quoted_adult_price" placeholder="Quoted Adult Price">
+                                <input type="number" name="quoted_child_price" placeholder="Quoted Child Price">
+                                <input type="number" name="quoted_infant_price" placeholder="Quoted Infant Price">
+                                <input type="number" name="quoted_family_price" placeholder="Quoted Family Price">
+                                <textarea name="notes" placeholder="Additional notes"></textarea>
+                                <button type="submit">Submit Quote</button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,32 +1,39 @@
 {% extends "dashboard.html" %}
 
-{% block title %}
-    My Bookings
-{% endblock %}
+{% block title %}My Bookings{% endblock %}
 
 {% block header %}
-    My Bookings
+   My Bookings
 {% endblock %}
 
 {% block nested_content %}
-<h1>My Bookings</h1>
-    <div>
-        {% for booking in bookings %}
-            <div class="booking">
-                <h3>Booking ID: {{ booking.BookingID }}</h3>
-                <p>Tour: {{ booking.TourName }}</p>
-                <p>Date: {{ booking.TourDate }}</p>
-                <p>Status: {{ booking.BookingStatus }}</p>
-                <p>Adults: {{ booking.AdultNum }}</p>
-                <p>Children: {{ booking.ChildNum }}</p>
-                <p>Infants: {{ booking.InfantNum }}</p>
-                <p>Families: {{ booking.FamilyNum }}</p>
-                <p>Pick-Up Location: {{ booking.PickUpLocation }}</p>
-                <p>Note: {{ booking.Note }}</p>
-
-            </div>
-        {% else %}
-            <p>No bookings found.</p>
-        {% endfor %}
-    </div>
+<div class="container">
+    <h2>My Bookings</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tour Name</th>
+                <th>Date</th>
+                <th>Operator/Customer</th>
+                <th>Status</th>
+                <th>Pax</th>
+                <th>Quoted Prices</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.TourName }}</td>
+                <td>{{ booking.TourDate }}</td>
+                <td>{{ booking.OperatorName or booking.CustomerName }}</td>
+                <td>{{ booking.BookingStatus }}</td>
+                <td>Adults: {{ booking.AdultNum }}, Children: {{ booking.ChildNum }}</td>
+                <td>Adult: ${{ booking.AdultQuote }}, Child: ${{ booking.ChildQuote }}</td>
+                <td>${{ booking.TotalQuote }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

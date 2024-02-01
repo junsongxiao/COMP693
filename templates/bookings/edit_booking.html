@@ -1,0 +1,97 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Edit Booking{% endblock %}
+
+{% block header %}
+   Edit Booking
+{% endblock %}
+
+{% block nested_content %}
+<div class="container">
+    <h2>Edit Booking ID: {{ booking.BookingID }}: {{ booking.TourName }} </h2>
+    <form action="{{ url_for('edit_booking', booking_id=booking.BookingID) }}" method="post">
+        
+
+        <div class="form-group">
+            <label for="tour_date">Tour Date:</label>
+            <input type="date" class="form-control" id="tour_date" name="tour_date" value="{{ booking.TourDate.strftime('%Y-%m-%d') }}">
+
+        </div>
+
+        <div class="form-group">
+            <label for="booking_account_name">Booking Account Name:</label>
+            <input type="text" class="form-control" id="booking_account_name" name="booking_account_name" value="{{ booking.BookingAccountName }}">
+        </div>
+
+        <div class="form-group">
+            <label for="booking_names">Booking Names:</label>
+            <input type="text" class="form-control" id="booking_names" name="booking_names" value="{{ booking.BookingNames }}">
+        </div>
+
+        <div class="form-group">
+            <label for="confirmation_num">Confirmation Number:</label>
+            <input type="text" class="form-control" id="confirmation_num" name="confirmation_num" value="{{ booking.ConfirmationNum }}">
+        </div>
+
+        <div class="form-group">
+            <label for="adult_quote">Adult Quote:</label>
+            <input type="number" class="form-control" id="adult_quote" name="adult_quote" value="{{ booking.AdultQuote }}">
+        </div>
+        <div class="form-group">
+            <label for="adult_num">Number of Adults:</label>
+            <input type="number" class="form-control" id="adult_num" name="adult_num" value="{{ booking.AdultNum }}">
+        </div>
+
+        <div class="form-group">
+            <label for="child_quote">Child Quote:</label>
+            <input type="number" class="form-control" id="child_quote" name="child_quote" value="{{ booking.ChildQuote }}">
+        </div>
+        <div class="form-group">
+            <label for="child_num">Number of Children:</label>
+            <input type="number" class="form-control" id="child_num" name="child_num" value="{{ booking.ChildNum }}">
+        </div>
+
+        <div class="form-group">
+            <label for="infant_quote">Infant Quote:</label>
+            <input type="number" class="form-control" id="infant_quote" name="infant_quote" value="{{ booking.InfantQuote }}">
+        </div>
+        <div class="form-group">
+            <label for="infant_num">Number of Infants:</label>
+            <input type="number" class="form-control" id="infant_num" name="infant_num" value="{{ booking.InfantNum }}">
+        </div>
+
+        <div class="form-group">
+            <label for="family_quote">Family Quote:</label>
+            <input type="number" class="form-control" id="family_quote" name="family_quote" value="{{ booking.FamilyQuote }}">
+        </div>
+        <div class="form-group">
+            <label for="family_num">Number of Families:</label>
+            <input type="number" class="form-control" id="family_num" name="family_num" value="{{ booking.FamilyNum }}">
+        </div>       
+
+        <div class="form-group">
+            <label for="pick_up_location">Pick Up Location:</label>
+            <input type="text" class="form-control" id="pick_up_location" name="pick_up_location" value="{{ booking.PickUpLocation }}">
+        </div>
+
+        <div class="form-group">
+            <label for="note">Note:</label>
+            <textarea class="form-control" id="note" name="note">{{ booking.Note }}</textarea>
+        </div>
+
+
+        
+
+        
+
+        
+
+        
+
+        
+
+
+        <button type="submit" class="btn btn-primary">Update Booking</button>
+    </form>
+</div>
+{% endblock %}

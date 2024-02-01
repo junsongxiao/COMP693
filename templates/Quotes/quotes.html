@@ -1,0 +1,57 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Quotes{% endblock %}
+{% block header %}
+   All Quotes
+{% endblock %}
+{% block nested_content %}
+<div class="container">
+    <h2>All Quotes</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Operator</th>
+                <th>Tour Name</th>
+                <th>Date</th>
+                <th>PAX</th>
+                
+                <th>Quoted Prices</th>
+                <th>Total Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for quote in quotes %}
+            <tr>
+                <td>{{ quote.FirstName }} {{ quote.LastName }}</td>
+                <td>{{quote.OperatorName}}</td>
+                <td>{{ quote.TourName }}</td>
+                <td>{{ quote.TourDate }}</td>
+                <td>Adult(s):${{quote.AdultNum}} | Child(ren): ${{quote.ChildNum}} | Infant(s): ${{quote.InfantNum}} | Family(s): ${{quote.FamilyNum}} </td>                
+                <td>
+                    Adult: ${{ quote.AdultQuote }} | Child: ${{ quote.ChildQuote }} |
+                    Infant: ${{ quote.InfantQuote }} | Family: ${{ quote.FamilyQuote }}
+                </td>
+                <td>${{quote.TotalQuote}}</td>
+                <td>
+                    <!-- Update Booking Status Dropdown -->
+                    <form action="{{ url_for('update_booking_status', booking_id=quote.BookingID) }}" method="post">
+                        <select name="new_status">
+                            <option value="Quote">Quote</option>
+                            <option value="Pending Payment">Pending Payment</option>
+                            <option value="Pending Confirmation">Pending Confirmation</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Cancelled and Refunded">Cancelled and Refunded</option>
+                            <option value="Cancelled and Charged">Cancelled and Charged</option>
+                        </select>
+                        <button type="submit">Update Status</button>
+                    </form>
+                    <a href="{{ url_for('send_quote_email', booking_id=quote.BookingID) }}" class="btn btn-primary">Send Email</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

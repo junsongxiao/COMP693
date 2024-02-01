@@ -1,0 +1,37 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Agents{% endblock %}
+
+{% block header %}
+  Agents
+{% endblock %}
+
+{% block nested_content %}
+
+
+<h2>Agent List</h2>
+<table>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Wechat</th>
+        <th>Agency Name</th>
+        <th>Actions</th>
+        <!-- Add other relevant columns -->
+    </tr>
+    {% for agent in agents %}
+    <tr>
+        <td>{{ agent.FirstName }}</td>
+        <td>{{ agent.LastName }}</td>
+        <td>{{ agent.Email }}</td>
+        <td>{{ agent.Phone }}</td>
+        <td>{{ agent.Wechat }}</td>
+        <td>{{ agent.AgencyName }}</td>
+        <td><a href="#">Edit</a></td>
+       
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

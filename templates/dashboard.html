@@ -8,53 +8,95 @@
 <div id="wrapper">
 
     <div id="sidebar-wrapper">
-        <ul class="sidebar-nav nav-pills nav-stacked" id="menu">
+        <ul class="sidebar-nav nav-pills nav-stacked" id="menu">     
             <li>
-                {# Show dashboard for all users #}
                 <a href="{{ url_for('dashboard') }}">
                     <span class="fa-stack fa-lg pull-left">
                         <i class="fas fa-tachometer-alt fa-stack-1x "></i>
                     </span>
                     Dashboard
-                </a>`
+                </a>
             </li>
-            {% if session['role'] == 'Agent' %}
             <li>
-                <a href="{{url_for('agent_inquiries')}}">
+                <a href="{{ url_for('tours') }}">
                     <span class="fa-stack fa-lg pull-left">
                         <i class="fas fa-calendar-check fa-stack-1x "></i>
                     </span>
-                    Inquiries
+                    Tours
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('inquiries') }}">
+                    <span class="fa-stack fa-lg pull-left">
+                        <i class="fas fa-tachometer-alt fa-stack-1x "></i>
+                    </span>
+                   All Inquiries
+                </a>
+            </li>
+            
+            {% if session['Type'] == 'Agent' %}
+            <li>
+                <a href="{{url_for('agent_quotes')}}">
+                    <span class="fa-stack fa-lg pull-left">
+                        <i class="fas fa-calendar-check fa-stack-1x "></i>
+                    </span>
+                    Quotes
                 </a>
             </li>
             <li>
            
-                <a href="#">
+                <a href="{{url_for('my_bookings')}}">
                     <span class="fa-stack fa-lg pull-left">
                         <i class="fas fa-book-medical fa-stack-1x "></i>
                     </span>
-                    Bookings
+                    My Bookings
                 </a>
             </li>
             
             {% endif %}
-            {% if session['role'] == 'Admin' %}
-            <li>
-                <a href="#">
+            {% if session['Type'] == 'Admin' %}
+            <li>            
+                <a href="{{ url_for('quotes') }}">
                     <span class="fa-stack fa-lg pull-left">
-                        <i class="fas fa-calendar-check fa-stack-1x "></i>
+                        <i class="fas fa-tachometer-alt fa-stack-1x "></i>
                     </span>
-                    Inquiries
+                    All Quotes
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="#"> 
                     <span class="fa-stack fa-lg pull-left">
-                        <i class="fas fa-hospital-user fa-stack-1x "></i>
+                        
+                        <i class="fas fa-clipboard-user fa-stack-1x "></i>
                     </span>
-                    Bookings
+                    Quote Admin
                 </a>
-            </li>            
+                <ul class="nav-pills nav-stacked" style="list-style-type:none;">                   
+                    <li><a href="{{url_for('quotes')}}"><span class="fa-stack fa-lg pull-left"><i class="fas fa-clipboard-user fa-stack-1x"></i></span>All Quotes</a></li>
+                    <li><a href="{{url_for('add_quote')}}"><span class="fa-stack fa-lg pull-left"><i class="fas fa-clipboard-user fa-stack-1x"></i></span>Add Quotes</a></li>
+                    
+                </ul>
+            </li>
+
+            
+           
+            <li>
+                <a href="#"> 
+                    <span class="fa-stack fa-lg pull-left">
+
+                        <i class="fas fa-clipboard-user fa-stack-1x "></i>
+                    </span>
+                    Booking Admin
+                </a>
+                <ul class="nav-pills nav-stacked" style="list-style-type:none;">                   
+                    <li><a href="{{url_for('all_bookings')}}"><span class="fa-stack fa-lg pull-left"><i class="fas fa-clipboard-user fa-stack-1x"></i></span>Bookings</a></li>
+                    <li><a href="{{url_for('add_bookoing')}}"><span class="fa-stack fa-lg pull-left"><i class="fas fa-clipboard-user fa-stack-1x"></i></span>Add Bookings</a></li>
+                    
+                </ul>
+            </li>
+            <li>
+            
+
             <li>
                 <a href="#"> 
                     <span class="fa-stack fa-lg pull-left">
@@ -63,8 +105,21 @@
                     Tour Admin
                 </a>
                 <ul class="nav-pills nav-stacked" style="list-style-type:none;">                   
-                    <li><a href="#"><span class="fa-stack fa-lg pull-left"><i class="fas fa-clipboard-user fa-stack-1x"></i></span>Operators</a></li>
-                    <li><a href="#"><span class="fa-stack fa-lg pull-left"><i class="fas fa-clipboard-user fa-stack-1x"></i></span>Tours</a></li>
+                    <li><a href="{{url_for('tours')}}"><span class="fa-stack fa-lg pull-left"><i class="fas fa-clipboard-user fa-stack-1x"></i></span>Tours</a></li>
+                    <li><a href="{{url_for('add_tour')}}"><span class="fa-stack fa-lg pull-left"><i class="fas fa-clipboard-user fa-stack-1x"></i></span>Add Tours</a></li>
+                    
+                </ul>
+            </li>
+            <li>
+                <a href="#"> 
+                    <span class="fa-stack fa-lg pull-left">
+                        <i class="fas fa-clipboard-user fa-stack-1x "></i>
+                    </span>
+                    Operator Admin
+                </a>
+                <ul class="nav-pills nav-stacked" style="list-style-type:none;">                   
+                    <li><a href="{{url_for('operators_list')}}"><span class="fa-stack fa-lg pull-left"><i class="fas fa-clipboard-user fa-stack-1x"></i></span>Operators</a></li>
+                    <li><a href="{{url_for('add_operator')}}"><span class="fa-stack fa-lg pull-left"><i class="fas fa-clipboard-user fa-stack-1x"></i></span>Add Operators</a></li>
                     
                 </ul>
             </li>
@@ -102,7 +157,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{url_for('my_bookings')}}">
                     <span class="fa-stack fa-lg pull-left">
                         <i class="fas fa-hospital-user fa-stack-1x "></i>
                     </span>

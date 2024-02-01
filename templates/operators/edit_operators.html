@@ -1,0 +1,29 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Edit Operator{% endblock %}
+
+{% block header %}
+   Edit Operator
+{% endblock %}
+
+{% block nested_content %}
+<h2>Edit Operator</h2>
+<form action="{{ url_for('edit_operator', operator_id=operator.OperatorID) }}" method="post">
+    <label for="OperatorName">Operator Name:</label>
+    <input type="text" id="OperatorName" name="OperatorName" value="{{ operator.OperatorName }}">
+
+    <label for="ContactName">Contact Name:</label>
+    <input type="text" id="ContactName" name="ContactName" value="{{ operator.ContactName }}">
+
+    <label for="Email">Email:</label>
+    <input type="email" id="Email" name="Email" value="{{ operator.Email }}">
+
+    <label for="Phone">Phone:</label>
+    <input type="text" id="Phone" name="Phone" value="{{ operator.Phone }}">
+
+    <label for="Address">Address:</label>
+    <input type="text" id="Address" name="Address" value="{{ operator.Address }}">
+
+    <button type="submit" class="btn btn-primary">Update Operator</button>
+</form>
+{% endblock %}

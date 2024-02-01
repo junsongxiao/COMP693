@@ -12,9 +12,8 @@
             <form action="{{ url_for('register') }}" method="post" class="p-3">
                 <p class="text-danger">* Required</p>
 
-            <!-- Left Side -->
-                <div class="d-inline-flex">
-                    <div class="py-3 pe-2" style="max-width: 700px;">
+           
+                    <div class="py-12 pe-12" style="min-width:400px;max-width: 700px;">
                         <div class="mb-3">
                             <input type="text" class="form-control" id="username" name="username" placeholder="Username*" required>
                         </div>
@@ -25,45 +24,26 @@
                         <div class="mb-3">
                             <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password*" required>
                         </div>
-                        <div class="mb-3">
-                            <input type="text" class="form-control" id="title" name="title" placeholder="Title (Mr/Ms/etc)*" required>
-                        </div>
+                       
                         <div class="mb-3">
                             <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First name*" required>
                         </div>
                         <div class="mb-3">
                             <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last name*" required>
+                        </div>  
+                        <div class="mb-3">
+                            <input type="tel" class="form-control" id="phone_number" name="phone_number" placeholder="Phone number*" required>
                         </div>
-                        <div class="mb-3" onclick="switchDOBInput()">
-                            <input type="date" class="form-control" id="dob" name="dob" placeholder="Date of birth*" required oninput="validateDate()">
-
+                        <div class="mb-3">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email*" required>
                         </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="wechat" name="wechat" placeholder="Wechat">
+                        </div>  
+                        
                     </div>
-
-                    <!-- Right Side -->
-                    <div class="py-3 pe-2" style="max-width: 700px;">
-                        <div style="padding-bottom: 100px;">
-                            <div class="mb-3">
-                                <input type="tel" class="form-control" id="phone_number" name="phone_number" placeholder="Phone number*" required>
-                            </div>
-                            <div class="mb-3">
-                                <input type="email" class="form-control" id="email" name="email" placeholder="Email*" required>
-                            </div>
-                            <div class="mb-3">
-                                <input type="text" class="form-control" id="street_address" name="street_address" placeholder="Street*" required>
-                            </div>
-                            <div class="mb-3">
-                                <input type="text" class="form-control" id="suburb" name="suburb" placeholder="Suburb*" required>
-                            </div>
-                            <div class="mb-3">
-                                <input type="text" class="form-control" id="city" name="city" placeholder="City*" required>
-                            </div>
-                            <div class="mb-3">
-                                <input type="text" class="form-control" id="postcode" name="postcode" placeholder="Postcode*" pattern="\d{4}" title="Please enter a 4-digit postcode" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    
+                
 
 
                 {% if error_msg %}
@@ -79,28 +59,5 @@
     </div>
 
 
-    <script>
-        function switchDOBInput() {
-            var dobInput = document.getElementById("dob");
-    
-            if (dobInput.type !== 'date') {
-                dobInput.type = 'date';
-    
-                // Set the min attribute to the current date to prevent future dates
-                var currentDate = new Date().toISOString().split('T')[0];
-                dobInput.min = currentDate;
-            }
-        }
-    
-        function validateDate() {
-            var dobInput = document.getElementById("dob");
-            var selectedDate = dobInput.value;
-    
-            if (selectedDate > new Date().toISOString().split('T')[0]) {
-                alert("Please select a valid date. The Date of birth cannot be in the future.");
-                dobInput.value = ""; // Clear the invalid date
-            }
-        }
-    </script>
 </body>
     {% endblock %}

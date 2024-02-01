@@ -67,28 +67,90 @@ class Users:
             print(f"Error fetching user by username: {e}")
             return None
     @staticmethod
-    def get_user_role_details(user_id):
-        query = """
-        SELECT role, title, first_name, last_name
-        FROM Users
-        JOIN Customers ON Users.UserID = Customers.UserID
-        WHERE Users.UserID = %s;
-        """
-        user = database_execute_query_fetchone(query, (user_id,))
-        if user:
-            return user['role'], user
-        return None, None
-
+    def get_customer_id_by_user_id(user_id):
+        query = "SELECT CustomerID FROM Customers WHERE UserID = %s;"
+        return database_execute_query_fetchone(query, (user_id,))
     @staticmethod
-    def update_user(user_id, first_name, last_name, email, phone, wechat, preferences, notes):
+    def get_user_role_details(user_id):
+        # First, get the basic user details
+        user_query = "SELECT UserID, Username, Type FROM Users WHERE UserID = %s;"
+        user = database_execute_query_fetchone(user_query, (user_id,))
+
+        if user:
+            additional_info_query = ""
+            # Depending on the Type, choose a different table to join with
+            if user['Type'] == 'Customer':
+                additional_info_query = "SELECT FirstName, LastName FROM Customers WHERE UserID = %s;"
+            elif user['Type'] == 'Agent':
+                additional_info_query = "SELECT FirstName, LastName, AgencyName FROM Agents WHERE UserID = %s;"
+            elif user['Type'] == 'Admin':
+                additional_info_query = "SELECT FirstName, LastName FROM Admins WHERE UserID = %s;"
+            # Add more conditions for other user types if needed
+
+            additional_info = database_execute_query_fetchone(additional_info_query, (user_id,))
+            if additional_info:
+                return {**user, **additional_info}
+            else:
+                return user
+        else:
+            return None
+
+    # Method to get profile details based on user type
+    @staticmethod
+    def get_profile_details(user_id, user_type):
+        query = ""
+        if user_type == 'Customer':
+            query = "SELECT * FROM Customers WHERE UserID = %s"
+        elif user_type == 'Agent':
+            query = "SELECT * FROM Agents WHERE UserID = %s"
+        elif user_type == 'Admin':
+            query = "SELECT * FROM Admins WHERE UserID = %s"
+        else:
+            return None
+
+        return database_execute_query_fetchone(query, (user_id,))
+
+    # Method to update customer profile
+    @staticmethod
+    def update_customer_profile(user_id, first_name, last_name, email, phone, wechat):
         query = """
-            UPDATE Users
-            SET FirstName = %s, LastName = %s, Email = %s, Phone = %s, Wechat = %s, Preferences = %s, Notes = %s
+            UPDATE Customers 
+            SET FirstName = %s, LastName = %s, Email = %s, Phone = %s, Wechat = %s 
             WHERE UserID = %s
         """
-        return database_execute_action(query, (first_name, last_name, email, phone, wechat, preferences, notes, user_id))
+        return database_execute_action(query, (first_name, last_name, email, phone, wechat, user_id))
 
-    # def get_all_users():
+    # Method to update agent profile
+    @staticmethod
+    def update_agent_profile(user_id, first_name, last_name, email, phone, wechat, agency_name):
+        query = """
+            UPDATE Agents 
+            SET FirstName = %s, LastName = %s, Email = %s, Phone = %s, Wechat = %s, AgencyName = %s 
+            WHERE UserID = %s
+        """
+        return database_execute_action(query, (first_name, last_name, email, phone, wechat, agency_name, user_id))
+
+    # Method to update admin profile
+    @staticmethod
+    def update_admin_profile(user_id, first_name, last_name, email, phone, wechat):
+        query = """
+            UPDATE Admins 
+            SET FirstName = %s, LastName = %s, Email = %s, Phone = %s, Wechat = %s 
+            WHERE UserID = %s
+        """
+        return database_execute_action(query, (first_name, last_name, email, phone, wechat, user_id))
+    
+    
+    # @staticmethod
+    # def update_user(user_id, first_name, last_name, email, phone, wechat, preferences, notes):
+    #     query = """
+    #         UPDATE Users
+    #         SET FirstName = %s, LastName = %s, Email = %s, Phone = %s, Wechat = %s, Preferences = %s, Notes = %s
+    #         WHERE UserID = %s
+    #     """
+    #     return database_execute_action(query, (first_name, last_name, email, phone, wechat, preferences, notes, user_id))
+
+    # # def get_all_users():
     #     """Returns a list of all users."""
     #     query_string = """
     #     SELECT *

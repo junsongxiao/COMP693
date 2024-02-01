@@ -1,4 +1,4 @@
-from model.db import database_execute_query_fetchall
+from model.db import database_execute_query_fetchall, database_execute_query_fetchone, database_execute_action, database_execute_lastrowid
 
 
 
@@ -122,7 +122,43 @@ class Tours:
 
     @staticmethod
     def get_all_tours():
-        query = "SELECT * FROM Tours"
+        query = "SELECT * FROM Tours ORDER BY TourName"
         return database_execute_query_fetchall(query)
+    
+    @staticmethod
+    def get_tour_details(tour_id):
+        query = "SELECT * FROM Tours WHERE TourID = %s"
+        return database_execute_query_fetchone(query, (tour_id,))
+
+    @staticmethod
+    def update_tour(tour_id, tour_name, city, region, description, adult_price, child_price, 
+                    infant_price, family_price, tour_time, report_time, terms, 
+                    reporting_add, tour_add, commission_rate):
+        query = """
+            UPDATE Tours
+            SET TourName = %s, City = %s, Region = %s, TourDescription = %s, 
+                AdultPrice = %s, ChildPrice = %s, InfantPrice = %s, 
+                FamilyPrice = %s, TourTime = %s, ReportTime = %s, 
+                Terms = %s, ReportingAdd = %s, TourAdd = %s, CommissionRate = %s
+            WHERE TourID = %s
+        """
+        params = (tour_name, city, region, description, adult_price, child_price, 
+                  infant_price, family_price, tour_time, report_time, terms, 
+                  reporting_add, tour_add, commission_rate, tour_id)
+        return database_execute_action(query, params)
+    
+    @staticmethod
+    def get_tours_by_operator(operator_id):
+        query = "SELECT * FROM Tours WHERE OperatorID = %s"
+        return database_execute_query_fetchall(query, (operator_id,))
+    
+    @staticmethod
+    def add_tour(operator_id, tour_name, city, region, description, adult_price, child_price, infant_price, family_price, tour_time, report_time, terms, reporting_add, tour_add, commission_rate):
+        query = """
+            INSERT INTO Tours (OperatorID, TourName, City, Region, TourDescription, AdultPrice, ChildPrice, InfantPrice, FamilyPrice, TourTime, ReportTime, Terms, ReportingAdd, TourAdd, CommissionRate)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        # Execute the query with the provided data
+        return database_execute_action(query, (operator_id, tour_name, city, region, description, adult_price, child_price, infant_price, family_price, tour_time, report_time, terms, reporting_add, tour_add, commission_rate))
 
     

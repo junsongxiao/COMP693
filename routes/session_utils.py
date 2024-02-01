@@ -4,7 +4,7 @@ from flask import abort, session
 
 def is_logged_in():
     """Check if there is a session for the user"""
-    if "user_id" in session and "username" in session and "role" in session:
+    if "UserID" in session and "Username" in session and "Type" in session:
         return True
     else:
         session.clear()
@@ -16,7 +16,7 @@ def auth_handler(role_list: list):
     If not allowed, abort with 403 error"""
    
     if is_logged_in():
-        if session["role"] not in role_list:
+        if session["Type"] not in role_list:
             abort(403)
     else:
         abort(401)
@@ -24,5 +24,15 @@ def auth_handler(role_list: list):
 def is_agent():
     user_type = session.get('Type')
     return user_type == 'Agent'
+
+def is_admin():
+    user_type = session.get('Type')
+    return user_type == 'Admin'
+
+def is_customer():
+    user_type = session.get('Type')
+    return user_type == 'Customer'
+
+
     
 

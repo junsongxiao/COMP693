@@ -12,19 +12,119 @@
     <h1>Tours</h1>
     <div>
         {% for tour in tours %}
-            <!-- Existing tour display -->
-            <form action="{{ url_for('inquire') }}" method="post">
-                <input type="hidden" name="tour_id" value="{{ tour.TourID }}">
-                <input type="date" name="selected_date" required>
-                <input type="number" name="adult_num" placeholder="Number of adults">
-                <input type="number" name="child_num" placeholder="Number of children">
-                <input type="number" name="infant_num" placeholder="Number of infants">
-                <input type="number" name="family_num" placeholder="Number of families">
-                <input type="text" name="pickup_location" placeholder="Pick-up location">
-                <textarea name="note" placeholder="Additional notes"></textarea>
-                <button type="submit">Inquire</button>
-            </form>
-        {% endfor %}
+            <div class="tour">
+                <h2>{{ tour.TourName }}</h2>
+                <p>{{ tour.City }}, {{ tour.Region }}</p>
+                <p>{{ tour.TourDescription }}</p>
 
+                <!-- Trigger/Open The Modal -->
+                <!-- <button id="btn{{ tour.TourID }}" class="inquiry-btn">Inquire</button> -->
+
+                <!-- The Modal -->
+                <!-- <div id="modal{{ tour.TourID }}" class="modal"> -->
+                    <!-- Modal content -->
+                    <!-- <div class="modal-content">
+                        <span class="close" data-modal="{{ tour.TourID }}">&times;</span> -->
+
+                 <!-- Trigger/Open The Inquiry Modal -->
+                 <button id="inquiryBtn-{{ tour.TourID }}" class="modal-btn inquiry-btn">Inquire</button>
+
+                 <!-- The Inquiry Modal -->
+                 <div id="inquiryModal-{{ tour.TourID }}" class="modal">
+ 
+                     <!-- Modal content -->
+                     <div  class="modal-content">
+                         <span style="position:absolute;right:0" class="close" data-modal-id="inquiryModal-{{ tour.TourID }}">&times;</span>
+                         <!-- Inquiry form content here -->
+                        <form  action="{{ url_for('inquire') }}" method="post" class="modal-form">
+                            <input type="hidden" name="tour_id" value="{{ tour.TourID }}">
+                            <input type="text" name="booking_account_name" placeholder="Key contact name" required>
+                            <input type="text" name="booking_names" placeholder="Booking Names (comma-separated)" required>
+    
+                            <input type="date" name="selected_date" required>
+                            <input type="number" name="adult_num" placeholder="Number of adults">
+                            <input type="number" name="child_num" placeholder="Number of children">
+                            <input type="number" name="infant_num" placeholder="Number of infants">
+                            <input type="number" name="family_num" placeholder="Number of families">
+                            <input type="text" name="pickup_location" placeholder="Pick-up location">
+                            <textarea name="note" placeholder="Additional notes"></textarea>
+                            <button type="submit">Submit Inquiry</button>
+                        </form>
+                    </div>
+                    
+
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
+<script>
+    // JavaScript for handling modals
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Handle opening modals
+        document.querySelectorAll('.inquiry-btn').forEach(button => {
+            button.onclick = () => {
+                const modalId = 'modal' + button.id.replace('btn', '');
+                document.getElementById(modalId).style.display = 'block';
+            };
+        });
+
+        // Handle closing modals
+        document.querySelectorAll('.close').forEach(span => {
+            span.onclick = () => {
+                const modalId = 'modal' + span.dataset.modal;
+                document.getElementById(modalId).style.display = 'none';
+            };
+        });
+
+        // Close modal when clicking outside
+        window.onclick = event => {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        };
+    });
+</script>
+
+
+<style>
+    /* The Modal (background) */
+   .modal {
+       display: block; /* Hidden by default */
+       position: fixed; /* Stay in place */
+       z-index: 1; /* Sit on top */
+       left: 0;
+       top: 0;
+       width: 100%; /* Full width */
+       height: 100%; /* Full height */
+       overflow: auto; /* Enable scroll if needed */
+       background-color: rgb(0,0,0); /* Fallback color */
+       background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+   }
+   
+   /* Modal Content */
+   .modal-content {
+       background-color: #fefefe;
+       margin: 15% auto; /* 15% from the top and centered */
+       padding: 20px;
+       border: 1px solid #888;
+       width: 80%; /* Could be more or less, depending on screen size */
+   }
+   
+   /* The Close Button */
+   .close {
+       color: #aaa;
+       float: right;
+       font-size: 28px;
+       font-weight: bold;
+   }
+   
+   .close:hover,
+   .close:focus {
+       color: black;
+       text-decoration: none;
+       cursor: pointer;
+   }
+   
+   
+   </style>

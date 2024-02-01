@@ -1,0 +1,35 @@
+{% extends "dashboard.html" %}
+
+{% block title %}
+    Tours
+{% endblock %}
+
+{% block header %}
+    Tour List
+{% endblock %}
+
+{% block nested_content %}
+    <h1>Tours</h1>
+    <div>
+        {% for tour in tours %}
+        <div class="tour">
+            <h2>{{ tour.TourName }}</h2>
+            <p>{{ tour.City }}, {{ tour.Region }}</p>
+            <p>{{ tour.TourDescription }}</p>
+            <!-- <p>Prices: Adult - {{ tour.AdultPrice }}, Child - {{ tour.ChildPrice }}, Infant - {{ tour.InfantPrice }}, Family - {{ tour.FamilyPrice }}</p> -->
+            <form action="{{ url_for('inquire') }}" method="post">
+                <input type="hidden" name="tour_id" value="{{ tour.TourID }}">
+                <input type="date" name="selected_date" required>
+                <input type="number" name="adult_num" placeholder="Number of adults">
+                <input type="number" name="child_num" placeholder="Number of children">
+                <input type="number" name="infant_num" placeholder="Number of infants">
+                <input type="number" name="family_num" placeholder="Number of families">
+                <input type="text" name="pickup_location" placeholder="Pick-up location">
+                <textarea name="note" placeholder="Additional notes"></textarea>
+                <button type="submit">Inquire</button>
+            </form>
+        </div>
+    {% endfor %}
+
+    </div>
+{% endblock %}

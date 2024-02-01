@@ -1,5 +1,6 @@
 
 from model.db import database_execute_lastrowid, database_execute_query_fetchall, database_execute_action, database_execute_query_fetchone
+from model.users import Users
 
 
 
@@ -140,22 +141,65 @@ class Bookings:
     #     return database_execute_lastrowid(query, (tour_id, customer_id, tour_date))
     @staticmethod
     def add_inquiry(**kwargs):
+        # Retrieve CustomerID using UserID
+        customer_id = Users.get_customer_id_by_user_id(kwargs['user_id'])
+
+        # Check if CustomerID is retrieved
+        if not customer_id:
+            
+            return None
+
         query = """
-            INSERT INTO Bookings (TourID, CustomerID, TourDate, AdultNum, ChildNum, InfantNum, FamilyNum, PickUpLocation, Note, BookingStatus)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, 'Inquiry')
+            INSERT INTO Bookings (TourID, CustomerID, TourDate, AdultNum, ChildNum, InfantNum, FamilyNum, PickUpLocation, Note, BookingStatus, BookingAccountName, BookingNames)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, 'Inquiry', %s, %s)
         """
-        values = (kwargs['tour_id'], kwargs['user_id'], kwargs['selected_date'], kwargs['adult_num'], kwargs['child_num'], kwargs['infant_num'], kwargs['family_num'], kwargs['pickup_location'], kwargs['note'])
+        values = (kwargs['tour_id'], customer_id['CustomerID'], kwargs['selected_date'], kwargs['adult_num'], kwargs['child_num'], kwargs['infant_num'], kwargs['family_num'], kwargs['pickup_location'], kwargs['note'], kwargs['booking_account_name'], kwargs['booking_names'])
+
+       
         return database_execute_lastrowid(query, values)
     
     @staticmethod
-    def get_agent_inquiries(agent_id):
+    def get_customer_inquiries(customer_id):
         query = """
-            SELECT Bookings.*, Tours.TourName
+            SELECT Bookings.*, Tours.*, Operators.*,Customers.*
             FROM Bookings
             INNER JOIN Tours ON Bookings.TourID = Tours.TourID
-            WHERE Bookings.AgentID = %s AND Bookings.BookingStatus = 'Inquiry'
+             INNER JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
+            INNER JOIN Operators ON Tours.OperatorID = Operators.OperatorID
+            WHERE Bookings.CustomerID = %s AND Bookings.BookingStatus = 'Inquiry'
         """
-        return database_execute_query_fetchall(query, (agent_id,))
+        return database_execute_query_fetchall(query, (customer_id,))
+    
+    @staticmethod
+    def get_all_inquiries():
+        query = """
+            SELECT Bookings.*, Tours.*, Operators.*,Customers.*
+            FROM Bookings
+            INNER JOIN Tours ON Bookings.TourID = Tours.TourID
+            INNER JOIN Operators ON Tours.OperatorID = Operators.OperatorID
+            INNER JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
+            WHERE Bookings.BookingStatus = 'Inquiry'
+        """
+        return database_execute_query_fetchall(query)
+    
+    @staticmethod
+    def get_all_quotes():
+        query = """
+            SELECT Bookings.*, Tours.TourName, Operators.*, Customers.*,
+            (Bookings.AdultQuote * Bookings.AdultNum) +
+            (Bookings.ChildQuote * Bookings.ChildNum) +
+            (Bookings.InfantQuote * Bookings.InfantNum) +
+            (Bookings.FamilyQuote * Bookings.FamilyNum) AS TotalQuote
+            FROM Bookings
+            INNER JOIN Tours ON Bookings.TourID = Tours.TourID
+            INNER JOIN Operators ON Tours.OperatorID = Operators.OperatorID
+            INNER JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
+            WHERE Bookings.BookingStatus = 'Quote'
+        """
+        return database_execute_query_fetchall(query)
+
+
+
 
     @staticmethod
     def get_agent_quotes(agent_id):
@@ -166,60 +210,154 @@ class Bookings:
             WHERE Bookings.AgentID = %s AND Bookings.BookingStatus = 'Quote'
         """
         return database_execute_query_fetchall(query, (agent_id,))
-
+    
+    
     @staticmethod
-    def update_booking_status(booking_id, new_status):
-        query = """
-            UPDATE Bookings
-            SET BookingStatus = %s
-            WHERE BookingID = %s
-        """
+    def update_status(booking_id, new_status):
+        query = "UPDATE Bookings SET BookingStatus = %s WHERE BookingID = %s"
         return database_execute_action(query, (new_status, booking_id))
 
     
     @staticmethod
-    def update_quoted_prices_and_notes(booking_id, quoted_adult_price, quoted_child_price, quoted_infant_price, quoted_family_price, notes):
-        # Logic to update the quoted prices and notes in the database
-        # This would involve writing a query to update the relevant fields in the Bookings table
+    def insert_or_update_quote(booking_id, adult_quote, child_quote, infant_quote, family_quote, notes):
+        # Check if a quote already exists
+        existing_quote_query = "SELECT * FROM Bookings WHERE BookingID = %s AND BookingStatus = 'Quote'"
+        existing_quote = database_execute_query_fetchone(existing_quote_query, (booking_id,))
+        
+        if existing_quote:
+            # Update existing quote
+            
+            update_query = """
+                UPDATE Bookings
+                SET AdultQuote = %s, ChildQuote = %s, InfantQuote = %s, FamilyQuote = %s, Note = %s
+                WHERE BookingID = %s
+            """
+            return database_execute_action(update_query, (adult_quote, child_quote, infant_quote, family_quote, notes, booking_id))
+        else:
+            # Insert new quote
+            insert_query = """
+                UPDATE Bookings
+                SET AdultQuote = %s, ChildQuote = %s, InfantQuote = %s, FamilyQuote = %s, Note = %s, BookingStatus = 'Quote'
+                WHERE BookingID = %s
+            """
+            return database_execute_action(insert_query, (adult_quote, child_quote, infant_quote, family_quote, notes, booking_id))
+
+      
+
+    @staticmethod
+    def get_quote_by_id(booking_id):
         query = """
-            UPDATE Bookings
-            SET QuotedAdultPrice = %s, QuotedChildPrice = %s, QuotedInfantPrice = %s, QuotedFamilyPrice = %s, Notes = %s
-            WHERE BookingID = %s
+            SELECT Bookings.*, Customers.Email AS CustomerEmail, Customers.FirstName, Customers.LastName, Tours.TourName
+            FROM Bookings
+            INNER JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
+            INNER JOIN Tours ON Bookings.TourID = Tours.TourID
+            
+            WHERE Bookings.BookingID = %s AND Bookings.BookingStatus = 'Quote'
         """
-        return database_execute_action(query, (quoted_adult_price, quoted_child_price, quoted_infant_price, quoted_family_price, notes, booking_id))
+        result=database_execute_query_fetchone(query, (booking_id,))
+        
+        return result
+
 
     @staticmethod
     def get_inquiry_details(booking_id):
-        # Logic to retrieve the details of a specific inquiry
-        # This would involve an SQL query to fetch the details from the Bookings table
+       
         query = """
             SELECT * FROM Bookings
+            INNER JOIN Tours ON Bookings.TourID = Tours.TourID
+            INNER JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
+            INNER JOIN Operators ON Tours.OperatorID = Operators.OperatorID
             WHERE BookingID = %s
         """
         return database_execute_query_fetchone(query, (booking_id,))
     
     
-    @staticmethod
-    def get_bookings_by_user(user_id):
-        query = """
-            SELECT * FROM Bookings
-            WHERE CustomerID = %s
-        """
-        return database_execute_query_fetchall(query, (user_id,))
-    
     # @staticmethod
-    # def update_quoted_prices(booking_id, quoted_adult_price, quoted_child_price, quoted_infant_price, quoted_family_price):
+    # def get_bookings_by_user(user_id):
     #     query = """
-    #         UPDATE Bookings
-    #         SET QuotedAdultPrice = %s, QuotedChildPrice = %s, QuotedInfantPrice = %s, QuotedFamilyPrice = %s
-    #         WHERE BookingID = %s
+    #         SELECT * FROM Bookings
+    #         WHERE CustomerID = %s
     #     """
-    #     return database_execute_action(query, (quoted_adult_price, quoted_child_price, quoted_infant_price, quoted_family_price, booking_id))
+    #     return database_execute_query_fetchall(query, (user_id,))
     
-    # @staticmethod
-    # def update_inquiry_status(booking_id, new_status):
-    #     query = "UPDATE Bookings SET BookingStatus = %s WHERE BookingID = %s"
-    #     return database_execute_action(query, (new_status, booking_id))
+    @staticmethod
+    def get_all_bookings_except_inquiry_quote():
+        query = """
+            SELECT 
+                Bookings.*, 
+                Tours.TourName, 
+                Customers.FirstName, 
+                Customers.LastName, 
+                Operators.OperatorName,
+                (Bookings.AdultNum * Bookings.AdultQuote + 
+                Bookings.ChildNum * Bookings.ChildQuote + 
+                Bookings.InfantNum * Bookings.InfantQuote + 
+                Bookings.FamilyNum * Bookings.FamilyQuote) AS TotalQuote
+            FROM Bookings
+            INNER JOIN Tours ON Bookings.TourID = Tours.TourID
+            INNER JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
+            INNER JOIN Operators ON Tours.OperatorID = Operators.OperatorID
+            WHERE Bookings.BookingStatus NOT IN ('Inquiry', 'Quote')
+        """
+        return database_execute_query_fetchall(query)
 
+    # Method for agent bookings
+    @staticmethod
+    def get_agent_bookings(agent_id):
+        query = """
+            SELECT Bookings.*, Tours.*, Customers.*, Operators.*
+            FROM Bookings
+            INNER JOIN Tours ON Bookings.TourID = Tours.TourID
+            INNER JOIN Operators ON Tours.OperatorID = Operators.OperatorID
+            INNER JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
+            WHERE Bookings.AgentID = %s
+        """
+        return database_execute_query_fetchall(query, (agent_id,))
+
+    # Method for customer bookings
+    @staticmethod
+    def get_customer_bookings(customer_id):
+        query = """
+            SELECT Bookings.*, Tours.*, Customers.*,Operators.*
+            FROM Bookings
+            INNER JOIN Tours ON Bookings.TourID = Tours.TourID
+            INNER JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
+            INNER JOIN Operators ON Tours.OperatorID = Operators.OperatorID
+            WHERE Bookings.CustomerID = %s
+        """
+        return database_execute_query_fetchall(query, (customer_id,))
+    
+    @staticmethod
+    def update_booking(booking_id, tour_date, adult_num, child_num, infant_num, family_num, pick_up_location, note, booking_account_name, booking_names, confirmation_num, adult_quote, child_quote, infant_quote, family_quote):
+        query = """
+            UPDATE Bookings
+            SET TourDate = %s, AdultNum = %s, ChildNum = %s, InfantNum = %s, FamilyNum = %s, 
+                PickUpLocation = %s, Note = %s, BookingAccountName = %s, BookingNames = %s, 
+                ConfirmationNum = %s, AdultQuote = %s, ChildQuote = %s, InfantQuote = %s, FamilyQuote = %s
+            WHERE BookingID = %s
+        """
+        return database_execute_action(query, (tour_date, adult_num, child_num, infant_num, family_num, pick_up_location, note, booking_account_name, booking_names, confirmation_num, adult_quote, child_quote, infant_quote, family_quote, booking_id))
+    @staticmethod
+    def get_booking_by_id(booking_id):
+        query = """
+        SELECT Bookings.*, Customers.Email AS CustomerEmail, Customers.FirstName, Customers.LastName, Tours.TourName
+            FROM Bookings
+            INNER JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
+            INNER JOIN Tours ON Bookings.TourID = Tours.TourID            
+            WHERE Bookings.BookingID = %s
+            """
+        return database_execute_query_fetchone(query, (booking_id,))
+    
+    @staticmethod
+    def add_booking(customer_id, tour_id, tour_date, adult_num, child_num, infant_num, family_num, pickup_location, note):
+        query = """
+            INSERT INTO Bookings (CustomerID, TourID, TourDate, AdultNum, ChildNum, InfantNum, FamilyNum, PickUpLocation, Note)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """
+        values = (customer_id, tour_id, tour_date, adult_num, child_num, infant_num, family_num, pickup_location, note)
+        
+        return database_execute_lastrowid(query, values)
+        
+    
 
     

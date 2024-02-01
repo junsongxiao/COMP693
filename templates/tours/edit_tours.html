@@ -1,0 +1,55 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Edit Tour{% endblock %}
+
+{% block header %}
+   Edit Tour
+{% endblock %}
+{% block nested_content %}
+<h2>Edit Tour</h2>
+<form action="{{ url_for('edit_tour', tour_id=tour.TourID) }}" method="post">
+    <label for="TourName">Tour Name:</label>
+    <input type="text" id="TourName" name="TourName" value="{{ tour.TourName }}">
+
+    <label for="City">City:</label>
+    <input type="text" id="City" name="City" value="{{ tour.City }}">
+
+    <label for="Region">Region:</label>
+    <input type="text" id="Region" name="Region" value="{{ tour.Region }}">
+
+    <label for="TourDescription">Description:</label>
+    <textarea id="TourDescription" name="TourDescription">{{ tour.TourDescription }}</textarea>
+
+    <label for="AdultPrice">Adult Price:</label>
+    <input type="number" step="0.01" id="AdultPrice" name="AdultPrice" value="{{ tour.AdultPrice }}">
+
+    <label for="ChildPrice">Child Price:</label>
+    <input type="number" step="0.01" id="ChildPrice" name="ChildPrice" value="{{ tour.ChildPrice }}">
+
+    <label for="InfantPrice">Infant Price:</label>
+    <input type="number" step="0.01" id="InfantPrice" name="InfantPrice" value="{{ tour.InfantPrice }}">
+
+    <label for="FamilyPrice">Family Price:</label>
+    <input type="number" step="0.01" id="FamilyPrice" name="FamilyPrice" value="{{ tour.FamilyPrice }}">
+
+    <label for="TourTime">Tour Time:</label>
+    <input type="time" id="TourTime" name="TourTime" value="{{ tour.TourTime }}">
+
+    <label for="ReportTime">Report Time:</label>
+    <input type="time" id="ReportTime" name="ReportTime" value="{{ tour.ReportTime }}">
+
+    <label for="Terms">Terms:</label>
+    <textarea id="Terms" name="Terms">{{ tour.Terms }}</textarea>
+
+    <label for="ReportingAdd">Reporting Address:</label>
+    <input type="text" id="ReportingAdd" name="ReportingAdd" value="{{ tour.ReportingAdd }}">
+
+    <label for="TourAdd">Tour Address:</label>
+    <input type="text" id="TourAdd" name="TourAdd" value="{{ tour.TourAdd }}">
+
+    <label for="CommissionRate">Commission Rate:</label>
+    <input type="number" step="0.01" id="CommissionRate" name="CommissionRate" value="{{ tour.CommissionRate }}">
+
+    <button type="submit" class="btn btn-primary">Update Tour</button>
+</form>
+{% endblock %}

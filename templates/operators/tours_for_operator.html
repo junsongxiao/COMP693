@@ -1,0 +1,49 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Tours for Operators{% endblock %}
+
+{% block header %}
+   Tours for Operators
+{% endblock %}
+
+{% block nested_content %}
+<h2>Tours by Operator ID: {{ operator_id }}</h2>
+<table>
+    <tr>
+        <th>Tour ID</th>
+        <th>Tour Name</th>
+        <th>City</th>
+        <th>Region</th>
+        <th>Description</th>
+        <th>Adult Price</th>
+        <th>Child Price</th>
+        <th>Infant Price</th>
+        <th>Family Price</th>
+        <th>Tour Time</th>
+        <th>Report Time</th>
+        <th>Terms</th>
+        <th>Reporting Address</th>
+        <th>Tour Address</th>
+        <th>Commission Rate</th>
+    </tr>
+    {% for tour in tours %}
+    <tr>
+        <td>{{ tour.TourID }}</td>
+        <td>{{ tour.TourName }}</td>
+        <td>{{ tour.City }}</td>
+        <td>{{ tour.Region }}</td>
+        <td>{{ tour.TourDescription }}</td>
+        <td>{{ tour.AdultPrice }}</td>
+        <td>{{ tour.ChildPrice }}</td>
+        <td>{{ tour.InfantPrice }}</td>
+        <td>{{ tour.FamilyPrice }}</td>
+        <td>{{ tour.TourTime }}</td>
+        <td>{{ tour.ReportTime }}</td>
+        <td>{{ tour.Terms }}</td>
+        <td>{{ tour.ReportingAdd }}</td>
+        <td>{{ tour.TourAdd }}</td>
+        <td>{{ tour.CommissionRate }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

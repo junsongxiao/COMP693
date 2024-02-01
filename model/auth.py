@@ -3,6 +3,7 @@
 from flask import session
 import bcrypt
 from model.users import Users
+from model.db import database_execute_lastrowid, database_execute_query_fetchone, database_execute_action
 
 class Auth:
     @staticmethod
@@ -20,5 +21,17 @@ class Auth:
         return False
     
     @staticmethod
-    def is_logged_in():
-        return 'UserID' in session
+    def create_user(username, password):
+        # Hash the password
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode("utf-8")
+
+        # SQL query to insert a new user
+        query = "INSERT INTO Users (Username, PasswordHash, Type) VALUES (%s, %s, %s);"
+        values = (username, hashed_password, 'Customer')  # Assuming 'Customer' as default user type
+
+        # Execute query and return the UserID
+        return database_execute_lastrowid(query, values)
+
+    
+
+    

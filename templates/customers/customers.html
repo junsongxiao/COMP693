@@ -1,0 +1,37 @@
+
+{% extends "dashboard.html" %}
+
+{% block title %}Customers{% endblock %}
+
+{% block header %}
+   Customers
+{% endblock %}
+
+{% block nested_content %}
+<h2>All Customers</h2>
+<table>
+    <tr>
+        <th>Customer ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Wechat</th>
+        <th>Preferences</th>
+        <th>Notes</th>
+        <th>Actions</th>
+    </tr>
+    {% for customer in customers %}
+    <tr>
+        <td>{{ customer.CustomerID }}</td>
+        <td>{{ customer.FirstName }}</td>
+        <td>{{ customer.LastName }}</td>
+        <td>{{ customer.Email }}</td>
+        <td>{{ customer.Wechat }}</td>
+        <td>{{ customer.Preferences }}</td>
+        <td>{{ customer.Notes }}</td>
+        <td><a href="#">Edit</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

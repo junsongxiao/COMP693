@@ -1,0 +1,60 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Agent Quotes{% endblock %}
+
+
+{% block header %}
+   Agent Quotes
+{% endblock %}
+{% block nested_content %}
+<div class="container">
+    <h2>Agent-Specific Quotes</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Operator</th>
+                <th>Tour Name</th>
+                <th>Date</th>
+                <th>PAX</th>
+                <th>Quoted Prices</th>
+                <th>Total Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for quote in quotes %}
+            <tr>
+                <td>{{ quote.FirstName }} {{ quote.LastName }}</td>
+                <td>{{ quote.OperatorName }}</td>
+                <td>{{ quote.TourName }}</td>
+                <td>{{ quote.TourDate }}</td>
+                <td>
+                    Adults: {{ quote.AdultNum }},
+                    Children: {{ quote.ChildNum }},
+                    Infants: {{ quote.InfantNum }},
+                    Families: {{ quote.FamilyNum }}
+                </td>
+                <td>
+                    Adult: ${{ quote.AdultQuote }},
+                    Child: ${{ quote.ChildQuote }},
+                    Infant: ${{ quote.InfantQuote }},
+                    Family: ${{ quote.FamilyQuote }}
+                </td>
+                <td>${{ quote.TotalQuote }}</td>
+                <td>
+                    <!-- Update Booking Status and Send Email -->
+                    <form action="{{ url_for('update_booking_status', booking_id=quote.BookingID) }}" method="post">
+                        <select name="new_status">
+                            <!-- Status options here -->
+                        </select>
+                        <button type="submit">Update Status</button>
+                    </form>
+                    <a href="{{ url_for('send_quote_email', booking_id=quote.BookingID) }}" class="btn btn-primary">Send Email</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
