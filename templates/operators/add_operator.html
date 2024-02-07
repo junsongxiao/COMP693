@@ -6,27 +6,37 @@
    Add Operator
 {% endblock %}
 {% block nested_content %}
-<h2>Add Operator</h2>
+<div style="display:inline-flex">
+    {% include 'components/back_button.html' %}
+</div>
+
 <form method="post">
-    <label for="operator_name">Operator Name:</label>
-    <input type="text" id="operator_name" name="operator_name">
-
-    <label for="contact_name">Contact Name:</label>
-    <input type="text" id="contact_name" name="contact_name">
-
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email">
-
-    <label for="phone">Phone:</label>
-    <input type="text" id="phone" name="phone">
-
-    <label for="address">Address:</label>
-    <input type="text" id="address" name="address">
-
-
-
-    <!-- Repeat for Contact Name, Email, Phone, and Address -->
-
-    <button type="submit">Add Operator</button>
+    <table>
+        <tr>
+            <td><label for="operator_name">Operator Name:</label></td>
+            <td><input type="text" id="operator_name" name="operator_name" placeholder="Operator Name"></td>
+        </tr>
+        <tr>
+            <td><label for="contact_name">Contact Name:</label></td>
+            <td><input type="text" id="contact_name" name="contact_name" placeholder="Contact Name"></td>
+        </tr>
+        <tr>
+            <td><label for="email">Email:</label></td>
+            <td><input type="email" id="email" name="email" placeholder="Email"></td>
+        </tr>
+        <tr>
+            <td><label for="phone">Phone:</label></td>
+            <td><input type="text" id="phone" name="phone" placeholder="Phone"></td>
+        </tr>
+        <tr>
+            <td><label for="address">Address:</label></td>
+            <td><input type="text" id="address" name="address" placeholder="Address"></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: center;"><button class="btn btn-primary" type="submit">Add Operator</button></td>
+        </tr>
+    </table>
 </form>
+
+
 {% endblock %}

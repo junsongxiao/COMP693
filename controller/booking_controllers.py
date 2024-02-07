@@ -91,6 +91,16 @@ class BookingController:
     @staticmethod
     def add_booking(customer_id, tour_id, tour_date, adult_num, child_num, infant_num, family_num, pickup_location, note):
         return Bookings.add_booking(customer_id, tour_id, tour_date, adult_num, child_num, infant_num, family_num, pickup_location, note)
+    @staticmethod
+    def get_customer_inquiries(customer_id):
+        return Bookings.get_customer_inquiries(customer_id)
+    
+    
+    @staticmethod
+    def update_quote( booking_id,tour_date, adult_num, child_num, infant_num, family_num, adult_quote, child_quote, infant_quote, family_quote, pickup_location, note):
+        return Bookings.update_quote(booking_id, tour_date, adult_num, child_num, infant_num, family_num, adult_quote, child_quote, infant_quote, family_quote, pickup_location, note)
+
+    
     
 
 

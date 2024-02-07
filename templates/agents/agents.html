@@ -8,8 +8,9 @@
 
 {% block nested_content %}
 
-
-<h2>Agent List</h2>
+<div style="display:inline-flex">
+    {% include 'components/back_button.html' %}
+</div>
 <table>
     <tr>
         <th>First Name</th>
@@ -29,7 +30,8 @@
         <td>{{ agent.Phone }}</td>
         <td>{{ agent.Wechat }}</td>
         <td>{{ agent.AgencyName }}</td>
-        <td><a href="#">Edit</a></td>
+        <td><a class="btn btn-primary" href="{{ url_for('edit_agent', agent_id=agent.AgentID) }}">Edit</a>
+        </td>
        
     </tr>
     {% endfor %}

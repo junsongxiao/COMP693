@@ -7,35 +7,43 @@
 {% endblock %}
 
 {% block nested_content %}
-
-
-<h2>Edit Customer Details</h2>
+<div style="display:inline-flex">
+    {% include 'components/back_button.html' %}
+</div>
 <form action="{{ url_for('edit_customer', customer_id=customer.CustomerID) }}" method="post">
-    <label for="first_name">First Name:</label>
-    <input type="text" id="first_name" name="first_name" value="{{ customer.FirstName }}">
-
-    <label for="last_name">Last Name:</label>
-    <input type="text" id="last_name" name="last_name" value="{{ customer.LastName }}">
-
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" value="{{ customer.Email }}">
-
-    <label for="phone">Phone:</label>
-    <input type="text" id="phone" name="phone" value="{{ customer.Phone }}">
-
-    <label for="wechat">Wechat:</label>
-    <input type="text" id="wechat" name="wechat" value="{{ customer.Wechat }}">
-
-    <label for="preferences">Preferences:</label>
-    <input type="preferences" id="preferences" name="preferences" value="{{ customer.Preferences }}">
-
-    <label for="notes">Note:</label>
-    <input type="textarea" id="notes" name="notes" value="{{ customer.Notes }}">
-
-    
-
-    <!-- Add other fields as necessary -->
-
-    <button type="submit">Update Customer</button>
+  <table>
+      <tr>
+          <td><label for="first_name">First Name:</label></td>
+          <td><input type="text" id="first_name" name="first_name" value="{{ customer.FirstName }}"></td>
+      </tr>
+      <tr>
+          <td><label for="last_name">Last Name:</label></td>
+          <td><input type="text" id="last_name" name="last_name" value="{{ customer.LastName }}"></td>
+      </tr>
+      <tr>
+          <td><label for="email">Email:</label></td>
+          <td><input type="email" id="email" name="email" value="{{ customer.Email }}"></td>
+      </tr>
+      <tr>
+          <td><label for="phone">Phone:</label></td>
+          <td><input type="text" id="phone" name="phone" value="{{ customer.Phone }}"></td>
+      </tr>
+      <tr>
+          <td><label for="wechat">Wechat:</label></td>
+          <td><input type="text" id="wechat" name="wechat" value="{{ customer.Wechat }}"></td>
+      </tr>
+      <tr>
+          <td><label for="preferences">Preferences:</label></td>
+          <td><input type="text" id="preferences" name="preferences" value="{{ customer.Preferences }}"></td>
+      </tr>
+      <tr>
+          <td><label for="notes">Notes:</label></td>
+          <td><input type="text" id="notes" name="notes" value="{{ customer.Notes }}"></td>
+      </tr>
+      <tr>
+          <td colspan="2" style="text-align: center;"><button class="btn btn-primary" type="submit">Update Customer</button></td>
+      </tr>
+  </table>
 </form>
+
 {% endblock %}

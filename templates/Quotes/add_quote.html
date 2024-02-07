@@ -6,13 +6,17 @@
    Add Quote
 {% endblock %}
 
-<h2>Add Quote</h2>
+{% block nested_content %}
+<div style="display:inline-flex">
+    {% include 'components/back_button.html' %}
+</div>   
+
 <form action="{{ url_for('add_quote') }}" method="post">
 
     <!-- Dropdown for selecting Tour -->
     <label for="TourID">Tour:</label>
     <select name="TourID" id="TourID">
-        {{for tour in tours}}
+        {% for tour in tours %}
             <option value="{{tour.TourID}}">{{tour.TourName}}</option>
         {% endfor %}
         
@@ -21,18 +25,18 @@
     <!-- Dropdown for selecting Customer -->
     <label for="CustomerID">Customer:</label>
     <select name="CustomerID" id="CustomerID">
-        {{for customer in customers}}
+        {% for customer in customers %}
             <option value="{{customer.CustomerID}}">{{customer.FirstName}} {{customer.LastName}}</option>
-        {% endfor % }
+        {% endfor %}
         
     </select>
-    {{if user_type == 'agent'}}
+    {% if user_type == 'agent' %}
         <input type="hidden" id="AgentID" name="AgentID" value="{{user.AgentID}}">
     {% else %}
         <!-- Dropdown for selecting Agent -->
         <label for="AgentID">Agent:</label>
         <select name="AgentID" id="AgentID">
-            {{for agent in agents}}
+            {% for agent in agents %}
                 <option value="{{agent.AgentID}}">{{agent.FirstName}} {{agent.LastName}}</option>
             {% endfor %}    
         

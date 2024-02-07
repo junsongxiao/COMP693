@@ -337,14 +337,37 @@ class Bookings:
             WHERE BookingID = %s
         """
         return database_execute_action(query, (tour_date, adult_num, child_num, infant_num, family_num, pick_up_location, note, booking_account_name, booking_names, confirmation_num, adult_quote, child_quote, infant_quote, family_quote, booking_id))
+    
+    @staticmethod
+    def update_quote(booking_id, tour_date, adult_num, child_num, infant_num, family_num, adult_quote, child_quote, infant_quote, family_quote, pickup_location, note):
+        query = """
+            UPDATE Bookings
+            SET TourDate = %s, AdultNum = %s, ChildNum = %s, InfantNum = %s, FamilyNum = %s, 
+                AdultQuote = %s, ChildQuote = %s, InfantQuote = %s, FamilyQuote = %s, 
+                PickUpLocation = %s, Note = %s
+            WHERE BookingID = %s
+        """
+        return database_execute_action(query, (tour_date, adult_num, child_num, infant_num, family_num, adult_quote, child_quote, infant_quote, family_quote, pickup_location, note, booking_id))
+   
+
+
     @staticmethod
     def get_booking_by_id(booking_id):
         query = """
-        SELECT Bookings.*, Customers.Email AS CustomerEmail, Customers.FirstName, Customers.LastName, Tours.TourName
+        SELECT Bookings.*, Tours.TourName, Operators.*, Customers.*,
+            (Bookings.AdultQuote * Bookings.AdultNum) +
+            (Bookings.ChildQuote * Bookings.ChildNum) +
+            (Bookings.InfantQuote * Bookings.InfantNum) +
+            (Bookings.FamilyQuote * Bookings.FamilyNum) AS TotalQuote,
+            ((Bookings.AdultQuote * Bookings.AdultNum) +
+            (Bookings.ChildQuote * Bookings.ChildNum) +
+            (Bookings.InfantQuote * Bookings.InfantNum) +
+            (Bookings.FamilyQuote * Bookings.FamilyNum)) * Tours.CommissionRate / 100 AS TotalCommission
             FROM Bookings
+            INNER JOIN Tours ON Bookings.TourID = Tours.TourID
+            INNER JOIN Operators ON Tours.OperatorID = Operators.OperatorID
             INNER JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
-            INNER JOIN Tours ON Bookings.TourID = Tours.TourID            
-            WHERE Bookings.BookingID = %s
+            WHERE Bookings.BookingID = %s AND (Bookings.BookingStatus != 'Quote' OR Bookings.BookingStatus != 'Inquiry')   
             """
         return database_execute_query_fetchone(query, (booking_id,))
     
@@ -357,6 +380,14 @@ class Bookings:
         values = (customer_id, tour_id, tour_date, adult_num, child_num, infant_num, family_num, pickup_location, note)
         
         return database_execute_lastrowid(query, values)
+    
+    @staticmethod
+    def get_customer_inquiries(customer_id):
+        query = """
+            SELECT * FROM bookings
+            WHERE CustomerID = %s AND BookingStatus = 'Inquiry'
+        """
+        return database_execute_query_fetchall(query, (customer_id,))
         
     
 

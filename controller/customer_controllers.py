@@ -9,8 +9,8 @@ class CustomerController:
         return Customers.get_customer_details(customer_id)
 
     @staticmethod
-    def update_customer(customer_id, first_name, last_name, email):
-        return Customers.update_customer(customer_id, first_name, last_name, email)
+    def update_customer(customer_id, first_name, last_name, email, phone, wechat, preferences, notes):
+        return Customers.update_customer(customer_id, first_name, last_name, email, phone, wechat, preferences, notes)
     
     staticmethod
     def add_customer(first_name, last_name, email, phone, wechat, preferences, notes):

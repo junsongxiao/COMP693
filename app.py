@@ -35,8 +35,12 @@ import routes.session_utils  # Session utility routes
 import routes.general
 import routes.auth  # Authentication routes (login/logout)
 import routes.operators
+import routes.customers
+import routes.agents
+import routes.quotes
+import routes.user
 import routes.tours
-# import routes.inquire
+import routes.inquiries
 import routes.dashboard
 import routes.booking
 # import routes.register  # register route

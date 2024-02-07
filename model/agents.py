@@ -1,5 +1,5 @@
 
-from db import database_execute_action, database_execute_lastrowid, database_execute_query_fetchone, database_execute_query_fetchall
+from model.db import database_execute_action, database_execute_lastrowid, database_execute_query_fetchone, database_execute_query_fetchall
 
 class Agents:
     def __init__(self, user_id, first_name, last_name, email, phone, wechat, agency_name):

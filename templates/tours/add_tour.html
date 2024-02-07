@@ -6,24 +6,61 @@
    Add New Tour
 {% endblock %}
 {% block nested_content %}
+<div style="display:inline-flex">
+    {% include 'components/back_button.html' %}
+</div>   
 
-<h2>Add New Tour</h2>
 <form action="{{ url_for('add_tour') }}" method="post">
-    <input type="number" name="operator_id" placeholder="Operator ID">
-    <input type="text" name="tour_name" placeholder="Tour Name">
-    <input type="text" name="city" placeholder="City">
-    <input type="text" name="region" placeholder="Region">
-    <textarea name="description" placeholder="Tour Description"></textarea>
-    <input type="number" name="adult_price" placeholder="Adult Price">
-    <input type="number" name="child_price" placeholder="Child Price">
-    <input type="number" name="infant_price" placeholder="Infant Price">
-    <input type="number" name="family_price" placeholder="Family Price">
-    <input type="time" name="tour_time" placeholder="Tour Time">
-    <input type="time" name="report_time" placeholder="Report Time">
-    <textarea name="terms" placeholder="Terms"></textarea>
-    <input type="text" name="reporting_add" placeholder="Reporting Address">
-    <input type="text" name="tour_add" placeholder="Tour Address">
-    <input type="number" name="commission_rate" placeholder="Commission Rate">
-    <button type="submit">Add Tour</button>
+    <table>
+        <tr>
+            <td><input type="number" name="operator_id" placeholder="Operator ID"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="tour_name" placeholder="Tour Name"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="city" placeholder="City"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="region" placeholder="Region"></td>
+        </tr>
+        <tr>
+            <td><textarea name="description" placeholder="Tour Description"></textarea></td>
+        </tr>
+        <tr>
+            <td><input type="number" name="adult_price" placeholder="Adult Price"></td>
+        </tr>
+        <tr>
+            <td><input type="number" name="child_price" placeholder="Child Price"></td>
+        </tr>
+        <tr>
+            <td><input type="number" name="infant_price" placeholder="Infant Price"></td>
+        </tr>
+        <tr>
+            <td><input type="number" name="family_price" placeholder="Family Price"></td>
+        </tr>
+        <tr>
+            <td><input type="time" name="tour_time" placeholder="Tour Time"></td>
+        </tr>
+        <tr>
+            <td><input type="time" name="report_time" placeholder="Report Time"></td>
+        </tr>
+        <tr>
+            <td><textarea name="terms" placeholder="Terms"></textarea></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="reporting_add" placeholder="Reporting Address"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="tour_add" placeholder="Tour Address"></td>
+        </tr>
+        <tr>
+            <td><input type="number" name="commission_rate" placeholder="Commission Rate"></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: center;"><button class="btn btn-primary" type="submit">Add Tour</button></td>
+        </tr>
+    </table>
 </form>
+
 {% endblock %}

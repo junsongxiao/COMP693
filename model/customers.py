@@ -1,4 +1,4 @@
-from db import database_execute_query_fetchall, database_execute_query_fetchone, database_execute_action, database_execute_lastrowid
+from model.db import database_execute_query_fetchall, database_execute_query_fetchone, database_execute_action, database_execute_lastrowid
 
 class Customers:
     def __init__(self, user_id, first_name, last_name, email, phone, wechat, preferences, notes):
@@ -83,10 +83,10 @@ class Customers:
         return database_execute_query_fetchone(query, (customer_id,))
 
     @staticmethod
-    def update_customer(customer_id, first_name, last_name, email):
+    def update_customer(customer_id, first_name, last_name, email, phone, wechat, preferences, notes):
         # Update query with necessary fields
-        query = "UPDATE Customers SET FirstName = %s, LastName = %s, Email = %s WHERE CustomerID = %s"
-        return database_execute_action(query, (first_name, last_name, email, customer_id))
+        query = "UPDATE Customers SET FirstName = %s, LastName = %s, Email = %s, Phone=%s, Wechat=%s, Preferences=%s, Notes=%s WHERE CustomerID = %s"
+        return database_execute_action(query, (first_name, last_name, email, phone, wechat, preferences, notes, customer_id))
     
     @staticmethod
     def add_customer(first_name, last_name, email, phone, wechat, preferences, notes):
@@ -95,5 +95,5 @@ class Customers:
             VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
         # Execute the query
-        return database_execute_action(query, (first_name, last_name, email, phone, wechat, preferences))
+        return database_execute_action(query, (first_name, last_name, email, phone, wechat, preferences,notes))
 

@@ -1,0 +1,201 @@
+{% extends "dashboard.html" %}
+
+{% block title %}
+    Tour Details
+{% endblock %}
+
+{% block header %}
+    Tour Details
+{% endblock %}
+
+{% block nested_content %}
+
+ 
+    <div class="container">
+        <div style="display:inline-flex">
+            {% include 'components/back_button.html' %}
+        </div>   
+
+        <table>
+            <tbody>
+                <tr>
+                    <div style="background-image: url('{{ url_for('static', filename='images/' + tour.Photo) if tour.Photo else url_for('static', filename='images/default-avatar.jpg') }}'); height: 400px; background-size: cover; background-position: center;"></div>
+                </tr>
+                <tr>
+                    <th>Tour ID</th>
+                    <td>{{ tour.TourID }}</td>
+                </tr>
+                <tr>
+                    <th>Tour Name</th>
+                    <td>{{ tour.TourName }}</td>
+                </tr>
+                <tr>
+                    <th>City</th>
+                    <td>{{ tour.City }}</td>
+                </tr>
+                <tr>
+                    <th>Region</th>
+                    <td>{{ tour.Region }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ tour.TourDescription }}</td>
+                </tr>
+                <tr>
+                    <th>Adult Price</th>
+                    <td>{{ tour.AdultPrice }}</td>
+                </tr>
+                <tr>
+                    <th>Child Price</th>
+                    <td>{{ tour.ChildPrice }}</td>
+                </tr>
+                <tr>
+                    <th>Infant Price</th>
+                    <td>{{ tour.InfantPrice }}</td>
+                </tr>
+                <tr>
+                    <th>Family Price</th>
+                    <td>{{ tour.FamilyPrice }}</td>
+                </tr>
+                <tr>
+                    <th>Tour Time</th>
+                    <td>{{ tour.TourTime }}</td>
+                </tr>
+                <tr>
+                    <th>Report Time</th>
+                    <td>{{ tour.ReportTime }}</td>
+                </tr>
+                <tr>
+                    <th>Terms</th>
+                    <td>{{ tour.Terms }}</td>
+                </tr>
+                <tr>
+                    <th>Reporting Address</th>
+                    <td>{{ tour.ReportingAdd }}</td>
+                </tr>
+                <tr>
+                    <th>Tour Address</th>
+                    <td>{{ tour.TourAdd }}</td>
+                </tr>
+                {% if user_type=="Admin" %}
+                <tr>
+                    <th>Commission Rate</th>
+                    <td>{{ tour.CommissionRate }}</td>
+                </tr>
+                <tr>                    
+                    <td> 
+                        <a href="{{ url_for('edit_tour', tour_id=tour.TourID) }}" class="btn btn-primary">Edit Tour</a>
+                    </td>
+                </tr>
+                {% elif user_type=="Customer" %}
+                <tr>
+                    
+                    <td> <button id="inquiryBtn-{{ tour.TourID }}" class="modal-btn inquiry-btn">Inquire</button></td>
+                </tr>
+                {% endif %}
+            </tbody>
+
+        </table>
+           
+               
+               
+
+                 <!-- The Inquiry Modal -->
+                 <div id="inquiryModal-{{ tour.TourID }}" class="modal">
+ 
+                     <!-- Modal content -->
+                     <div  class="modal-content">
+                         <span style="position:absolute;right:0" class="close" data-modal-id="inquiryModal-{{ tour.TourID }}">&times;</span>
+                         <!-- Inquiry form content here -->
+                        <form  action="{{ url_for('inquire') }}" method="post" class="modal-form">
+                            <input type="hidden" name="tour_id" value="{{ tour.TourID }}">
+                            <input type="text" name="booking_account_name" placeholder="Key contact name" required>
+                            <input type="text" name="booking_names" placeholder="Booking Names (comma-separated)" required>
+    
+                            <input type="date" name="selected_date" required>
+                            <input type="number" name="adult_num" placeholder="Number of adults">
+                            <input type="number" name="child_num" placeholder="Number of children">
+                            <input type="number" name="infant_num" placeholder="Number of infants">
+                            <input type="number" name="family_num" placeholder="Number of families">
+                            <input type="text" name="pickup_location" placeholder="Pick-up location">
+                            <textarea name="note" placeholder="Additional notes"></textarea>
+                            <button type="submit">Submit Inquiry</button>
+                        </form>
+                    </div>
+                    
+
+                </div>
+            </div>
+        
+    </div>
+{% endblock %}
+<script>
+    // JavaScript for handling modals
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Handle opening modals
+        document.querySelectorAll('.inquiry-btn').forEach(button => {
+            button.onclick = () => {
+                const modalId = 'modal' + button.id.replace('btn', '');
+                document.getElementById(modalId).style.display = 'block';
+            };
+        });
+
+        // Handle closing modals
+        document.querySelectorAll('.close').forEach(span => {
+            span.onclick = () => {
+                const modalId = 'modal' + span.dataset.modal;
+                document.getElementById(modalId).style.display = 'none';
+            };
+        });
+
+        // Close modal when clicking outside
+        window.onclick = event => {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        };
+    });
+</script>
+
+
+<style>
+    /* The Modal (background) */
+   .modal {
+       display: block; /* Hidden by default */
+       position: fixed; /* Stay in place */
+       z-index: 1; /* Sit on top */
+       left: 0;
+       top: 0;
+       width: 100%; /* Full width */
+       height: 100%; /* Full height */
+       overflow: auto; /* Enable scroll if needed */
+       background-color: rgb(0,0,0); /* Fallback color */
+       background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+   }
+   
+   /* Modal Content */
+   .modal-content {
+       background-color: #fefefe;
+       margin: 15% auto; /* 15% from the top and centered */
+       padding: 20px;
+       border: 1px solid #888;
+       width: 80%; /* Could be more or less, depending on screen size */
+   }
+   
+   /* The Close Button */
+   .close {
+       color: #aaa;
+       float: right;
+       font-size: 28px;
+       font-weight: bold;
+   }
+   
+   .close:hover,
+   .close:focus {
+       color: black;
+       text-decoration: none;
+       cursor: pointer;
+   }
+   
+   
+   </style>

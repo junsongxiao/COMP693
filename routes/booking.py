@@ -118,7 +118,7 @@ def add_booking():
 
         booking_status=request.form['BookingStatus']
 
-        if BookingController.add_booking(customer_id, tour_id,agent_id,confirmation_num, booking_account_name,booking_names,tour_date, adult_num, child_num, infant_num, family_num, adult_quote,child_quote,infant_quote,family_quote,pickup_location, note,booking_status):
+        if BookingController.add_booking(customer_id, tour_id,agent_id, booking_account_name,confirmation_num,booking_num,booking_names,tour_date, adult_num, child_num, infant_num, family_num, adult_quote,child_quote,infant_quote,family_quote,pickup_location, note,booking_status):
             flash('Booking added successfully')
             return redirect(url_for('dashboard'))
         else:
@@ -128,6 +128,11 @@ def add_booking():
     tours = TourController.get_all_tours()
     agents = AgentController.get_all_agents()
     return render_template('bookings/add_booking.html', customers=customers, tours=tours, agents=agents,user_type=user_type)
+
+@app.route('/booking_details/<int:booking_id>')
+def booking_details(booking_id):
+    booking = BookingController.get_booking_details(booking_id)
+    return render_template('bookings/booking_details.html', booking=booking)
 
 
 

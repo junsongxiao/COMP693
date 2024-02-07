@@ -1,7 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark flex-shrink-0 d-flex justify-content-between">
 
   <a class="navbar-brand fs-2 mx-4 d-flex" href="{{ url_for('index') }}">
-    <i class="fas fa-hospital fa-2x d-inline"></i>
+    <!-- <i class="fas fa-hospital fa-2x d-inline"></i> -->
+    <i class="fa-solid fa-2x fa-earth-oceania"></i>
+    <!-- <i class="fa-solid fa-earth-oceania"></i> -->
     <h2 class="ms-4 my-auto d-inline align-middle" style="height: 100%;">NZ EASY TOUR BOOKING SYSTEM</h2>
   </a>
   
@@ -11,12 +13,12 @@
       <a class="nav-link" href="{{ url_for('index') }}">Home</a>
     </li>
     <li class="nav-item" class="ms-auto mx-5">
-      <a class="nav-link" href="#">About us</a>
+      <a class="nav-link" href="{{url_for('tours')}}">Tours</a>
     </li>
  
 
     {# If user is logged in #}
-    {% if session["username"] %}
+    {% if session["UserID"] %}
    
       <li class="nav-item" class="ms-auto mx-5">
         <a class="nav-link" href="{{url_for('profile')}}">Profile</a>
@@ -28,44 +30,35 @@
       </form><nav class="navbar navbar-expand-lg navbar-dark flex-shrink-0 d-flex justify-content-between">
 
         <a class="navbar-brand fs-2 mx-4 d-flex" href="{{ url_for('home') }}">
-          <i class="fas fa-hospital fa-2x d-inline"></i>
+          <!-- <i class="fa-solid fa-earth-oceania fa-2x d-inline"></i> -->
           <h2 class="ms-4 my-auto d-inline align-middle" style="height: 100%;">NZ Easy Tour Booking System</h2>
         </a>
         
       
         <ul class="navbar-nav ms-auto">
-          
-           
+       
           
                    
-          {% if session['role'] == 'Admin' %}
+          {% if  session['Type']  in ['Admin','Customer','Agent'] %}
+          <li class="nav-item ms-auto mx-5">
+            <a class="nav-link" href="{{url_for('dashboard')}}">Dashboard</a>
+          </li>
          
-            <li class="nav-item ms-auto mx-5">
-              <a class="nav-link" href="{{ url_for('home') }}">Home</a>
-            </li>
+           
            
             <li class="nav-item ms-auto mx-5">
-              <a class="nav-link" href="#">Profile</a>
+              <a class="nav-link" href="{{url_for('profile')}}">Profile</a>
             </li>
             <form action="{{ url_for('logout') }}" method="post" class="m-auto mx-5"
               style="width: fit-content; height:fit-content">
               <button type="submit" class="btn btn-light">Logout</button>
             </form>
-            {# Only show profile and logout option for admin/doctor/nurse/receptionist #}  
-            {%elif session['role']  in ['admin','doctor','nurse','receptionist'] %}
-            <li class="nav-item ms-auto mx-5">
-              <a class="nav-link" href="#">Profile</a>
-            </li>
-            <form action="{{ url_for('logout') }}" method="post" class="m-auto mx-5"
-              style="width: fit-content; height:fit-content">
-              <button type="submit" class="btn btn-light">Logout</button>
-            </form>
+           
 
-            {%else%}
-            
-            <li class="nav-item ms-auto mx-5">
-              <a class="nav-link" href="{{ url_for('home') }}">Home</a>
-            </li>
+           {% else %}
+           <li class="nav-item ms-auto mx-5">
+            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+          </li>            
             <li class="nav-item ms-auto mx-5">
               <a class="nav-link" href="#">About us</a>
             </li>

@@ -1,0 +1,128 @@
+
+{% extends "index.html" %}
+
+
+{% block title %}
+    Tours
+{% endblock %}
+
+{% block header %}
+    Tour List
+{% endblock %}
+
+
+{% block content %}
+
+  
+   
+    <div  style="display:inline-block;width:100%;margin:50px auto;padding:0 200px">
+     <h1 style="text-align:center">Tours</h1>
+        <div style="display:inline-flex">
+            {% include 'components/back_button.html' %}
+        </div> 
+
+
+<!--START Tour list card layout-->
+
+
+
+<div class="container mt-4">
+    <div class="row">
+        {% for tour in tours %}
+            <div class="col-md-4 mb-4">
+                <div class="card" style="width: 100%;">
+                    <div style="background-image: url('{{ url_for('static', filename='images/' + tour.Photo) if tour.Photo else url_for('static', filename='images/default-avatar.jpg') }}'); height: 250px; background-size: cover; background-position: center;"></div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ tour.TourName }}</h5>
+                        <p class="card-text">{{ tour.City }}, {{ tour.Region }}</p>
+                        <p>{{ tour.TourDescription | truncate(150, true, '...') }}</p>
+                        <a href="{{ url_for('tour_details_general', tour_id=tour.TourID) }}" class="btn btn-primary">Details</a>
+                        {% if user_type == "Admin" %}
+                            <a href="{{ url_for('edit_tour', tour_id=tour.TourID) }}" class="btn btn-secondary">Edit</a>
+                        {% endif %}
+                        <!-- <button class="btn btn-info">Inquire</button> -->
+                        <button id="{{ tour.TourID }}" class="modal-btn inquiry-btn btn btn-primary" data-logged-in="{{ 'true' if session['UserID'] else 'false' }}">Inquire</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+       
+    </div>
+
+
+
+
+
+<!--END Tour list card layout-->
+
+               
+                <!-- The Inquiry Modal -->
+                <div id="inquiryModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <!-- Inquiry form content here -->
+                        <form id="inquiryForm" action="" method="post">
+                            <!-- Form fields will be dynamically populated -->
+                            <input type="hidden" name="tour_id" id="modalTourId">
+                            <input type="text" name="booking_account_name" placeholder="Key contact name" required>
+                            <input type="text" name="booking_names" placeholder="Booking Names (comma-separated)" required>
+                            <input type="date" name="selected_date" required>
+                            <input type="number" name="adult_num" placeholder="Number of adults">
+                            <input type="number" name="child_num" placeholder="Number of children">
+                            <input type="number" name="infant_num" placeholder="Number of infants">
+                            <input type="number" name="family_num" placeholder="Number of families">
+                            <input type="text" name="pickup_location" placeholder="Pick-up location">
+                            <textarea name="note" placeholder="Additional notes"></textarea>
+                            <button type="submit">Submit Inquiry</button>
+                        </form>
+                    </div>
+                </div>
+
+
+          
+      
+    </div>
+{% endblock %}
+
+    
+<style>
+    /* The Modal (background) */
+   .modal {
+       display: block; /* Hidden by default */
+       position: fixed; /* Stay in place */
+       z-index: 1; /* Sit on top */
+       left: 0;
+       top: 0;
+       width: 100%; /* Full width */
+       height: 100%; /* Full height */
+       overflow: auto; /* Enable scroll if needed */
+       background-color: rgb(0,0,0); /* Fallback color */
+       background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+   }
+   
+   /* Modal Content */
+   .modal-content {
+       background-color: #fefefe;
+       margin: 15% auto; /* 15% from the top and centered */
+       padding: 20px;
+       border: 1px solid #888;
+       width: 80%; /* Could be more or less, depending on screen size */
+   }
+   
+   /* The Close Button */
+   .close {
+       color: #aaa;
+       float: right;
+       font-size: 28px;
+       font-weight: bold;
+   }
+   
+   .close:hover,
+   .close:focus {
+       color: black;
+       text-decoration: none;
+       cursor: pointer;
+   }
+   
+   
+   </style>

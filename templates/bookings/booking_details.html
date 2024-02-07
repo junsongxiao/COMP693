@@ -1,0 +1,114 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Booking Details{% endblock %}
+
+{% block header %}
+  Booking Details
+{% endblock %}
+{% block nested_content %}
+<div style="display:inline-flex">
+    {% include 'components/back_button.html' %}
+</div>
+<div class="container">
+   
+    
+    <div class="row">
+        
+        
+            <table>
+                <tr>
+                    <td>Booking Account:</td>
+                    <td>{{ booking.BookingAccountName }}</td>
+                    
+                </tr>
+                <tr>
+                    <td>Booking Names:</td>
+                    <td>{{ booking.BookingNames }}</td>
+                    
+                </tr>
+                <tr>
+                    <td>Confirmation Number:</td>
+                    <td>{{ booking.ConfirmationNum }}</td>
+                    
+                </tr>
+                <tr>
+                    <td>Booking Number:</td>
+                    <td>{{ booking.BookingNum }}</td>
+                    
+                </tr>
+                <tr>
+                    <td>Customer Name:</td>
+                    <td>{{ booking.FirstName }} {{ booking.LastName }}</td>
+                    
+                </tr>
+                <tr>
+                    <td>Operator Name:</td>
+                    <td>{{ booking.OperatorName }}</td>
+                    
+                </tr>
+                <tr>
+                    <td>Tour Name:</td>
+                    <td>{{ booking.TourName }}</td>
+                    
+                </tr>
+                <tr>
+                    <td>Tour Date:</td>
+                    <td>{{ booking.TourDate }}</td>
+                    
+                </tr>
+
+                <tr>
+                    <td>Booking Status:</td>
+                    <td>
+                    <!-- Update Booking Status Dropdown -->
+                        <form action="{{ url_for('update_booking_status', booking_id=booking.BookingID) }}" method="post">
+                            <select name="new_status">
+                                {% set statuses = ['Pending Payment', 'Pending Confirmation', 'Confirmed', 'Cancelled and Refunded', 'Cancelled and Charged'] %}
+                                {% for status in statuses %}
+                                    <option value="{{ status }}" {% if status == booking.BookingStatus %}selected{% endif %}>{{ status }}</option>
+                                {% endfor %}
+                            </select>
+                        
+                          <button type="submit">Update Status</button>
+                        
+                        </form>
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td>Pax</td>
+                    <td>Adult(s): {{ booking.AdultNum }} | Child(ren): {{ booking.ChildNum }} | Infant: {{ booking.InfantNum }} | Family: {{ booking.FamilyNum }}</td>
+                    
+                </tr>
+                <tr>
+                    <td>Quotes:</td>
+                    <td>Adult: ${{ booking.AdultQuote }} | Child: ${{ booking.ChildQuote }} | Infant: ${{ booking.InfantQuote }} | Family: ${{ booking.FamilyQuote }}</td>
+                   
+                </tr>
+                <tr>
+                    <td>Total Quote:</td>
+                    <td>${{ booking.TotalQuote }}</td>
+                    
+                </tr>
+                <tr>
+                    <td>Pick-Up Location:</td>
+                    <td>{{ booking.PickUpLocation }}</td>
+                    
+                </tr>
+                <tr>
+                    <td>Note:</td>
+                    <td>{{ booking.Note }}</td>
+                    
+                </tr>
+                <tr>
+                    <td>Commission:</td>
+                    <td>{{ booking.Commission }}</td>
+                </tr>
+            </table>
+        </div>
+    
+    
+                
+               
+</div>
+{% endblock %}

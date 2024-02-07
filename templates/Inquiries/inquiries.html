@@ -6,10 +6,12 @@
 {% endblock %}
 
 {% block nested_content %}
-
+<div style="display:inline-flex">
+    {% include 'components/back_button.html' %}
+</div>
 
 <div class="container">
-    <h2>All Inquiries</h2>
+
     <table class="table">
         <thead>
             <tr>
@@ -37,14 +39,14 @@
                 </td>
                 <td>
                     <!-- Trigger/Open The Quote Modal -->
-                    <button id="quoteBtn-{{ inquiry.BookingID }}" class="modal-btn quote-btn">Quote</button>
+                    <button id="btn-{{ inquiry.BookingID }}" class="modal-btn quote-btn btn btn-primary">Quote</button>
 
                     <!-- The Quote Modal -->
-                    <div id="quoteModal-{{ inquiry.BookingID }}" class="modal">
+                    <div id="modal-{{ inquiry.BookingID }}" class="modal">
                         <div class="modal-content">
                             <h3>Quote for {{ inquiry.TourName }}</h3>
                             <p>{{ inquiry.FirstName }} {{ inquiry.LastName }}</p>
-                            <span style="position:absolute;right:0" class="close" data-modal-id="quoteModal-{{ inquiry.BookingID }}">&times;</span>
+                            <span style="position:absolute;right:0" class="close" data-modal-id="{{ inquiry.BookingID }}">&times;</span>
                             <form action="{{ url_for('quote_inquiry', booking_id=inquiry.BookingID) }}" method="post" class="modal-form">
                                 <!-- Quotation fields here -->
                                 <input type="number" name="quoted_adult_price" placeholder="Quoted Adult Price">

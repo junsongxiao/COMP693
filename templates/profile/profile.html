@@ -8,18 +8,28 @@
     Profile
 {% endblock %}
 
+
 {% block nested_content %}
-    <h1>Profile</h1>
+    <div style="display:inline-flex">
+        {% include 'components/back_button.html' %}
+    </div>   
+    
     <div>
-        <p>Username: {{ user.Username }}</p>
+        <p>Username: {{user.Username}}</p>
+        
+        
         <p>Email: {{ user.Email }}</p>
         <p>Phone: {{ user.Phone }}</p>
         <p>First Name: {{ user.FirstName }}</p>
         <p>Last Name: {{ user.LastName }}</p>
+
         <p>Wechat: {{ user.Wechat }}</p>
+        {% if user_type=='Customer' %}
         <p>Preferences: {{ user.Preferences }}</p>
         <p>Notes: {{ user.Notes }}</p>
+        {% endif %}
+            
 
     </div>
-    <a href="{{ url_for('edit_profile') }}">Edit Profile</a>
+    <a href="{{ url_for('edit_profile') }}" class="btn btn-primary">Edit Profile</a>
 {% endblock %}

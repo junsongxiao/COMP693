@@ -11,6 +11,7 @@ from mysql.connector.errors import IntegrityError
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    
     if is_logged_in():
         print("Already logged in")
         return redirect(url_for("dashboard"))
@@ -28,13 +29,14 @@ def login():
     print("Rendering login form")
     return render_template("auth/login.html")
 
-
-
-@app.route("/logout")
+@app.route("/logout", methods=['GET', 'POST'])
 def logout():
-    AuthController.log_out()
-    flash("You have been logged out.")
-    return redirect(url_for("login"))
+    """Logs the user out"""
+    if is_logged_in():
+        session.clear()
+        flash("You have been logged out.")
+    return redirect(url_for("home"))
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():

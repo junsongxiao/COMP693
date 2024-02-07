@@ -7,7 +7,7 @@ import bcrypt
 from model.db import database_execute_query_fetchone, database_execute_query_fetchall,database_execute_action,database_execute_lastrowid
 from typing import List,Dict, Any, Optional
 from flask import abort, session,flash
-import model.users,model.bookings,model.agencies,model.customers,model.operators,model.payments,model.tours,model.utilities
+import model.users,model.bookings,model.agents,model.customers,model.operators,model.payments,model.tours,model.utilities
 import json
 import mysql.connector
 import sqlite3
@@ -42,6 +42,16 @@ class UserController:
 
         # Execute query and check if the customer was successfully added
         return database_execute_action(query, values)
+    @staticmethod
+    def get_all_users():
+        return Users.get_all_users()
+    @staticmethod
+    def get_user_by_id(user_id):
+        return Users.get_user_by_id(user_id)
+    
+    @staticmethod
+    def update_user(user_id,user_name,hashed_password,user_type):
+        return Users.update_user(user_id,user_name,hashed_password,user_type)
     
 
     @staticmethod
@@ -66,9 +76,10 @@ class UserController:
         query = "DELETE FROM Users WHERE UserID = %s"
         return database_execute_action(query, (user_id,))
     
-    @staticmethod
-    def get_user_profile(user_id):
-        return Users.get_user_by_id(user_id)
+    # @staticmethod
+    # def get_user_profile(user_id, user_type):
+    #     # return Users.get_user_by_id(user_id)
+    #     return Users.get_profile_details(user_id, user_type)
 
     # @staticmethod
     # def update_user_profile(user_id, first_name, last_name, email, phone, wechat, preferences, notes):
@@ -80,6 +91,15 @@ class UserController:
     #     query = "UPDATE Users SET PasswordHash = %s WHERE Username = %s"
     #     return database_execute_action(query, (hashed_password, username))
     
+    # @staticmethod
+    # def get_user_role_details(user_id):
+    #     return Users.get_user_role_details(user_id)
     @staticmethod
-    def get_user_role_details(user_id):
-        return Users.get_user_role_details(user_id)
+    def get_customer_profile(user_id):
+        return Users.get_customer_by_user_id(user_id)
+    @staticmethod
+    def get_agent_profile(user_id):
+        return Users.get_agent_by_user_id(user_id)
+    @staticmethod
+    def get_admin_profile(user_id):
+        return Users.get_admin_by_user_id(user_id)

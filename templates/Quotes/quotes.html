@@ -5,8 +5,11 @@
    All Quotes
 {% endblock %}
 {% block nested_content %}
+<div style="display:inline-flex">
+    {% include 'components/back_button.html' %}
+</div>   
 <div class="container">
-    <h2>All Quotes</h2>
+
     <table class="table">
         <thead>
             <tr>

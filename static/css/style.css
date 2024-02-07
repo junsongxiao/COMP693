@@ -35,6 +35,15 @@ body {
   width: 400px;
 }
 
+.nested_content{
+  position:absolute;
+  display:inline-flex!important;
+
+width:70%;
+margin-left:300px;
+
+}
+
 .embed h1,
 .login h1,
 .register h1 {
@@ -297,7 +306,7 @@ body.loggedin {
 .nested-content {
   width: 100%;
   align-self: center;
-  padding: 50px;
+  /* padding: 50px; */
 }
 
 .flashes {
@@ -430,7 +439,10 @@ body.loggedin {
 }
 
 .content {
-  margin-top: 100px;
+  margin-left: 200px;
+  width:100%;
+  margin: 50px auto;
+  
 }
 
 #page-content-wrapper {
@@ -683,3 +695,4 @@ ul.nav-pills.nav-stacked li {
 .modal-form textarea {
     height: 100px; /* Adjust as needed */
 }
+

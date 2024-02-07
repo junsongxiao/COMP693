@@ -4,13 +4,14 @@ from controller.booking_controllers import BookingController
 from controller.customer_controllers import CustomerController
 from controller.tour_controllers import TourController
 from controller.agent_controllers import AgentController
-from routes.session_utils import is_logged_in, auth_handler, is_agent, is_admin
+from routes.session_utils import is_logged_in, auth_handler, is_agent, is_admin, is_customer
 from flask_mail import Message, Mail
 
 
 @app.route('/inquire', methods=['GET','POST'])
 def inquire():
     if not is_logged_in():
+        flash('Please log in to make an inquiry.')
         return redirect(url_for('login'))
 
     inquiry_details = {
@@ -43,14 +44,29 @@ def inquire():
 
 @app.route('/inquiries')
 def inquiries():
-    print("rendering inquiries")
+    
    
     # Check if the user is either an agent or an admin
     if not (is_agent() or is_admin()):
         return redirect(url_for('login'))
     
     
-    print("rendering inquiries location 2")
+   
     all_inquiries = BookingController.get_all_inquiries()
-    print(all_inquiries)
-    return render_template('bookings/inquiries.html', inquiries=all_inquiries)
+    
+    return render_template('inquiries/inquiries.html', inquiries=all_inquiries)
+
+
+@app.route('/my_inquiries')
+def my_inquiries():
+    if not is_logged_in():
+        return redirect(url_for('login'))
+    elif not is_customer():
+        return redirect(url_for('login'))
+    
+
+    customer_id = session['UserID']
+    inquiries = BookingController.get_customer_inquiries(customer_id)
+    if not inquiries:
+        flash('You have no inquiries.')
+    return render_template('inquiries/my_inquiries.html', inquiries=inquiries)

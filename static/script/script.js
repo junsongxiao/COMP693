@@ -100,29 +100,132 @@ $(document).ready(function() {
     //             event.target.style.display = 'none';
     //         }
     //     };
+    // // });
+
+
+    // // JavaScript for handling modals BACKUP START
+    // document.addEventListener('DOMContentLoaded', (event) => {
+    //     // Handle opening modals
+    //     document.querySelectorAll('.modal-btn').forEach(button => {
+    //         button.onclick = () => {
+    //             const modalId = button.id.replace('Btn', 'Modal');
+    //             document.getElementById(modalId).style.display = 'block';
+    //         };
+    //     });
+    
+    //     // Handle closing modals
+    //     document.querySelectorAll('.close').forEach(span => {
+    //         span.onclick = () => {
+    //             const modalId = span.dataset.modalId;
+    //             document.getElementById(modalId).style.display = 'none';
+    //         };
+    //     });
+    
+    //     // Close modal when clicking outside
+    //     window.onclick = event => {
+    //         if (event.target.classList.contains('modal')) {
+    //             event.target.style.display = 'none';
+    //         }
+    //     };
     // });
-    document.addEventListener('DOMContentLoaded', (event) => {
-        // Handle opening modals
-        document.querySelectorAll('.modal-btn').forEach(button => {
-            button.onclick = () => {
-                const modalId = button.id.replace('Btn', 'Modal');
-                document.getElementById(modalId).style.display = 'block';
-            };
-        });
+    // //BACKUP END
+
     
-        // Handle closing modals
-        document.querySelectorAll('.close').forEach(span => {
-            span.onclick = () => {
-                const modalId = span.dataset.modalId;
-                document.getElementById(modalId).style.display = 'none';
-            };
-        });
+
+
+    // JavaScript for handling modals BACKUP START
+    // document.addEventListener('DOMContentLoaded', () => {
+    //     document.querySelectorAll('.inquiry-btn').forEach(button => {
+    //         button.addEventListener('click', function() {
+    //             const isLoggedIn = this.getAttribute('data-logged-in') === 'true';
+    //             if (!isLoggedIn) {
+    //                 window.location.href = "login"; // Redirect to login
+    //             } else {
+    //                 const modalId = 'inquiryModal-' + this.id.split('-')[1];
+    //                 const modal = document.getElementById(modalId);
+    //                 if (modal) {
+    //                     modal.style.display = 'block';
+    //                 }
+    //             }
+    //         });
+    //     });
     
-        // Close modal when clicking outside
-        window.onclick = event => {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
+    //     document.querySelectorAll('.close').forEach(span => {
+    //         span.addEventListener('click', function() {
+    //             const modalId = this.dataset.modalId;
+    //             const modal = document.getElementById(modalId);
+    //             if (modal) {
+    //                 modal.style.display = 'none';
+    //             }
+    //         });
+    //     });
+    
+    //     window.addEventListener('click', event => {
+    //         if (event.target.classList.contains('modal')) {
+    //             event.target.style.display = 'none';
+    //         }
+    //     });
+    // });
+  //BACKUP END
+  
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.inquiry-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            var isLoggedIn = this.getAttribute('data-logged-in') === 'true';
+            var tourId = this.getAttribute('id');
+
+            if (isLoggedIn) {
+                // User is logged in, open the modal and set the tour ID
+                var modal = document.getElementById('inquiryModal');
+                document.getElementById('modalTourId').value = tourId;
+                modal.style.display = 'block';
+            } else {
+                // User is not logged in, redirect to login page
+                window.location.href = "/login";
             }
-        };
+        });
     });
-    
+
+    // Close the modal when the close button is clicked
+    document.querySelector('.close').addEventListener('click', function() {
+        document.getElementById('inquiryModal').style.display = 'none';
+    });
+
+    // Close the modal when clicking outside of it
+    window.addEventListener('click', function(event) {
+        var modal = document.getElementById('inquiryModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+
+
+//Quote modal control
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.quote-btn').forEach(function(button) {
+        button.addEventListener('click', function() {
+            var modalId = "modal-" + this.getAttribute('id').split('-')[1];
+            var modal = document.getElementById(modalId);
+            modal.style.display = 'block';
+        });
+    });
+
+    document.querySelectorAll('.close').forEach(function(closeButton) {
+        closeButton.addEventListener('click', function() {
+            var modalId = "modal-" + this.getAttribute('data-modal-id');
+            var modal = document.getElementById(modalId);
+            modal.style.display = 'none';
+        });
+    });
+
+    window.addEventListener('click', function(event) {
+        document.querySelectorAll('.modal').forEach(function(modal) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+});

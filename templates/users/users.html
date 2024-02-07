@@ -1,0 +1,38 @@
+{% extends "dashboard.html" %}
+
+{% block title %}All Users{% endblock %}
+
+{% block header %}
+   All Users
+{% endblock %}
+
+{% block nested_content %}
+<div style="display:inline-flex">
+    {% include 'components/back_button.html' %}
+</div>
+
+<table>
+    <tr>
+        <th>User ID</th>
+        <th>Username</th>
+       
+        <th>User Type</th>
+  
+        <th>Actions</th>
+    </tr>
+    {% for user in users %}
+    <tr>
+        <td>{{ user.UserID }}</td>
+        <td>{{ user.Username }}</td>
+        <td>{{ user.Type }}</td>
+       
+        <td>
+            <a href="{{url_for('update_user', user_id = user.UserID)}}" class="btn btn-primary">Update</a>   
+           
+        
+        </td>
+
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

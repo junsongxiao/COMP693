@@ -1,5 +1,6 @@
 <!-- Flash messages -->
-<div class="container alertmsg">
+
+<div style="z-index:9;display:block;position:relative;align-self: center;left:auto;right:auto;" class="container alertmsg">
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     {% for message in messages %}

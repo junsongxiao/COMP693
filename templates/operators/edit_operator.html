@@ -1,0 +1,42 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Edit Operator{% endblock %}
+
+{% block header %}
+   Edit Operator
+{% endblock %}
+
+{% block nested_content %}
+<div style="display:inline-flex">
+    {% include 'components/back_button.html' %}
+</div>
+
+<form action="{{ url_for('edit_operator', operator_id=operator.OperatorID) }}" method="post">
+    <table>
+        <tr>
+            <td><label for="operator_name">Operator Name:</label></td>
+            <td><input type="text" id="operator_name" name="operator_name" value="{{ operator.OperatorName }}"></td>
+        </tr>
+        <tr>
+            <td><label for="contact_name">Contact Name:</label></td>
+            <td><input type="text" id="contact_name" name="contact_name" value="{{ operator.ContactName }}"></td>
+        </tr>
+        <tr>
+            <td><label for="email">Email:</label></td>
+            <td><input type="email" id="email" name="email" value="{{ operator.Email }}"></td>
+        </tr>
+        <tr>
+            <td><label for="phone">Phone:</label></td>
+            <td><input type="text" id="phone" name="phone" value="{{ operator.Phone }}"></td>
+        </tr>
+        <tr>
+            <td><label for="address">Address:</label></td>
+            <td><input type="text" id="address" name="address" value="{{ operator.Address }}"></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: center;"><button type="submit" class="btn btn-primary">Update Operator</button></td>
+        </tr>
+    </table>
+</form>
+
+{% endblock %}

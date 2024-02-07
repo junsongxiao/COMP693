@@ -1,0 +1,46 @@
+{% extends "dashboard.html" %}
+
+{% block title %}My Inquiries{% endblock %}
+{% block header %}
+  My Inquiries
+{% endblock %}
+
+{% block nested_content %}
+
+<div style="display:inline-flex">
+    {% include 'components/back_button.html' %}
+</div>
+<div class="container">
+   
+    <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Operator Name</th>
+                <th>Tour Name</th>
+                <th>Date</th>
+                <th>PAX</th>
+                <th>Notes</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for inquiry in inquiries %}
+            <tr>
+                
+                <td>{{ inquiry.OperatorName }}</td>
+                <td>{{ inquiry.TourName }}</td>
+                <td>{{ inquiry.TourDate }}</td>
+                <td>
+                    Adults: {{ inquiry.AdultNum }}, Children: {{ inquiry.ChildNum }}, Infants: {{ inquiry.InfantNum }}, Families: {{ inquiry.FamilyNum }}
+                </td>
+                <td>
+                    Notes: {{ inquiry.Note }}
+                </td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

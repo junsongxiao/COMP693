@@ -1,0 +1,43 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block header %}
+  Edit User
+{% endblock %}
+
+{% block nested_content %}
+<div style="display:inline-flex">
+    {% include 'components/back_button.html' %}
+</div>
+<form action="{{ url_for('update_user', user_id=user.UserID) }}" method="post">
+  <table>
+      <tr>
+          <td><label for="user_name">Username</label></td>
+          <td><input type="text" id="user_name" name="user_name" value="{{ user.Username }}"></td>
+      </tr>
+      <tr>
+        <td><label for="password">Password</label></td>
+        <td><input type="password" id="password" name="password"></td>
+        
+      </tr>
+      <tr>
+          <td><label for="new_type">Type:</label></td>
+          <td>
+            <select name="new_type">
+                {% set types = ['Admin', 'Agent', 'Customer', 'Guest'] %}
+                {% for type in types %}
+                    <option value="{{ type }}" {% if type == user.Type %}selected{% endif %}>{{ type }}</option>
+                {% endfor %}
+            </select>
+        </td>
+      </tr>
+      <tr>
+       <td><button type="submit">Update User</button></td>
+
+      </tr>
+      
+  </table>
+</form>
+
+{% endblock %}

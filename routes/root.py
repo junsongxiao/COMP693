@@ -1,5 +1,6 @@
-from flask import redirect, url_for,render_template
+from flask import redirect, url_for,render_template, session
 from app import app
+from controller.tour_controllers import TourController
 
 """
 This module contains the route for the root page.
@@ -8,7 +9,6 @@ Note: All users can view the root, but we still use auth_handler to ensure the u
 
 @app.route("/")
 def index():
-    # return redirect(url_for("home"))
-    print("route rendered")
-    # return url_for("home")
-    return render_template("general/home.html")
+    tours=TourController.get_all_tours()
+  
+    return render_template("general/home.html", tours=tours)

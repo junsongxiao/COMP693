@@ -6,16 +6,27 @@ class OperatorController:
     def get_operator_details(operator_id):
         return Operators.get_operator_details(operator_id)
 
+    # @staticmethod
+    # def update_operator(operator_id, operator_data):
+    #     return Operators.update_operator(
+    #         operator_id,
+    #         operator_data['operator_name'],
+    #         operator_data['contact_name'],
+    #         operator_data['email'],
+    #         operator_data['phone'],
+    #         operator_data['address']
+    #     )
     @staticmethod
-    def update_operator(operator_id, operator_data):
+    def update_operator(operator_id, **operator_data):
         return Operators.update_operator(
             operator_id,
-            operator_data['operator_name'],
-            operator_data['contact_name'],
-            operator_data['email'],
-            operator_data['phone'],
-            operator_data['address']
+            operator_data.get('operator_name'),
+            operator_data.get('contact_name'),
+            operator_data.get('email'),
+            operator_data.get('phone'),
+            operator_data.get('address')
         )
+
     @staticmethod
     def get_all_operators():
         return Operators.get_all_operators()

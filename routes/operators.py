@@ -18,7 +18,7 @@ def edit_operator(operator_id):
     if not is_logged_in():
         flash('You must be logged in to access this page.')
         return redirect(url_for('login'))
-    elif is_admin():
+    elif not is_admin():
         flash('You do not have permission to access this page.')
         return redirect(url_for('dashboard'))
     
@@ -50,11 +50,14 @@ def tours_for_operator(operator_id):
     if not is_logged_in():
         flash('You must be logged in to access this page.')
         return redirect(url_for('login'))
-    elif is_admin():
+    elif not is_admin():
         flash('You do not have permission to access this page.')
         return redirect(url_for('dashboard'))
     # You might want to check if the user is logged in or has the right permissions
+    print(operator_id)
     tours = OperatorController.get_tours_by_operator(operator_id)
+    if not tours:
+        flash('No tours found for this operator.')
     return render_template('operators/tours_for_operator.html', tours=tours, operator_id=operator_id)
 
 @app.route('/add_operator', methods=['GET', 'POST'])
@@ -65,13 +68,13 @@ def add_operator():
         email = request.form['email']
         phone = request.form['phone']
         address = request.form['address']
-
+   
         if OperatorController.add_operator(operator_name, contact_name, email, phone, address):
             flash('Operator added successfully')
             return redirect(url_for('operators_list'))
         else:
             flash('Failed to add operator')
-
-    return render_template('add_operator.html')
+    operators=OperatorController.get_all_operators()
+    return render_template('operators/add_operator.html', operators=operators)
 
 

@@ -16,6 +16,22 @@ CREATE TABLE Users (
     Type ENUM('Admin', 'Agent', 'Customer', 'Guest')    
 );
 
+-- Admin Table
+CREATE TABLE `admins` (
+  `AdminID` int NOT NULL AUTO_INCREMENT,
+  `UserID` int DEFAULT NULL,
+  `FirstName` varchar(255) DEFAULT NULL,
+  `LastName` varchar(255) DEFAULT NULL,
+  `Email` varchar(255) DEFAULT NULL,
+  `Phone` varchar(20) DEFAULT NULL,
+  `Wechat` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`AdminID`),
+  UNIQUE KEY `Email` (`Email`),
+  KEY `UserID` (`UserID`),
+  CONSTRAINT `admins_ibfk_1`
+  FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- Customers Table
 CREATE TABLE Customers (
     CustomerID INT PRIMARY KEY AUTO_INCREMENT,
@@ -96,6 +112,10 @@ CREATE TABLE Bookings (
     ChildNum INT,
     InfantNum INT,
     FamilyNum INT,
+    QuotedAdultPrice DECIMAL(10, 2),
+    QuotedChildPrice DECIMAL(10, 2),
+    QuotedInfantPrice DECIMAL(10, 2),
+    QuotedFamilyPrice DECIMAL(10, 2),
     PickUpLocation VARCHAR(255),
     Note VARCHAR(255),  
     PaymentID INT,
@@ -119,14 +139,22 @@ CREATE INDEX idx_operatorid ON Operators(OperatorID);
 INSERT INTO Users (Username, PasswordHash, Type) VALUES
 ('johnDoe', 'hashedpassword1', 'Customer'),
 ('janeDoe', 'hashedpassword2', 'Agent'),
-('bobSmith', 'hashedpassword3', 'Admin'),
+('bobSmith', '$2b$12$WJ0.dFRYsBmLobM2ah2V8euf3KNkcsJieb2170fo27pUD/TT2uUSa', 'Admin'),
 ('aliceJones', 'hashedpassword4', 'Guest'),
-('charlieBrown', 'hashedpassword5', 'Customer'),
+('charlieBrown', '$2b$12$UfdGqYIR0wpCnMcwRqxMKOk15rFg18.J7bBzIHuJs3oiI/p4AVCP6', 'Customer'),
 ('dianaPrince', 'hashedpassword6', 'Agent'),
-('peterParker', 'hashedpassword7', 'Customer'),
+('peterParker', '$2b$12$UfdGqYIR0wpCnMcwRqxMKOk15rFg18.J7bBzIHuJs3oiI/p4AVCP6', 'Customer'),
 ('clarkKent', 'hashedpassword8', 'Admin'),
 ('bruceWayne', 'hashedpassword9', 'Agent'),
 ('tonyStark', 'hashedpassword10', 'Guest');
+('admin','$2b$12$WJ0.dFRYsBmLobM2ah2V8euf3KNkcsJieb2170fo27pUD/TT2uUSa','Admin'),
+('customer','$2b$12$UfdGqYIR0wpCnMcwRqxMKOk15rFg18.J7bBzIHuJs3oiI/p4AVCP6','Customer');
+
+
+-- Inserting Admins
+INSERT INTO `admins` VALUES 
+(1,11,'admin1','admin1','admin1@agency.com','9876543210','admin1wechat'),
+(2,4,'admin2','admin2','admin2@agency.com','987654310','admin2wechat');
 
 -- Inserting Customers
 INSERT INTO Customers (UserID, FirstName, LastName, Email, Phone, Wechat, Preferences, Notes) VALUES

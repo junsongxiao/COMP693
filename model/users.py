@@ -1,5 +1,5 @@
 
-from model.db import database_execute_action, database_execute_lastrowid, database_execute_query_fetchone
+from model.db import database_execute_action, database_execute_lastrowid, database_execute_query_fetchone,database_execute_query_fetchall
 
 class Users:
     def __init__(self, username, password_hash, user_type):
@@ -50,13 +50,28 @@ class Users:
         All authentication should be done through the model.auth module.
     """
     @staticmethod
-    def update_password(username, new_hashed_password):
-        query = "UPDATE Users SET PasswordHash = %s WHERE Username = %s"
-        return database_execute_action(query, (new_hashed_password, username))
+    def get_all_users():
+        query = "SELECT * FROM Users"
+        return database_execute_query_fetchall(query)
+    
+    @staticmethod
+    def update_user(user_id,username, new_hashed_password, user_type):
+       
+        query = "UPDATE Users SET Username=%s, PasswordHash=%s, Type=%s WHERE UserID=%s"
+       
+
+
+        return database_execute_action(query, (username,new_hashed_password, user_type,user_id))
+    
+
     
     @staticmethod
     def get_user_by_id(user_id):
-        query = "SELECT * FROM Users WHERE UserID = %s"
+        query = """
+        SELECT *
+        FROM Users         
+        WHERE UserID = %s
+        """
         return database_execute_query_fetchone(query, (user_id,))
     @staticmethod
     def get_user_by_username(username):
@@ -96,19 +111,46 @@ class Users:
             return None
 
     # Method to get profile details based on user type
+    # @staticmethod
+    # def get_profile_details(user_id, user_type):
+    #     query = ""
+    #     if user_type == 'Customer':
+    #         query = """
+    #         SELECT * FROM Customers WHERE UserID = %s
+    #         """
+    #     elif user_type == 'Agent':
+    #         query = "SELECT * FROM Agents WHERE UserID = %s"
+    #     elif user_type == 'Admin':
+    #         query = "SELECT * FROM Admins WHERE UserID = %s"
+    #     else:
+    #         return None
+
+        # return database_execute_query_fetchone(query, (user_id,))
     @staticmethod
     def get_profile_details(user_id, user_type):
-        query = ""
+        
         if user_type == 'Customer':
-            query = "SELECT * FROM Customers WHERE UserID = %s"
+            query = """
+            SELECT UserID, Username, Email, Phone, FirstName, LastName, Wechat
+            FROM Customers
+            WHERE UserID = %s
+            """
         elif user_type == 'Agent':
-            query = "SELECT * FROM Agents WHERE UserID = %s"
+            query = """
+            SELECT UserID, Username, Email, Phone, FirstName, LastName, Wechat
+            FROM Agents
+            WHERE UserID = %s
+            """
         elif user_type == 'Admin':
-            query = "SELECT * FROM Admins WHERE UserID = %s"
-        else:
-            return None
-
+            query = """
+            SELECT UserID, Username, Email, Phone, FirstName, LastName, Wechat
+            FROM Admins
+            WHERE UserID = %s
+            """
         return database_execute_query_fetchone(query, (user_id,))
+   
+
+
 
     # Method to update customer profile
     @staticmethod
@@ -139,8 +181,21 @@ class Users:
             WHERE UserID = %s
         """
         return database_execute_action(query, (first_name, last_name, email, phone, wechat, user_id))
+    @staticmethod
+    def get_customer_by_user_id(user_id):
+        query = "SELECT * FROM Customers WHERE UserID = %s;"
+        return database_execute_query_fetchone(query, (user_id,))
+    @staticmethod
+    def get_agent_by_user_id(user_id):
+        query = "SELECT * FROM Agents WHERE UserID = %s;"
+        return database_execute_query_fetchone(query, (user_id,))
+    @staticmethod
+    def get_admin_by_user_id(user_id):
+        query = "SELECT * FROM Admins WHERE UserID = %s;"
+        return database_execute_query_fetchone(query, (user_id,))
     
-    
+
+
     # @staticmethod
     # def update_user(user_id, first_name, last_name, email, phone, wechat, preferences, notes):
     #     query = """

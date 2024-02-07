@@ -7,16 +7,33 @@ Add Agent
 {% endblock %}
 
 {% block nested_content %}
-
-<h2>Add New Agent</h2>
+<div style="display:inline-flex">
+    {% include 'components/back_button.html' %}
+</div>
 <form action="{{ url_for('add_agent') }}" method="post">
-    <input type="text" name="first_name" placeholder="First Name">
-    <input type="text" name="last_name" placeholder="Last Name">
-    <input type="email" name="email" placeholder="Email">
-    <input type="text" name="phone" placeholder="Phone Number">
-    <input type="text" name="wechat" placeholder="Wechat">
-    <input type="text" name="agency_name" placeholder="Agency Name">
-    
-    <button type="submit">Add Agent</button>
+    <table>
+        <tr>
+            <td><input type="text" name="first_name" placeholder="First Name"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="last_name" placeholder="Last Name"></td>
+        </tr>
+        <tr>
+            <td><input type="email" name="email" placeholder="Email"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="phone" placeholder="Phone Number"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="wechat" placeholder="Wechat"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="agency_name" placeholder="Agency Name"></td>
+        </tr>
+        <tr>
+            <td><button class="btn btn-primary" type="submit">Add Agent</button></td>
+        </tr>
+    </table>
 </form>
+
 {% endblock %}

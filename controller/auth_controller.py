@@ -15,10 +15,19 @@ class AuthController:
     def log_out():
         return Auth.log_out()
 
+    # @staticmethod
+    # def register_user(username, password, user_type):
+    #     return UserController.add_user(username, password, user_type)
+    # In AuthController
     @staticmethod
-    def register_user(username, password, user_type):
-        return UserController.add_user(username, password, user_type)
-    
+    def register_user(username, password, first_name, last_name, email, phone, wechat):
+        user_id = Auth.create_user(username, password)
+        if user_id:
+            customer_created = UserController.create_customer(user_id, first_name, last_name, email, phone, wechat)
+            if customer_created:
+                return True
+        return False
+
     @staticmethod
     def update_password(username, new_password):
         hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode("utf-8")
