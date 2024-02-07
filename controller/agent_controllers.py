@@ -14,4 +14,7 @@ class AgentController:
     @staticmethod
     def update_agent(first_name, last_name, email, phone, wechat, agency_name):
         return Agents.update_agent(first_name, last_name, email, phone, wechat, agency_name)
+    @staticmethod
+    def get_agent_id_by_user_id(user_id):
+        return Agents.get_agent_id_by_user_id(user_id)
     

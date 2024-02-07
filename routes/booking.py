@@ -18,9 +18,15 @@ def my_bookings():
     user_role = session['Type']  
 
     if user_role == 'Agent':
-        bookings = BookingController.get_agent_bookings(user_id)
+        agent_id=AgentController.get_agent_id_by_user_id(user_id).get('AgentID')
+        print(agent_id)
+
+        bookings = BookingController.get_agent_bookings(agent_id)
     elif user_role == 'Customer':
-        bookings = BookingController.get_customer_bookings(user_id)
+        customer_id=CustomerController.get_customer_id_by_user_id(user_id).get('CustomerID')
+        print(customer_id)
+        bookings = BookingController.get_customer_bookings(customer_id)
+        print(bookings)
     else:
         
         flash('Unable to determine your role.')

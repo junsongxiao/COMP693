@@ -72,6 +72,10 @@ class Agents:
     def get_all_agents():
         query = "SELECT * FROM Agents ORDER BY LastName ASC, FirstName ASC"
         return database_execute_query_fetchall(query)
+    @staticmethod
+    def get_agent_id_by_user_id(user_id):
+        query = "SELECT AgentID FROM Agents WHERE UserID = %s"
+        return database_execute_query_fetchone(query, (user_id,))
     
     @staticmethod
     def get_agent_details(agent_id):

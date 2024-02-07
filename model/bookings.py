@@ -171,7 +171,15 @@ class Bookings:
             Bookings.FamilyNum,
             Bookings.PickUpLocation,
             Bookings.Note,
-            -- Add or remove any columns you need from Bookings
+            Bookings.AdultQuote,
+            Bookings.ChildQuote,
+            Bookings.InfantQuote,
+            Bookings.FamilyQuote,
+            (Bookings.AdultQuote * Bookings.AdultNum) +
+            (Bookings.ChildQuote * Bookings.ChildNum) +
+            (Bookings.InfantQuote * Bookings.InfantNum) +
+            (Bookings.FamilyQuote * Bookings.FamilyNum) AS TotalQuote,
+         
             Tours.TourName AS TourName,
             Tours.TourID,
             Tours.OperatorID,
@@ -181,10 +189,10 @@ class Bookings:
             Customers.LastName
             
             FROM Bookings
-            LEFT JOIN Tours ON Bookings.TourID = Tours.TourID
-            LEFT JOIN Operators ON Tours.OperatorID = Operators.OperatorID
-            LEFT JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
-            WHERE Bookings.CustomerID = %s AND Bookings.BookingStatus = 'Inquiry';
+             JOIN Tours ON Bookings.TourID = Tours.TourID
+             JOIN Operators ON Tours.OperatorID = Operators.OperatorID
+             JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
+            WHERE Bookings.CustomerID = %s AND (Bookings.BookingStatus = 'Inquiry' OR Bookings.BookingStatus = 'Quote');
 
         """
 
@@ -325,11 +333,15 @@ class Bookings:
     @staticmethod
     def get_agent_bookings(agent_id):
         query = """
-            SELECT Bookings.*, Tours.*, Customers.*, Operators.*
+            SELECT Bookings.*, Tours.*, Customers.*, Operators.*,
+            (Bookings.AdultQuote * Bookings.AdultNum) +
+            (Bookings.ChildQuote * Bookings.ChildNum) +
+            (Bookings.InfantQuote * Bookings.InfantNum) +
+            (Bookings.FamilyQuote * Bookings.FamilyNum) AS TotalQuote,
             FROM Bookings
-            INNER JOIN Tours ON Bookings.TourID = Tours.TourID
-            INNER JOIN Operators ON Tours.OperatorID = Operators.OperatorID
-            INNER JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
+             JOIN Tours ON Bookings.TourID = Tours.TourID
+            JOIN Operators ON Tours.OperatorID = Operators.OperatorID
+             JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
             WHERE Bookings.AgentID = %s
         """
         return database_execute_query_fetchall(query, (agent_id,))
@@ -338,11 +350,15 @@ class Bookings:
     @staticmethod
     def get_customer_bookings(customer_id):
         query = """
-            SELECT Bookings.*, Tours.*, Customers.*,Operators.*
+            SELECT Bookings.*, Tours.*, Customers.*,Operators.*,
+            (Bookings.AdultQuote * Bookings.AdultNum) +
+            (Bookings.ChildQuote * Bookings.ChildNum) +
+            (Bookings.InfantQuote * Bookings.InfantNum) +
+            (Bookings.FamilyQuote * Bookings.FamilyNum) AS TotalQuote
             FROM Bookings
-            INNER JOIN Tours ON Bookings.TourID = Tours.TourID
-            INNER JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
-            INNER JOIN Operators ON Tours.OperatorID = Operators.OperatorID
+             JOIN Tours ON Bookings.TourID = Tours.TourID
+             JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
+             JOIN Operators ON Tours.OperatorID = Operators.OperatorID
             WHERE Bookings.CustomerID = %s
         """
         return database_execute_query_fetchall(query, (customer_id,))
@@ -401,13 +417,13 @@ class Bookings:
         
         return database_execute_lastrowid(query, values)
     
-    @staticmethod
-    def get_customer_inquiries(customer_id):
-        query = """
-            SELECT * FROM bookings
-            WHERE CustomerID = %s AND BookingStatus = 'Inquiry'
-        """
-        return database_execute_query_fetchall(query, (customer_id,))
+    # @staticmethod
+    # def get_customer_inquiries(customer_id):
+    #     query = """
+    #         SELECT * FROM bookings
+    #         WHERE CustomerID = %s AND BookingStatus = 'Inquiry'
+    #     """
+    #     return database_execute_query_fetchall(query, (customer_id,))
         
     
 

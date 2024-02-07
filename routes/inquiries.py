@@ -90,9 +90,9 @@ def my_inquiries():
         return redirect(url_for('dashboard'))
     
     user_id = session['UserID']
-    customer_id = CustomerController.get_customer_id_by_user_id(user_id)
+    customer_id = CustomerController.get_customer_id_by_user_id(user_id).get('CustomerID')
     if customer_id:
-        customer_id = customer_id['CustomerID']  # Assuming this returns a dict with CustomerID
+        # customer_id = customer_id['CustomerID']  # Assuming this returns a dict with CustomerID
         inquiries = BookingController.get_customer_inquiries(customer_id)
         
         for inquiry in inquiries:

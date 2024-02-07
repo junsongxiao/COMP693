@@ -2,7 +2,7 @@
 
 {% block title %}My Inquiries{% endblock %}
 {% block header %}
-  My Inquiries
+  My Inquiries/Quotes
 {% endblock %}
 
 {% block nested_content %}
@@ -15,32 +15,45 @@
     <table class="table">
         <thead>
             <tr>
-                
+                <th>Status</th>
                 <th>Operator Name</th>
                 <th>Tour Name</th>
                 <th>Date</th>
-                <th>PAX</th>
+                <th>Pax</th>
                 <th>Notes</th>
+                
+                <th>Quoted Prices</th>
+                <th>Total Quote</th>
+                <th>Payment</th>
                 
             </tr>
         </thead>
         <tbody>
             {% for inquiry in inquiries %}
             <tr>
-                
+                <td>                   
+                    {{ inquiry.BookingStatus }}                   
+                </td>
                 <td>{{ inquiry.OperatorName }}</td>
                 <td>{{ inquiry.TourName }}</td>
                 <td>{{ inquiry.TourDate }}</td>
                 <td>
-                    Adults: {{ inquiry.AdultNum }}, Children: {{ inquiry.ChildNum }}, Infants: {{ inquiry.InfantNum }}, Families: {{ inquiry.FamilyNum }}
+                    A: {{ inquiry.AdultNum }}, C: {{ inquiry.ChildNum }}, I: {{ inquiry.InfantNum }}, F: {{ inquiry.FamilyNum }}
                 </td>
                 <td>
-                    Notes: {{ inquiry.Note }}
+                   {{ inquiry.Note }}
+                </td>
+                
+                <td>${{ inquiry.AdultQuote}}/a | ${{ inquiry.ChildQuote}}/c | ${{ inquiry.InfantQuote}}/i | ${{ inquiry.FamilyQuote}}/f</td>
+                <td>${{ inquiry.TotalQuote }}</td>
+                <td>
+                    <a href="#" class="btn btn-primary">Pay Now</a>
                 </td>
                 
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    <p>Note: A = adult(s), C = child(ren), I = Infant(s), F = Family/Families</p>
 </div>
 {% endblock %}
