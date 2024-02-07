@@ -69,7 +69,10 @@ class Customers:
     @notes.setter
     def notes(self, value):
         self._notes = value
-
+    @staticmethod
+    def get_customer_id_by_user_id(user_id):
+        query = "SELECT CustomerID FROM Customers WHERE UserID = %s"
+        return database_execute_query_fetchone(query, (user_id,))
 
     @staticmethod
     def get_all_customers():

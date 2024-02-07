@@ -161,15 +161,35 @@ class Bookings:
     @staticmethod
     def get_customer_inquiries(customer_id):
         query = """
-            SELECT Bookings.*, Tours.*, Operators.*,Customers.*
+            SELECT
+            Bookings.BookingID, 
+            Bookings.BookingStatus,
+            Bookings.TourDate,
+            Bookings.AdultNum,
+            Bookings.ChildNum,
+            Bookings.InfantNum,
+            Bookings.FamilyNum,
+            Bookings.PickUpLocation,
+            Bookings.Note,
+            -- Add or remove any columns you need from Bookings
+            Tours.TourName AS TourName,
+            Tours.TourID,
+            Tours.OperatorID,
+            Operators.OperatorID,
+            Operators.OperatorName AS OperatorName,
+            Customers.FirstName,
+            Customers.LastName
+            
             FROM Bookings
-            INNER JOIN Tours ON Bookings.TourID = Tours.TourID
-             INNER JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
-            INNER JOIN Operators ON Tours.OperatorID = Operators.OperatorID
-            WHERE Bookings.CustomerID = %s AND Bookings.BookingStatus = 'Inquiry'
+            LEFT JOIN Tours ON Bookings.TourID = Tours.TourID
+            LEFT JOIN Operators ON Tours.OperatorID = Operators.OperatorID
+            LEFT JOIN Customers ON Bookings.CustomerID = Customers.CustomerID
+            WHERE Bookings.CustomerID = %s AND Bookings.BookingStatus = 'Inquiry';
+
         """
+
         return database_execute_query_fetchall(query, (customer_id,))
-    
+        
     @staticmethod
     def get_all_inquiries():
         query = """

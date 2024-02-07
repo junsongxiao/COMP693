@@ -166,27 +166,50 @@ $(document).ready(function() {
     //         }
     //     });
     // });
-  //BACKUP END
+//   BACKUP END
   
-
-
 document.addEventListener('DOMContentLoaded', function() {
+    // Correctly target buttons and assign click event
     document.querySelectorAll('.inquiry-btn').forEach(function(button) {
         button.addEventListener('click', function() {
             var isLoggedIn = this.getAttribute('data-logged-in') === 'true';
-            var tourId = this.getAttribute('id');
-
             if (isLoggedIn) {
-                // User is logged in, open the modal and set the tour ID
-                var modal = document.getElementById('inquiryModal');
+                // Extract the numeric tour ID from button's ID
+                var tourId = this.id.split('-')[1];
+                // Correctly set the tour ID for the modal's form
                 document.getElementById('modalTourId').value = tourId;
+
+                // Display the modal
+                var modal = document.getElementById('inquiryModal');
                 modal.style.display = 'block';
             } else {
-                // User is not logged in, redirect to login page
+                // Redirect to login if not logged in
                 window.location.href = "/login";
             }
         });
     });
+
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     document.querySelectorAll('.inquiry-btn').forEach(function(button) {
+//         button.addEventListener('click', function() {
+//             var isLoggedIn = this.getAttribute('data-logged-in') === 'true';
+//             var tourId = this.getAttribute('id');
+
+//             if (isLoggedIn) {
+//                 // User is logged in, open the modal and set the tour ID
+//                 var modal = document.getElementById('inquiryModal');
+//                 document.getElementById('modalTourId').value = tourId;
+//                 modal.style.display = 'block';
+//             } else {
+//                 // User is not logged in, redirect to login page
+//                 window.location.href = "/login";
+//             }
+//         });
+//     });
+
+
+
 
     // Close the modal when the close button is clicked
     document.querySelector('.close').addEventListener('click', function() {
@@ -201,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-
+ 
 
 //Quote modal control
 document.addEventListener('DOMContentLoaded', function() {

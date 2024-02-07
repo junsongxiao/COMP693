@@ -12,7 +12,11 @@ class CustomerController:
     def update_customer(customer_id, first_name, last_name, email, phone, wechat, preferences, notes):
         return Customers.update_customer(customer_id, first_name, last_name, email, phone, wechat, preferences, notes)
     
-    staticmethod
+    @staticmethod
     def add_customer(first_name, last_name, email, phone, wechat, preferences, notes):
         return Customers.add_customer(first_name, last_name, email, phone, wechat, preferences, notes)
+    @staticmethod
+    def get_customer_id_by_user_id(user_id):
+        return Customers.get_customer_id_by_user_id(user_id)
+    
 

@@ -57,16 +57,54 @@ def inquiries():
     return render_template('inquiries/inquiries.html', inquiries=all_inquiries)
 
 
+# @app.route('/my_inquiries')
+# def my_inquiries():
+#     if not is_logged_in():
+#         return redirect(url_for('login'))
+#     elif not is_customer():
+#         return redirect(url_for('dashboard'))
+    
+#     user_id = session['UserID']
+#     customer_result = CustomerController.get_customer_id_by_user_id(user_id)
+    
+#     # Check if customer_result is not None and has 'CustomerID' key
+#     if customer_result and 'CustomerID' in customer_result:
+#         customer_id = customer_result['CustomerID']
+#     else:
+#         flash('Customer ID not found.')
+#         return redirect(url_for('dashboard'))  # Or some other appropriate action
+
+#     inquiries = BookingController.get_customer_inquiries(customer_id)
+#     for inquiry in inquiries:
+#         print(inquiry['TourName'], inquiry['OperatorName'])
+
+
+#     if not inquiries:
+#         flash('You have no inquiries.')
+#     return render_template('inquiries/my_inquiries.html', inquiries=inquiries)
 @app.route('/my_inquiries')
 def my_inquiries():
     if not is_logged_in():
         return redirect(url_for('login'))
     elif not is_customer():
-        return redirect(url_for('login'))
+        return redirect(url_for('dashboard'))
     
+    user_id = session['UserID']
+    customer_id = CustomerController.get_customer_id_by_user_id(user_id)
+    if customer_id:
+        customer_id = customer_id['CustomerID']  # Assuming this returns a dict with CustomerID
+        inquiries = BookingController.get_customer_inquiries(customer_id)
+        
+        for inquiry in inquiries:
+            if 'TourName' in inquiry :
+                print(inquiry['TourName'])
+            else:
+                print("Keys not found in inquiry:", inquiry)
 
-    customer_id = session['UserID']
-    inquiries = BookingController.get_customer_inquiries(customer_id)
-    if not inquiries:
-        flash('You have no inquiries.')
-    return render_template('inquiries/my_inquiries.html', inquiries=inquiries)
+
+        if not inquiries:
+            flash('You have no inquiries.')
+        return render_template('inquiries/my_inquiries.html', inquiries=inquiries)
+    else:
+        flash('Customer ID not found.')
+        return redirect(url_for('dashboard'))
