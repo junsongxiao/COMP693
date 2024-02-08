@@ -95,7 +95,7 @@ def tour_details(tour_id):
 @app.route('/tours_details_general/<int:tour_id>')
 def tour_details_general(tour_id):
     if is_logged_in():
-        return redirect(url_for('tours_details', tour_id=tour_id))
+        return redirect(url_for('tour_details', tour_id=tour_id))
 
     user_type = session.get('Type')
     tour = TourController.get_tour_details(tour_id)

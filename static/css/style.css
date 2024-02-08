@@ -696,3 +696,60 @@ ul.nav-pills.nav-stacked li {
     height: 100px; /* Adjust as needed */
 }
 
+/*********** CHATBOT WIDGET STYLING  *************/
+/* 
+#chatbot-widget {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+#chatbot-container {
+  width: 300px;
+  border: 1px solid #ddd;
+  background: #fff;
+  position: relative;
+}
+
+#chatbot-header {
+  background: #f7f7f7;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+#chat-box {
+  height: 200px;
+  overflow-y: auto;
+  padding: 5px;
+} */
+/* Add to style.css */
+#chatbot-widget {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+#chatbot-container {
+  width: 300px;
+  border: 1px solid #ddd;
+  background: #fff;
+  position: relative;
+}
+
+#chatbot-header {
+  background: #f7f7f7;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+#chat-box {
+  height: 200px;
+  overflow-y: auto;
+  padding: 5px;
+}
+
+/* Add more styles as needed */
+
+/* Add more styles as needed */

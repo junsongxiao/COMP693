@@ -1,15 +1,8 @@
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 
-
-from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_mail import Mail, Message
 
-import connect
-# Import models and controllers here
-# import model.users, model.bookings, model.tours, model.auth
-# from model import users, bookings, tours,auth
-# import controller.auth_controller, controller.user_controller, controller.booking_controller, controller.tour_controller
-# from controller import user_controllers, booking_controllers,auth_controllers
-
+from routes.chat import chat_bp
 
 app = Flask(__name__)
 
@@ -29,6 +22,8 @@ app.config['MAIL_DEFAULT_SENDER'] = 'words4sammy@gmail.com'
 
 
 ### Routes ###
+
+app.register_blueprint(chat_bp)
 
 import routes.root  # Root page route
 import routes.session_utils  # Session utility routes

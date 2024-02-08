@@ -1,0 +1,72 @@
+<!-- _chatbot widget -->
+<div id="chatbot-widget">
+    <button id="chatbot-toggle">Chat</button>
+    <div id="chatbot-container" style="display: none;">
+        <div id="chatbot-header">
+            <h4>Chatbot</h4>
+            <button id="chatbot-close">X</button>
+        </div>
+        <div id="chat-box"></div>
+        <form id="chat-form">
+            <input type="text" id="user-input" placeholder="Ask me anything...">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</div>
+<script>
+    
+// START JAVASCRIPT FOR HANDLING CHATBOT WIDGET
+
+document.addEventListener("DOMContentLoaded", function() {
+    var toggleButton = document.getElementById("chatbot-toggle");
+    var closeButton = document.getElementById("chatbot-close");
+    var chatContainer = document.getElementById("chatbot-container");
+
+    toggleButton.onclick = function() {
+        chatContainer.style.display = 'block';
+    };
+
+    closeButton.onclick = function() {
+        chatContainer.style.display = 'none';
+    };
+
+    // Include the chat interaction code here
+   
+    var chatForm = document.getElementById("chat-form");
+    var chatBox = document.getElementById("chat-box");
+    var userInput = document.getElementById("user-input");
+
+    chatForm.onsubmit = function(e) {
+        e.preventDefault();
+        var text = userInput.value;
+        userInput.value = ""; // Clear input box
+        displayMessage(text, "user");
+
+        // Send text to the server
+        fetch("/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: `message=${encodeURIComponent(text)}`,
+        })
+        .then(response => response.json())
+        .then(data => {
+            displayMessage(data.response, "bot");
+        })
+        .catch(error => console.error("Error:", error));
+    };
+
+    function displayMessage(text, sender) {
+        var messageElement = document.createElement("div");
+        messageElement.textContent = text;
+        messageElement.className = sender; // Use this class for styling
+        chatBox.appendChild(messageElement);
+        chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+    }
+});
+
+
+
+//END JAVASCRIPT FOR HANDLING CHATBOT WIDGET
+</script>
