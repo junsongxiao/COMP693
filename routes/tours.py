@@ -2,6 +2,7 @@ from flask import render_template, redirect, url_for, request, flash, session
 from app import app
 from routes.session_utils import is_logged_in, auth_handler, is_agent, is_admin
 from controller.tour_controllers import TourController
+from controller.operator_controllers import OperatorController
 
 
 @app.route('/tours')
@@ -54,6 +55,11 @@ def edit_tour(tour_id):
 
 @app.route('/add_tour', methods=['GET', 'POST'])
 def add_tour():
+    if not is_logged_in():
+        return redirect(url_for('login'))
+    if not is_admin():
+        return redirect(url_for('dashboard'))
+    operators=OperatorController.get_all_operators()
     if request.method == 'POST':
         # Extract form data from the request
         operator_id = request.form.get('operator_id')
@@ -81,7 +87,7 @@ def add_tour():
         else:
             flash('Failed to add new tour.')
     
-    return render_template('tours/add_tour.html')
+    return render_template('tours/add_tour.html',operators=operators)
 
 @app.route('/tour_details/<int:tour_id>')
 def tour_details(tour_id):

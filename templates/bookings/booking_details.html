@@ -56,8 +56,15 @@
                     <td>{{ booking.TourDate }}</td>
                     
                 </tr>
-
+                {% if user_type=='Customer' %}
                 <tr>
+                    <td>Booking Status:</td>
+                    <td>{{ booking.BookingStatus }}</td>
+                </tr>
+               
+                {% else %}
+                <tr>
+
                     <td>Booking Status:</td>
                     <td>
                     <!-- Update Booking Status Dropdown -->
@@ -72,9 +79,9 @@
                           <button type="submit">Update Status</button>
                         
                         </form>
-                    </td>
-                    
+                    </td>                    
                 </tr>
+                {% endif %}
                 <tr>
                     <td>Pax</td>
                     <td>Adult(s): {{ booking.AdultNum }} | Child(ren): {{ booking.ChildNum }} | Infant: {{ booking.InfantNum }} | Family: {{ booking.FamilyNum }}</td>

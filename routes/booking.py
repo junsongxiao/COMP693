@@ -144,8 +144,9 @@ def add_booking():
 
 @app.route('/booking_details/<int:booking_id>')
 def booking_details(booking_id):
+    user_type = session.get('Type')
     booking = BookingController.get_booking_details(booking_id)
-    return render_template('bookings/booking_details.html', booking=booking)
+    return render_template('bookings/booking_details.html', booking=booking,user_type=user_type)
 
 
 

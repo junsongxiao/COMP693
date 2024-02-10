@@ -12,12 +12,27 @@
 
 <form action="{{ url_for('add_tour') }}" method="post">
     <table>
-        <tr>
+
+        <!-- <tr>
             <td><input type="number" name="operator_id" placeholder="Operator ID"></td>
-        </tr>
+        </tr> -->
+        
         <tr>
+
+            <td>
+                <select name="operator_id" id="operator_id">
+                    <option value="" disabled selected>Select an operator...</option>
+                    {% for operator in operators %}
+                    <option value="{{ operator.OperatorID }}" >{{ operator.OperatorName }}</option>
+                    {% endfor %}
+                </select>
+               <a href="{{ url_for('add_operator') }}" class="btn btn-primary">Add Operator</a>
+            </td>
+        <tr>
+       
             <td><input type="text" name="tour_name" placeholder="Tour Name"></td>
         </tr>
+        
         <tr>
             <td><input type="text" name="city" placeholder="City"></td>
         </tr>

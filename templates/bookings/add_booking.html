@@ -32,10 +32,11 @@
                         <option value="{{ customer.CustomerID }}">{{ customer.FirstName }} {{ customer.LastName }}</option>
                     {% endfor %}
                 </select>
+                <a href="{{ url_for('add_customer') }}" class="btn btn-primary">Add Customer</a>
             </td>
         </tr>
         <!-- Agent ID Dropdown -->
-        {% if user_type != 'agent' %}
+        {% if user_type != 'Agent' %}
         <tr>
             <td><label for="AgentID">Agent:</label></td>
             <td>
