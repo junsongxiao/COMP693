@@ -48,11 +48,14 @@
                             <p>{{ inquiry.FirstName }} {{ inquiry.LastName }}</p>
                             <span style="position:absolute;right:0" class="close" data-modal-id="{{ inquiry.BookingID }}">&times;</span>
                             <form action="{{ url_for('quote_inquiry', booking_id=inquiry.BookingID) }}" method="post" class="modal-form">
+                            
+                                
+
                                 <!-- Quotation fields here -->
-                                <input type="number" name="quoted_adult_price" placeholder="Quoted Adult Price">
-                                <input type="number" name="quoted_child_price" placeholder="Quoted Child Price">
-                                <input type="number" name="quoted_infant_price" placeholder="Quoted Infant Price">
-                                <input type="number" name="quoted_family_price" placeholder="Quoted Family Price">
+                                <input type="number" name="quoted_adult_price" placeholder="0">
+                                <input type="number" name="quoted_child_price" placeholder="0">
+                                <input type="number" name="quoted_infant_price" placeholder="0">
+                                <input type="number" name="quoted_family_price" placeholder="0">
                                 <textarea name="notes" placeholder="Additional notes"></textarea>
                                 <button type="submit">Submit Quote</button>
                             </form>

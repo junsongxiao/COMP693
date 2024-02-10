@@ -24,6 +24,10 @@
         <p>Last Name: {{ user.LastName }}</p>
 
         <p>Wechat: {{ user.Wechat }}</p>
+        {% if user_type=='Agent' %}
+        <p>Agency Name: {{ user.AgencyName }}</p>
+        {% endif %}
+
         {% if user_type=='Customer' %}
         <p>Preferences: {{ user.Preferences }}</p>
         <p>Notes: {{ user.Notes }}</p>

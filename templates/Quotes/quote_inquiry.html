@@ -21,13 +21,13 @@
 
    
         <label>Quoted Adult Price:</label>
-        <input type="number" name="quoted_adult_price" value="{{ inquiry.QuotedAdultPrice }}" step="0.01"><br>
+        <input type="number" name="quoted_adult_price" value="{{ inquiry.QuotedAdultPrice|default(0, true) }}" step="1"><br>
         <label>Quoted Child Price:</label>
-        <input type="number" name="quoted_child_price" value="{{ inquiry.QuotedChildPrice }}" step="0.01"><br>
+        <input type="number" name="quoted_child_price" value="{{ inquiry.QuotedChildPrice|default(0, true) }}" step="1"><br>
         <label>Quoted Infant Price:</label>
-        <input type="number" name="quoted_infant_price" value="{{ inquiry.QuotedInfantPrice }}" step="0.01"><br>
+        <input type="number" name="quoted_infant_price" value="{{ inquiry.QuotedInfantPrice|default(0, true) }}" step="1"><br>
         <label>Quoted Family Price:</label>
-        <input type="number" name="quoted_family_price" value="{{ inquiry.QuotedFamilyPrice }}" step="0.01"><br>
+        <input type="number" name="quoted_family_price" value="{{ inquiry.QuotedFamilyPrice|default(0, true) }}" step="1"><br>
 
     
     <textarea name="note" placeholder="Add a note"></textarea>

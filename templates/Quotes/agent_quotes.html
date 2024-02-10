@@ -19,7 +19,7 @@
                 <th>Operator</th>
                 <th>Tour Name</th>
                 <th>Date</th>
-                <th>PAX</th>
+                <th>Pax</th>
                 <th>Quoted Prices</th>
                 <th>Total Price</th>
                 <th>Actions</th>
@@ -48,8 +48,15 @@
                 <td>
                     <!-- Update Booking Status and Send Email -->
                     <form action="{{ url_for('update_booking_status', booking_id=quote.BookingID) }}" method="post">
-                        <select name="new_status">
-                            <!-- Status options here -->
+                        <select name="BookingStatus" id="BookingStatus">
+                           
+                            <option value="Quote">Quote</option>
+                            <option value="Pending Payment">Pending Payment</option>
+                            <option value="Pending Confirmation">Pending Confirmation</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Cancelled and Refunded">Cancelled and Refunded</option>
+                            <option value="Cancelled and Charged">Cancelled and Charged</option>
+                            
                         </select>
                         <button type="submit">Update Status</button>
                     </form>

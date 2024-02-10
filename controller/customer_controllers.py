@@ -18,5 +18,8 @@ class CustomerController:
     @staticmethod
     def get_customer_id_by_user_id(user_id):
         return Customers.get_customer_id_by_user_id(user_id)
+    @staticmethod
+    def create_customer(user_id,first_name, last_name, email, phone, wechat, preferences, notes):
+        return Customers.create_customer(user_id,first_name, last_name, email, phone, wechat, preferences, notes)
     
 

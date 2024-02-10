@@ -17,8 +17,11 @@ Tour Name: Glacier Heli Ice Climb
 Location: Glacier Base, 63 Cron Street, Franz Josef, 7856, New Zealand
 Price: NZD$400 per adult, NZD$300 per child, NZD$1000 per family 
 Features: Under the expert tuition of our experienced guides, we will introduce you to the exhilarating sport of ice-climbing, whilst still enjoying the spectacular scenery of the Franz Josef Glacier. Your guide will tailor the day to challenge novices and experts alike. No experience necessary.
+
 Duration: 2 hours
+
 Reporting Time: 9:00am, 12:00pm, 2:00pm, 3:00pm
+
 Region: West Coast
 
 

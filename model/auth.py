@@ -2,7 +2,8 @@
 
 from flask import session
 import bcrypt
-from model.users import Users
+# from model.users import Users
+from controller.user_controllers import UserController
 from model.db import database_execute_lastrowid, database_execute_query_fetchone, database_execute_action
 
 class Auth:
@@ -12,7 +13,7 @@ class Auth:
 
     @staticmethod
     def log_in(username, password):
-        user = Users.get_user_by_username(username)
+        user = UserController.get_user_by_username(username)
         if user and bcrypt.checkpw(password.encode("utf-8"), user["PasswordHash"].encode("utf-8")):
             session["UserID"] = user["UserID"]
             session["Username"] = user["Username"]

@@ -33,7 +33,7 @@
                     <span class="fa-stack fa-lg pull-left">
                         <i class="fa-solid fa-file-circle-question fa-stack-1x"></i>
                     </span>
-                   All Inquiries
+                   Inquiries
                 </a>
             </li>
             <li>
@@ -42,7 +42,7 @@
                         
                         <i class="fas fa-clipboard-user fa-stack-1x "></i>
                     </span>
-                    Quote Admin
+                    Quotes
                 </a>
                 <ul class="nav-pills nav-stacked" style="list-style-type:none;">                   
                     <li><a href="{{url_for('agent_quotes')}}"><span class="fa-stack fa-lg pull-left"><i class="fas fa-clipboard-user fa-stack-1x"></i></span>My Quotes</a></li>
@@ -63,6 +63,18 @@
                     <li><a href="{{url_for('my_bookings')}}"><span class="fa-stack fa-lg pull-left"><i class="fas fa-calendar-check fa-stack-1x "></i></span>My Bookings</a></li>
                     <li><a href="{{url_for('add_booking')}}"><span class="fa-stack fa-lg pull-left"><i class="fas fa-calendar-check fa-stack-1x "></i></span>Add Booking</a></li>
                     
+                </ul>
+            </li>
+            <li>
+                <a href="#"> 
+                    <span class="fa-stack fa-lg pull-left">
+                        <i class="fa-solid fa-person-walking-luggage fa-stack-1x"></i>
+                    </span>
+                    Customers
+                </a>
+                <ul class="nav-pills nav-stacked" style="list-style-type:none;">                   
+                    <li><a href="{{url_for('customers')}}"><span class="fa-stack fa-lg pull-left"><i class="fa-solid fa-person-walking-luggage fa-stack-1x"></i></span>Customers</a></li>
+                    <li><a href="{{url_for('add_customer')}}"><span class="fa-stack fa-lg pull-left"><i class="fa-solid fa-person-walking-luggage fa-stack-1x"></i></span>Add Customers</a></li>                    
                 </ul>
             </li>
 

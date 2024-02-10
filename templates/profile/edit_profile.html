@@ -21,32 +21,39 @@
         </tr>
         <tr>
             <td>Email:</td>
-            <td>{{ profile.Email }}</td>    
+            <td><input type="email" id="email" name="email" value="{{ profile.Email }}" required></td>    
         </tr>
         <tr>
             <td>Phone:</td>
-            <td>{{ profile.Phone }}</td>
+            <td><input type="text" id="phone" name="phone" value="{{ profile.Phone }}" required></td>
         </tr>
         <tr>
             <td>First Name:</td>
-            <td>{{ profile.FirstName }}</td>
+            <td><input type="text" id="first_name" name="first_name" value="{{ profile.FirstName }}" required></td>
         </tr>
         <tr>
             <td>Last Name:</td>
-            <td>{{ profile.LastName }}</td>
+            <td><input type="text" id="last_name" name="last_name" value="{{ profile.LastName }}" required></td>
         </tr>
         <tr>
             <td>Wechat:</td>
-            <td>{{ profile.Wechat }}</td>
+            <td><input type="text" id="wechat" name="wechat" value="{{ profile.Wechat }}"></td>
         </tr>
+        {% if user_type=='Agent' %}
+        <tr>
+            <td>Agency Name:</td>
+            <td><input type="text" id="agency_name" name="agency_name" value="{{ profile.AgencyName }}"></td>
+        </tr>
+        {% endif %}
+
         {% if user_type=='Customer' %}
         <tr>
             <td>Preferences:</td>
-            <td>{{ profile.Preferences }}</td>
+            <td><input type="text" id="preferences" name="preferences" value="{{ profile.Preferences }}"></td>
         </tr>
         <tr>
             <td>Notes:</td>
-            <td>{{ profile.Notes }}</td>
+            <td><input type="text" id="notes" name="notes" value="{{ profile.Notes }}"></td>
         </tr>
         {% endif %}
         <tr> 

@@ -1,9 +1,9 @@
 {% extends "dashboard.html" %}
 
-{% block title %}Edit User{% endblock %}
+{% block title %}Reset Password{% endblock %}
 
 {% block header %}
-  Edit User
+  Reset Password
 {% endblock %}
 
 {% block nested_content %}
@@ -13,8 +13,10 @@
 <form action="{{ url_for('update_user', user_id=user.UserID) }}" method="post">
   <table>
       <tr>
-          <td><label for="user_name">Username</label></td>
-          <td><input type="text" id="user_name" name="user_name" value="{{ user.Username }}"></td>
+          <!-- <td><label for="user_name">Username</label></td>
+          <td><input type="text" id="user_name" name="user_name" value="{# user.Username #}"></td> -->
+          <td>Username</td>
+          <td>{{ user.Username }}</td>
       </tr>
       <tr>
         <td><label for="password">Password</label></td>
@@ -22,18 +24,13 @@
         
       </tr>
       <tr>
-          <td><label for="new_type">Type:</label></td>
-          <td>
-            <select name="new_type">
-                {% set types = ['Admin', 'Agent', 'Customer', 'Guest'] %}
-                {% for type in types %}
-                    <option value="{{ type }}" {% if type == user.Type %}selected{% endif %}>{{ type }}</option>
-                {% endfor %}
-            </select>
-        </td>
+        <td><label for="confirm_password">Confirm Password</label></td>
+        <td><input type="password" id="confirm_password" name="confirm_password"></td>
+        
       </tr>
+      
       <tr>
-       <td><button type="submit">Update User</button></td>
+       <td><button type="submit" class="btn btn-primary">Update </button></td>
 
       </tr>
       

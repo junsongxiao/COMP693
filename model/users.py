@@ -1,47 +1,48 @@
 
 from model.db import database_execute_action, database_execute_lastrowid, database_execute_query_fetchone,database_execute_query_fetchall
+import bcrypt
 
 class Users:
-    def __init__(self, username, password_hash, user_type):
-        self._user_id = None
-        self._username = username
-        self._password_hash = password_hash
-        self._type = user_type
+    # def __init__(self, username, password_hash, user_type):
+    #     self._user_id = None
+    #     self._username = username
+    #     self._password_hash = password_hash
+    #     self._type = user_type
 
-    @property
-    def user_id(self):
-        return self._user_id
+    # @property
+    # def user_id(self):
+    #     return self._user_id
 
-    @user_id.setter
-    def user_id(self, value):
-        if self._user_id is None:
-            self._user_id = value
-        else:
-            raise ValueError("User ID can only be set once.")
+    # @user_id.setter
+    # def user_id(self, value):
+    #     if self._user_id is None:
+    #         self._user_id = value
+    #     else:
+    #         raise ValueError("User ID can only be set once.")
 
-    @property
-    def username(self):
-        return self._username
+    # @property
+    # def username(self):
+    #     return self._username
 
-    @username.setter
-    def username(self, value):
-        self._username = value
+    # @username.setter
+    # def username(self, value):
+    #     self._username = value
 
-    @property
-    def password_hash(self):
-        return self._password_hash
+    # @property
+    # def password_hash(self):
+    #     return self._password_hash
 
-    @password_hash.setter
-    def password_hash(self, value):
-        self._password_hash = value
+    # @password_hash.setter
+    # def password_hash(self, value):
+    #     self._password_hash = value
 
-    @property
-    def type(self):
-        return self._type
+    # @property
+    # def type(self):
+    #     return self._type
 
-    @type.setter
-    def type(self, value):
-        self._type = value
+    # @type.setter
+    # def type(self, value):
+    #     self._type = value
 
     
     """
@@ -55,14 +56,21 @@ class Users:
         return database_execute_query_fetchall(query)
     
     @staticmethod
-    def update_user(user_id,username, new_hashed_password, user_type):
+    def update_user(user_id,username):
        
-        query = "UPDATE Users SET Username=%s, PasswordHash=%s, Type=%s WHERE UserID=%s"
-       
+        query = "UPDATE Users SET Username=%s, WHERE UserID=%s"    
 
-
-        return database_execute_action(query, (username,new_hashed_password, user_type,user_id))
+        return database_execute_action(query, (username,user_id))
     
+    @staticmethod
+    def update_password(user_id, new_password):
+        hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt()).decode("utf-8")
+        query = "UPDATE Users SET PasswordHash = %s WHERE UserID = %s"
+        return database_execute_action(query, (hashed_password, user_id))
+    @staticmethod
+    def update_type(user_id, user_type):
+        query = "UPDATE Users SET Type = %s WHERE UserID = %s"
+        return database_execute_action(query, (user_type, user_id))
 
     
     @staticmethod
@@ -73,14 +81,14 @@ class Users:
         WHERE UserID = %s
         """
         return database_execute_query_fetchone(query, (user_id,))
-    @staticmethod
-    def get_user_by_username(username):
-        query = "SELECT * FROM Users WHERE Username = %s"
-        try:
-            return database_execute_query_fetchone(query, (username,))
-        except Exception as e:
-            print(f"Error fetching user by username: {e}")
-            return None
+    # @staticmethod
+    # def get_user_by_username(username):
+    #     query = "SELECT * FROM Users WHERE Username = %s"
+    #     try:
+    #         return database_execute_query_fetchone(query, (username,))
+    #     except Exception as e:
+    #         print(f"Error fetching user by username: {e}")
+    #         return None
     @staticmethod
     def get_customer_id_by_user_id(user_id):
         query = "SELECT CustomerID FROM Customers WHERE UserID = %s;"
@@ -154,13 +162,13 @@ class Users:
 
     # Method to update customer profile
     @staticmethod
-    def update_customer_profile(user_id, first_name, last_name, email, phone, wechat):
+    def update_customer_profile(user_id, first_name, last_name, email, phone, wechat, preferences, notes):
         query = """
             UPDATE Customers 
-            SET FirstName = %s, LastName = %s, Email = %s, Phone = %s, Wechat = %s 
+            SET FirstName = %s, LastName = %s, Email = %s, Phone = %s, Wechat = %s, Preferences = %s, Notes = %s
             WHERE UserID = %s
         """
-        return database_execute_action(query, (first_name, last_name, email, phone, wechat, user_id))
+        return database_execute_action(query, (first_name, last_name, email, phone, wechat,preferences,notes, user_id))
 
     # Method to update agent profile
     @staticmethod
@@ -187,12 +195,36 @@ class Users:
         return database_execute_query_fetchone(query, (user_id,))
     @staticmethod
     def get_agent_by_user_id(user_id):
-        query = "SELECT * FROM Agents WHERE UserID = %s;"
+        query = """
+        SELECT Agents.* , Users.Username, Users.UserID
+        FROM Agents 
+        INNER JOIN Users ON Agents.UserID=Users.UserID
+        WHERE Agents.UserID = %s;
+        """
         return database_execute_query_fetchone(query, (user_id,))
     @staticmethod
     def get_admin_by_user_id(user_id):
         query = "SELECT * FROM Admins WHERE UserID = %s;"
         return database_execute_query_fetchone(query, (user_id,))
+    @staticmethod
+    def add_user(username, password, user_type):
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode("utf-8")
+        query = """
+            INSERT INTO Users (Username, PasswordHash, Type)
+            VALUES (%s, %s, %s)
+        """
+        return database_execute_lastrowid(query, (username, hashed_password, user_type))
+    
+    @staticmethod
+    def create_login_for_customer(customer_id,user_id):
+        query = "UPDATE Customers SET UserID = %s WHERE CustomerID = %s"
+        
+        return database_execute_action(query, (user_id,customer_id))
+    @staticmethod
+    def create_login_for_agent(agent_id,user_id):
+        query = "UPDATE Agents SET UserID = %s WHERE AgentID = %s"
+        
+        return database_execute_action(query, (user_id,agent_id))
     
 
 

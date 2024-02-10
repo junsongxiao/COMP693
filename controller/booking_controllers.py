@@ -57,9 +57,22 @@ class BookingController:
     # @staticmethod
     # def process_update_quoted_prices_and_notes(booking_id, quoted_adult_price, quoted_child_price, quoted_infant_price, quoted_family_price, notes):
     #     return Bookings.update_quoted_prices_and_notes(booking_id, quoted_adult_price, quoted_child_price, quoted_infant_price, quoted_family_price, notes)
+
+
     @staticmethod
     def process_quote(booking_id, adult_quote, child_quote, infant_quote, family_quote, notes):
-        return Bookings.insert_or_update_quote(booking_id, adult_quote, child_quote, infant_quote, family_quote, notes)
+        try:
+                return Bookings.insert_or_update_quote(booking_id, adult_quote, child_quote, infant_quote, family_quote, notes)
+        except Exception as e:
+            print(f"Error processing quote: {e}")
+            # Optionally, log the error or handle it more specifically
+            return False        
+        # return Bookings.insert_or_update_quote(booking_id, adult_quote, child_quote, infant_quote, family_quote, notes)
+
+        
+    # @staticmethod
+    # def process_quote(booking_id, adult_quote, child_quote, infant_quote, family_quote, notes):
+    #     return Bookings.insert_or_update_quote(booking_id, adult_quote, child_quote, infant_quote, family_quote, notes)
     
     @staticmethod
     def get_quote_details(booking_id):
@@ -68,6 +81,10 @@ class BookingController:
     @staticmethod
     def update_status(booking_id, new_status):
         return Bookings.update_status(booking_id, new_status)
+    
+    @staticmethod
+    def assign_agent_to_booking(booking_id, agent_id):
+        return Bookings.assign_agent_to_booking(booking_id, agent_id)
     
     @staticmethod
     def get_all_bookings_except_inquiry_quote():

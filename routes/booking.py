@@ -22,11 +22,15 @@ def my_bookings():
         print(agent_id)
 
         bookings = BookingController.get_agent_bookings(agent_id)
+        if not bookings:
+            flash('No bookings found.')
     elif user_role == 'Customer':
         customer_id=CustomerController.get_customer_id_by_user_id(user_id).get('CustomerID')
         print(customer_id)
         bookings = BookingController.get_customer_bookings(customer_id)
         print(bookings)
+        if not bookings:
+            flash('No bookings found.')
     else:
         
         flash('Unable to determine your role.')
@@ -95,9 +99,12 @@ def edit_booking(booking_id):
     
 @app.route('/add_booking', methods=['GET', 'POST'])
 def add_booking():
-    if not (is_agent() or is_admin()):
+    if not is_logged_in():
         return redirect(url_for('login'))
-    user_type = session.get('user_type') 
+    if not (is_agent() or is_admin()):
+        return redirect(url_for('dashboard'))
+    
+    user_type = session.get('Type') 
 
     if request.method == 'POST':
         customer_id = request.form['CustomerID']

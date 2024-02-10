@@ -63,7 +63,7 @@
                     <!-- Update Booking Status Dropdown -->
                         <form action="{{ url_for('update_booking_status', booking_id=booking.BookingID) }}" method="post">
                             <select name="new_status">
-                                {% set statuses = ['Pending Payment', 'Pending Confirmation', 'Confirmed', 'Cancelled and Refunded', 'Cancelled and Charged'] %}
+                                {% set statuses = ['Quote','Pending Payment', 'Pending Confirmation', 'Confirmed', 'Cancelled and Refunded', 'Cancelled and Charged'] %}
                                 {% for status in statuses %}
                                     <option value="{{ status }}" {% if status == booking.BookingStatus %}selected{% endif %}>{{ status }}</option>
                                 {% endfor %}
@@ -100,9 +100,10 @@
                     <td>{{ booking.Note }}</td>
                     
                 </tr>
+
                 <tr>
                     <td>Commission:</td>
-                    <td>{{ booking.Commission }}</td>
+                    <td>${{ booking.TotalCommission}}</td>
                 </tr>
             </table>
         </div>

@@ -12,11 +12,12 @@ from mysql.connector.errors import IntegrityError
 @app.route("/login", methods=["GET", "POST"])
 def login():
     
-    if is_logged_in():
-        print("Already logged in")
-        return redirect(url_for("dashboard"))
+    
 
     if request.method == "POST":
+        # if is_logged_in():
+        #     print("Already logged in")
+        #     return redirect(url_for("dashboard"))
         username = request.form.get("username")
         password = request.form.get("password")
         if AuthController.log_in(username, password):
@@ -55,18 +56,27 @@ def register():
         if password != confirm_password:
             flash("Passwords do not match.")
             return render_template("auth/register.html")
-
         try:
-            # Create user and get user_id
-            user_id = Auth.create_user(username, password)
+            user_id=AuthController.register_user(username, password, first_name, last_name, email, phone, wechat)
             if user_id:
-                # Create customer details
-                if UserController.create_customer(user_id, first_name, last_name, email, phone, wechat):
-                    flash("Registration successful.")
-                    return redirect(url_for("login"))
-                else:
-                    flash("Failed to create customer details.")
+                flash("Registration successful.")
+                return redirect(url_for("login"))
+            else:
+                flash("Failed to create customer details.")
         except IntegrityError as e:
             flash("Username already taken. Please choose a different username.")
+
+        # try:
+        #     # Create user and get user_id
+        #     user_id = Auth.create_user(username, password)
+        #     if user_id:
+        #         # Create customer details
+        #         if UserController.create_customer(user_id, first_name, last_name, email, phone, wechat):
+        #             flash("Registration successful.")
+        #             return redirect(url_for("login"))
+        #         else:
+        #             flash("Failed to create customer details.")
+        # except IntegrityError as e:
+        #     flash("Username already taken. Please choose a different username.")
         
     return render_template("auth/register.html")

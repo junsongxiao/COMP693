@@ -12,32 +12,64 @@ from flask_mail import Message, Mail
 @app.route('/quote_inquiry/<int:booking_id>', methods=['GET', 'POST'])
 def quote_inquiry(booking_id):
     
-    if not (is_agent() or is_admin()):
-        
+    if not is_logged_in():
+        flash('Please login as agent or admin to view this page.')
         return redirect(url_for('login'))
+    if not (is_agent() or is_admin()):
+        flash('Only agents or admins are authorised to view this page.')
+        return redirect(url_for('dashboard'))
 
-    if request.method == 'POST':
-        # Extract form data
-        quoted_adult_price = request.form.get('quoted_adult_price')
-        quoted_child_price = request.form.get('quoted_child_price')
-        quoted_infant_price = request.form.get('quoted_infant_price')
-        quoted_family_price = request.form.get('quoted_family_price')
-        notes = request.form.get('notes')
+    
+    user_id=session.get('UserID')
 
-        # Update quoted prices and notes
-        success = BookingController.process_quote(
-            booking_id, quoted_adult_price, quoted_child_price, 
-            quoted_infant_price, quoted_family_price, notes
-        )
+
+    if is_agent():
+        agent_id = AgentController.get_agent_id_by_user_id(user_id)['AgentID']
        
+        print(agent_id)
+        
 
-        if success:
-            BookingController.update_status(booking_id, 'Quote')
-            flash('Quote successfully submitted. Booking ID: ' + str(booking_id) + '. You can check the quotation from All quotes.')
-        else:
-            flash('Failed to submit quote.')
+        if request.method == 'POST':
+            # Extract form data
+            # quoted_adult_price = request.form.get('quoted_adult_price')
+            # quoted_child_price = request.form.get('quoted_child_price')
+            # quoted_infant_price = request.form.get('quoted_infant_price')
+            # quoted_family_price = request.form.get('quoted_family_price')
+            # notes = request.form.get('notes')
+            # Extract form data with default values
+            quoted_adult_price = request.form.get('quoted_adult_price') or 'default_value'
+            quoted_child_price = request.form.get('quoted_child_price') or 'default_value'
+            quoted_infant_price = request.form.get('quoted_infant_price') or 'default_value'
+            quoted_family_price = request.form.get('quoted_family_price') or 'default_value'
+            notes = request.form.get('notes') or 'default note'
 
-        return redirect(url_for('inquiries'))
+            # Convert string values to the appropriate type if necessary
+            # For example, converting to float or integer if your database expects numerical values
+            quoted_adult_price = float(quoted_adult_price) if quoted_adult_price != 'default_value' else 0.0
+            quoted_child_price = float(quoted_child_price) if quoted_child_price != 'default_value' else 0.0
+            quoted_infant_price = float(quoted_infant_price) if quoted_infant_price != 'default_value' else 0.0
+            quoted_family_price = float(quoted_family_price) if quoted_family_price != 'default_value' else 0.0
+
+            
+            # Update quoted prices and notes
+            success = BookingController.process_quote(booking_id, quoted_adult_price, quoted_child_price, quoted_infant_price, quoted_family_price, notes)
+           
+            BookingController.assign_agent_to_booking(booking_id, agent_id)
+                        
+
+            if success:
+                BookingController.update_status(booking_id, 'Quote')
+                
+                flash('Quote successfully submitted. Booking ID: ' + str(booking_id) + '. You can check the quotation from All quotes.')
+                return redirect(url_for('agent_quotes'))
+            else:
+                flash('Failed to submit quote.')
+
+            return redirect(url_for('inquiries'))
+
+        
+        return redirect(url_for('dashboard'))
+    
 
     inquiry = BookingController.get_inquiry_details(booking_id)
     if inquiry:
@@ -115,9 +147,11 @@ def send_quote_email(booking_id):
 def agent_quotes():
     if not is_agent():
         return redirect(url_for('login'))
-
-    agent_id = session.get('UserID')
+    user_id=session.get('UserID')
+    agent_id = AgentController.get_agent_id_by_user_id(user_id)['AgentID']
     quotes = BookingController.get_agent_quotes(agent_id)
+    if not quotes:
+        flash('No quotes found.')
     return render_template('quotes/agent_quotes.html', quotes=quotes)
 
 

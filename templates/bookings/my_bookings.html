@@ -15,25 +15,31 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Customer</th>
+                <th>Booking Names</th>
                 <th>Tour Name</th>
                 <th>Date</th>
-                <th>Operator/Customer</th>
+                <th>Operator</th>
                 <th>Status</th>
                 <th>Pax</th>
                 <th>Quoted Prices</th>
                 <th>Total Price</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for booking in bookings %}
             <tr>
+                <td>{{ booking.FirstName }} {{ booking.LastName}}</td>
+                <td>{{ booking.BookingNames }}</td>
                 <td>{{ booking.TourName }}</td>
                 <td>{{ booking.TourDate }}</td>
                 <td>{{ booking.OperatorName or booking.CustomerName }}</td>
                 <td>{{ booking.BookingStatus }}</td>
-                <td>Adults: {{ booking.AdultNum }}, Children: {{ booking.ChildNum }}</td>
-                <td>Adult: ${{ booking.AdultQuote }}, Child: ${{ booking.ChildQuote }}</td>
+                <td>A: {{ booking.AdultNum }} | C: {{ booking.ChildNum }} | I: {{ booking.InfantNum }} | F: {{booking.FamilyNum }}</td>
+                <td>A: ${{ booking.AdultQuote }} | C: ${{ booking.ChildQuote }} | I: ${{booking.InfantQuote }} | F: {{booking.FamilyQuote}}</td>
                 <td>${{ booking.TotalQuote }}</td>
+                <td><a href="{{url_for('booking_details',booking_id=booking.BookingID)}}" class="btn btn-primary">Details</a></td>
             </tr>
             {% endfor %}
         </tbody>

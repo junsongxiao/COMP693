@@ -1,42 +1,97 @@
-COMP693/
+NZ EASYTOUR BOOKING SYSTEM/
 ├── controller/
+│   ├── agent_controllers.py
 │   ├── auth_controller.py
 │   ├── booking_controllers.py
-│   └──  user_controllers.py
+│   ├── customer_controllers.py
+│   ├── operator_controllers.py
+│   ├── tour_controllers.py
+│   └── user_controllers.py
 ├── model/
-│   ├── agencies.py
+│   ├── agents.py
 │   ├── auth.py
 │   ├── bookings.py
+│   ├── chat.py
 │   ├── customers.py
 │   ├── db.py
 │   ├── operators.py
-│   ├── tours.py
 │   ├── payments.py
+│   ├── tours.py
 │   ├── users.py
 │   └── utilities.py
 ├── routes/
 │   ├── auth.py
+│   ├── agents.py
+│   ├── bookings.py
+│   ├── chat.py
+│   ├── customers.py
 │   ├── dashboard.py
 │   ├── error.py
-│   ├── user.py
 │   ├── general.py
-│   ├── register.py
+│   ├── inquiries.py
+│   ├── operators.py
+│   ├── quotes.py
 │   ├── root.py
-│   └── session_utils.py
+│   ├── general.py
+│   ├── session_utils.py
+│   ├── tours.py
+│   └── user.py
 ├── templates/
+│   ├── agents/
+│   │   ├── add_agent.html
+│   │   ├── agents.html
+│   │   └── edit_agent.html
 │   ├── auth/
 │   │   ├── login.html
 │   │   └── register.html
+│   ├── bookings/
+│   │   ├── add_booking.html
+│   │   ├── agent_inquiries.html
+│   │   ├── booking_details.html
+│   │   ├── bookings.html
+│   │   ├── edit_bookings.html
+│   │   └── my_bookings.html
 │   ├── components/
 │   │   ├── back_button.html
+│   │   ├── chat.html
 │   │   ├── nav_bar.html
 │   │   └── flash_messages.html
+│   ├── customers/
+│   │   ├── add_customer.html
+│   │   ├── customers.html
+│   │   └── edit_customer.html
 │   ├── error/
 │   │   ├── 403.html
 │   │   └── 404.html
 │   ├── general/
 │   │   ├── about_us.html
 │   │   └── home.html
-│   ├── dashboard.html
+│   ├── inquiries/
+│   │   ├── inquiries.html
+│   │   └── my_inquiries.html
+│   ├── operators/
+│   │   ├── add_operator.html
+│   │   ├── edit_operator.html
+│   │   ├── operators.html
+│   │   └── tours_for_operator.html
+│   ├── profile/
+│   │   ├── edit_profile.html
+│   │   └── profile.html
+│   ├── quotes/
+│   │   ├── add_quote.html
+│   │   ├── agent_quote.html
+│   │   ├── quote_inquiry.html
+│   │   └── quotes.html
+│   ├── tourss/
+│   │   ├── add_tour.html
+│   │   ├── edit_tour.html
+│   │   ├── tour_details_public.html
+│   │   └── tours.html
+│   ├── users/
+│   │   ├── edit_user.html
+│   │   └── users.html
+│   ├── index.html
+│   └── dashboard.html
 ├── app.py
-└── connect.py
+├── connect.py
+└── knowledge_base.txt

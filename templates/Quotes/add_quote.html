@@ -9,86 +9,113 @@
 {% block nested_content %}
 <div style="display:inline-flex">
     {% include 'components/back_button.html' %}
-</div>   
+</div>
 
 <form action="{{ url_for('add_quote') }}" method="post">
+    <table>
+        <!-- Row for Tour -->
+        <tr>
+            <td><label for="TourID">Tour:</label></td>
+            <td>
+                <select name="TourID" id="TourID">
+                    {% for tour in tours %}
+                        <option value="{{tour.TourID}}">{{tour.TourName}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
 
-    <!-- Dropdown for selecting Tour -->
-    <label for="TourID">Tour:</label>
-    <select name="TourID" id="TourID">
-        {% for tour in tours %}
-            <option value="{{tour.TourID}}">{{tour.TourName}}</option>
-        {% endfor %}
+        <!-- Row for Customer -->
+        <tr>
+            <td><label for="CustomerID">Customer:</label></td>
+            <td>
+                <select name="CustomerID" id="CustomerID">
+                    {% for customer in customers %}
+                        <option value="{{customer.CustomerID}}">{{customer.FirstName}} {{customer.LastName}}</option>
+                    {% endfor %}
+                </select>
+                <a href="{{ url_for('add_customer') }}" class="btn btn-primary">Add Customer</a>
+
+            </td>
+        </tr>
+
+        {% if user_type == 'Agent' %}
+            <input type="hidden" id="AgentID" name="AgentID" value="{{user.AgentID}}">
+        {% elif user_type=='Admin' %}
+            <!-- Row for Agent -->
+            <tr>
+                <td><label for="AgentID">Agent:</label></td>
+                <td>
+                    <select name="AgentID" id="AgentID">
+                        {% for agent in agents %}
+                            <option value="{{agent.AgentID}}">{{agent.FirstName}} {{agent.LastName}}</option>
+                        {% endfor %}    
+                    </select>
+                </td>
+            </tr>
+        {% endif %}
+        <tr>
+            <td><label for="BookingAccountName">Booking Account Name:</label></td>
+            <td><input type="text" id="BookingAccountName" name="BookingAccountName"></td>
+        </tr>
+        <tr>
+            <td><label for="BookingNames">Booking Names:</label></td>
+            <td><input type="text" id="BookingNames" name="BookingNames"></td>
+        </tr>
+        <tr>
+            <td><label for="TourDate">Tour Date:</label></td>
+            <td><input type="date" id="TourDate" name="TourDate"></td>
+        </tr>
+        <tr>
+            <td><label for="ConfirmationNum">Confirmation Number:</label></td>
+            <td><input type="text" id="ConfirmationNum" name="ConfirmationNum"></td>
+        </tr>
+        <tr>
+            <td><label for="BookingNum">Booking Number:</label></td>
+            <td><input type="text" id="BookingNum" name="BookingNum"></td>
+        </tr>
+        <tr>
+            <td><label for="AdultQuote">Adult Quote:</label></td>
+            <td><input type="number" id="AdultQuote" name="AdultQuote"></td>
+        </tr>
+        <tr>
+            <td><label for="AdultNum">Number of Adults:</label></td>
+            <td><input type="number" id="AdultNum" name="AdultNum"></td>
+        </tr>
+        <tr>
+            <td><label for="ChildQuote">Child Quote:</label></td>
+            <td><input type="number" id="ChildQuote" name="ChildQuote"></td>
+        </tr>
+        <tr>
+            <td><label for="ChildNum">Number of Children:</label></td>
+            <td><input type="number" id="ChildNum" name="ChildNum"></td>
+        </tr>
+        <tr>
+            <td><label for="InfantQuote">Infant Quote:</label></td>
+            <td><input type="number" id="InfantQuote" name="InfantQuote"></td>
+        </tr>
+        <tr>
+            <td><label for="InfantNum">Number of Infants:</label></td>
+            <td><input type="number" id="InfantNum" name="InfantNum"></td>
+        </tr>
+        <tr>
+            <td><label for="FamilyQuote">Family Quote:</label></td>
+            <td><input type="number" id="FamilyQuote" name="FamilyQuote"></td>
+        </tr>
+        <tr>
+            <td><label for="FamilyNum">Number of Families:</label></td>
+            <td><input type="number" id="FamilyNum" name="FamilyNum"></td>
+        </tr>
+        <tr>
+            <td><label for="Note">Note:</label></td>
+            <td><textarea id="Note" name="Note"></textarea></td>
+        </tr>
         
-    </select>
 
-    <!-- Dropdown for selecting Customer -->
-    <label for="CustomerID">Customer:</label>
-    <select name="CustomerID" id="CustomerID">
-        {% for customer in customers %}
-            <option value="{{customer.CustomerID}}">{{customer.FirstName}} {{customer.LastName}}</option>
-        {% endfor %}
-        
-    </select>
-    {% if user_type == 'agent' %}
-        <input type="hidden" id="AgentID" name="AgentID" value="{{user.AgentID}}">
-    {% else %}
-        <!-- Dropdown for selecting Agent -->
-        <label for="AgentID">Agent:</label>
-        <select name="AgentID" id="AgentID">
-            {% for agent in agents %}
-                <option value="{{agent.AgentID}}">{{agent.FirstName}} {{agent.LastName}}</option>
-            {% endfor %}    
-        
-        </select>
-    {% endif %}
-
-
-    <label for="BookingAccountName">Booking Account Name:</label>
-    <input type="text" id="BookingAccountName" name="BookingAccountName">
-
-    <label for="BookingNames">Booking Names:</label>
-    <input type="text" id="BookingNames" name="BookingNames">
-
-    <label for="TourDate">Tour Date:</label>
-    <input type="date" id="TourDate" name="TourDate">
-
-    <label for="ConfirmationNum">Confirmation Number:</label>
-    <input type="text" id="ConfirmationNum" name="ConfirmationNum">
-
-    <label for="BookingNum">Booking Number</label>
-    <input type="text" id="BookingNum" name="BookingNum">
-
-    <label for="AdultQuote">Adult Quote:</label>
-    <input type="number" id="AdultQuote" name="AdultQuote">
-
-    <label for="AdultNum">Number of Adults:</label>
-    <input type="number" id="AdultNum" name="AdultNum">
-
-    <label for="ChildQuote">Child Quote:</label>
-    <input type="number" id="ChildQuote" name="ChildQuote">
-
-    <label for="ChildNum">Number of Children:</label>
-    <input type="number" id="ChildNum" name="ChildNum">
-
-    <label for="InfantQuote">Infant Quote:</label>
-    <input type="number" id="InfantQuote" name="InfantQuote">
-
-    <label for="InfantNum">Number of Infants:</label>
-    <input type="number" id="InfantNum" name="InfantNum">
-
-    <label for="FamilyQuote">Family Quote:</label>
-    <input type="number" id="FamilyQuote" name="FamilyQuote">
-
-    <label for="FamilyNum">Number of Families:</label>
-    <input type="number" id="FamilyNum" name="FamilyNum">
-
-    <label for="Note">Note</label>
-    <textarea id="Note" name="Note"></textarea>
-
-
-
-
-    <button type="submit">Add Quote</button>
+        <tr>
+            <td colspan="2"><button type="submit">Add Quote</button></td>
+        </tr>
+    </table>
 </form>
 {% endblock %}
+
